@@ -1,0 +1,227 @@
+---
+import { Image } from "astro:assets";
+
+const links = [
+  { name: "Inicio", href: "/" },
+  { name: "Servicios", href: "/servicios" },
+  { name: "Proyectos", href: "/proyectos" },
+  { name: "Contacto", href: "/contacto" },
+];
+
+const translations = {
+  en: {
+    services: "Services",
+    whyUs: "Why Choose Us",
+    process: "Process",
+    sectors: "Sectors",
+    blog: "Blog",
+    contact: "Contact",
+  },
+  es: {
+    services: "Servicios",
+    whyUs: "Por qué elegirnos",
+    process: "Proceso",
+    sectors: "Sectores",
+    blog: "Blog",
+    contact: "Contacto",
+  },
+  fr: {
+    services: "Services",
+    whyUs: "Pourquoi nous choisir",
+    process: "Processus",
+    sectors: "Secteurs",
+    blog: "Blog",
+    contact: "Contact",
+  },
+  ja: {
+    services: "サービス",
+    whyUs: "選ばれる理由",
+    process: "プロセス",
+    sectors: "分野",
+    blog: "ブログ",
+    contact: "お問い合わせ",
+  },
+  zh: {
+    services: "服务",
+    whyUs: "为何选择我们",
+    process: "流程",
+    sectors: "行业",
+    blog: "博客",
+    contact: "联系",
+  },
+};
+
+const HIDE_BLOG = process.env.NEXT_PUBLIC_HIDE_BLOG === "true";
+const language: keyof typeof translations = Astro.props.language || "en";
+const t = translations[language] || translations.en;
+const path = Astro.props.path || "/";
+const query = Astro.props.query || "";
+---
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur shadow-xs py-3 transition-all duration-300"
+>
+  <input
+    type="checkbox"
+    id="mobile-menu-toggle"
+    class="mobile-menu-toggle absolute opacity-0 pointer-events-none"
+  />
+
+  <div class="container mx-auto px-4 flex justify-between items-center">
+    <div class="flex items-center">
+      <Image
+        src="/favicon.ico"
+        alt="Logo"
+        width={40}
+        height={40}
+        class="mr-2"
+      />
+      <a href={`/${language}`} class="text-2xl font-bold text-gray-900">
+        <span class="text-primary">Onna</span>Soft
+      </a>
+    </div>
+
+    <nav class="hidden lg:flex space-x-8 items-center">
+      {
+        /*<ProductsMenu language={language} />
+      <ServicesMenu language={language} />*/
+      }
+      <a
+        href={`/${language}/company/why-choose-onnasoft-technology-tailored-to-you-results-scaled-to-your-needs`}
+        class="nav-link"
+      >
+        {t.whyUs}
+      </a>
+      {
+        !HIDE_BLOG && (
+          <a href={`/${language}/blog`} class="nav-link">
+            {t.blog}
+          </a>
+        )
+      }
+      <a
+        href={`/${language}/contact`}
+        class="bg-primary text-white px-4 py-2 rounded-md font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg"
+      >
+        <span class="text-white font-bold">{t.contact}</span>
+      </a>
+
+      {/* Desktop Language Selector */}
+      <div class="relative ml-4 lang-dropdown">
+        <button
+          class="flex items-center space-x-1 text-gray-700 hover:text-primary focus:outline-none"
+          aria-haspopup="true"
+          aria-expanded="false"
+          type="button"
+        >
+          {language === "en" && <span class="mr-1">🇺🇸</span>}
+          {language === "es" && <span class="mr-1">🇪🇸</span>}
+          {language === "fr" && <span class="mr-1">🇫🇷</span>}
+          {language === "ja" && <span class="mr-1">🇯🇵</span>}
+          {language === "zh" && <span class="mr-1">🇨🇳</span>}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width={2}
+              d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div
+          class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 lang-menu"
+        >
+          <a
+            href={`/en${path}${query ? "?q=" + query : ""}`}
+            class="flex items-center px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
+          >
+            <span class="mr-2">🇺🇸</span> English
+          </a>
+          <a
+            href={`/es${path}${query ? "?q=" + query : ""}`}
+            class="flex items-center px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
+          >
+            <span class="mr-2">🇪🇸</span> Español
+          </a>
+          <a
+            href={`/fr${path}${query ? "?q=" + query : ""}`}
+            class="flex items-center px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
+          >
+            <span class="mr-2">🇫🇷</span> Français
+          </a>
+          <a
+            href={`/ja${path}${query ? "?q=" + query : ""}`}
+            class="flex items-center px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
+          >
+            <span class="mr-2">🇯🇵</span> 日本語
+          </a>
+          <a
+            href={`/zh${path}${query ? "?q=" + query : ""}`}
+            class="flex items-center px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
+          >
+            <span class="mr-2">🇨🇳</span> 中文
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="hidden border-t border-gray-100 px-6 py-4 md:hidden"
+  >
+    <div class="flex flex-col gap-4">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="font-medium text-gray-600 transition hover:text-indigo-600"
+          >
+            {link.name}
+          </a>
+        ))
+      }
+      <a
+        href="/contacto"
+        class="rounded-lg bg-indigo-600 px-4 py-2 text-center font-semibold text-white hover:bg-indigo-700"
+      >
+        Empezar
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector("#menu-button");
+  const menu = document.querySelector("#mobile-menu");
+  const icon = document.querySelector("#menu-icon");
+
+  button?.addEventListener("click", () => {
+    const isExpanded = button.getAttribute("aria-expanded") === "true";
+
+    button.setAttribute("aria-expanded", String(!isExpanded));
+    button.setAttribute(
+      "aria-label",
+      isExpanded ? "Abrir menú" : "Cerrar menú",
+    );
+    menu?.classList.toggle("hidden");
+    icon?.replaceChildren();
+
+    if (isExpanded) {
+      icon?.insertAdjacentHTML(
+        "beforeend",
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />',
+      );
+    } else {
+      icon?.insertAdjacentHTML(
+        "beforeend",
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />',
+      );
+    }
+  });
+</script>
