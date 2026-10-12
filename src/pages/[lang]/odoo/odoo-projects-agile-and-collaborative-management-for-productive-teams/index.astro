@@ -1,0 +1,17 @@
+---
+export function getStaticPaths() {
+    return [
+        { params: { lang: "en" } },
+        { params: { lang: "es" } },
+        { params: { lang: "fr" } },
+        { params: { lang: "ja" } },
+        { params: { lang: "zh" } },
+    ];
+}
+
+const { lang } = Astro.params;
+---
+
+<div>
+    odoo-projects-agile-and-collaborative-management-for-productive-teams
+</div>

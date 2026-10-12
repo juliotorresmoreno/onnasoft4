@@ -1,0 +1,15 @@
+---
+export function getStaticPaths() {
+    return [
+        { params: { lang: "en" } },
+        { params: { lang: "es" } },
+        { params: { lang: "fr" } },
+        { params: { lang: "ja" } },
+        { params: { lang: "zh" } },
+    ];
+}
+
+const { lang } = Astro.params;
+---
+
+<div>api-integration-connect-your-systems-and-automate-key-processes</div>

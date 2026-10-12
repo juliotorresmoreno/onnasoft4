@@ -1,0 +1,224 @@
+
+---
+const { language = Astro.url.pathname.split("/").filter(Boolean)[0] || "en" } = Astro.props;
+
+const translations = {
+  en: {
+    title: "Make it real with OnnaSoft",
+    subtitle: "We transform ideas into innovative digital solutions. Specialists in programming, web development, API integration, big data and data science.",
+    ctaStart: "Start Your Project",
+    poweredBy: "Powered by cutting-edge technologies",
+    words: ["Projects Real", "Ideas Reality", "Dreams True", "Vision Live"],
+  },
+  es: {
+    title: "Hazlo realidad con OnnaSoft",
+    subtitle: "Transformamos ideas en soluciones digitales innovadoras. Especialistas en programación, desarrollo web, integración de APIs, big data y ciencia de datos.",
+    ctaStart: "Inicia tu Proyecto",
+    poweredBy: "Impulsado por tecnologías de punta",
+    words: ["Proyectos Reales", "Ideas en Acción", "Sueños Cumplidos", "Visión Viva"],
+  },
+  fr: {
+    title: "Réalisez-le avec OnnaSoft",
+    subtitle: "Nous transformons les idées en solutions numériques innovantes. Spécialistes en programmation, développement web, intégration d'API, big data et science des données.",
+    ctaStart: "Commencez votre projet",
+    poweredBy: "Propulsé par des technologies de pointe",
+    words: ["Projets Réels", "Idées Réalité", "Rêves Réalisés", "Vision Vivante"],
+  },
+  ja: {
+    title: "OnnaSoftで現実に",
+    subtitle: "アイデアを革新的なデジタルソリューションに変えます。プログラミング、Web開発、API統合、ビッグデータ、データサイエンスの専門家。",
+    ctaStart: "プロジェクトを始める",
+    poweredBy: "先端技術で実現",
+    words: ["実現したプロジェクト", "現実のアイデア", "夢が叶う", "ビジョンを実現"],
+  },
+  zh: {
+    title: "用 OnnaSoft 实现你的想法",
+    subtitle: "我们将创意转化为创新的数字解决方案。专注于编程、网页开发、API集成、大数据与数据科学。",
+    ctaStart: "开始你的项目",
+    poweredBy: "由尖端技术驱动",
+    words: ["真实项目", "创意实现", "梦想成真", "愿景成真"],
+  },
+};
+
+const t = translations[language as keyof typeof translations] ?? translations.en;
+
+const techIcons = [
+  { icon: "fab fa-js-square", color: "text-yellow-500", title: "JavaScript" },
+  { icon: "fab fa-js-square", color: "text-blue-600", title: "TypeScript" },
+  { icon: "fab fa-python", color: "text-blue-500", title: "Python" },
+  { icon: "fas fa-code", color: "text-cyan-500", title: "Go" },
+  { icon: "fab fa-node-js", color: "text-green-600", title: "Node.js" },
+  { icon: "fab fa-react", color: "text-blue-400", title: "React" },
+  { icon: "fas fa-layer-group", color: "text-black", title: "Next.js" },
+  { icon: "fab fa-aws", color: "text-orange-500", title: "AWS" },
+  { icon: "fab fa-docker", color: "text-blue-600", title: "Docker" },
+  { icon: "fab fa-bootstrap", color: "text-purple-600", title: "Bootstrap" },
+  { icon: "fas fa-wind", color: "text-cyan-400", title: "Tailwind" },
+  { icon: "fas fa-database", color: "text-gray-700", title: "SQL" },
+];
+---
+
+<section
+  id="home"
+  class="hero-pattern relative flex min-h-screen items-center justify-center overflow-hidden"
+>
+  <div class="absolute inset-0 bg-linear-to-br from-white via-primary/10 to-purple-50"></div>
+
+  <div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+
+  <div
+    id="particles-container"
+    class="pointer-events-none absolute inset-0 overflow-hidden"
+  ></div>
+
+  <div class="relative z-10 mx-auto max-w-7xl px-4 pt-20 text-center sm:px-6 lg:px-8">
+    <div class="animate-fade-in-up">
+      <h1 class="mb-6 break-words text-4xl leading-tight font-bold sm:text-4xl md:text-6xl lg:text-7xl">
+        <span class="gradient-text">{t.title}</span>
+        <br />
+        <span
+          class="typing-animation"
+          data-words={JSON.stringify(t.words)}
+          aria-label={t.words.join(", ")}
+        >{t.words[0]}</span>
+        <span class="typing-cursor" aria-hidden="true">|</span>
+      </h1>
+
+      <p class="animate-fade-in-down mx-auto mb-8 max-w-md break-words text-gray-600 sm:max-w-xl md:max-w-3xl">
+        {t.subtitle}
+      </p>
+
+      <div class="animate-fade-in-up flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href={`/${language}/contact`}
+          class="rounded-lg bg-primary px-8 py-4 font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl"
+        >
+          <i class="fas fa-rocket mr-2" aria-hidden="true"></i>
+          {t.ctaStart}
+        </a>
+      </div>
+    </div>
+
+    <div class="animate-slide-up mt-16">
+      <p class="mb-6 text-sm tracking-wider text-gray-500 uppercase">
+        {t.poweredBy}
+      </p>
+
+      <div class="tech-grid mx-auto grid max-w-4xl grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-6">
+        {techIcons.map((tech) => (
+          <div
+            class={`tech-icon cursor-pointer text-3xl ${tech.color} transition hover:opacity-80`}
+            title={tech.title}
+            aria-label={tech.title}
+          >
+            <i class={tech.icon} aria-hidden="true"></i>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const typingElements = document.querySelectorAll<HTMLElement>(".typing-animation");
+
+  typingElements.forEach((element) => {
+    const words = JSON.parse(element.dataset.words ?? "[]") as string[];
+
+    if (!words.length) return;
+
+    let wordIndex = 0;
+    let charIndex = words[0].length;
+    let deleting = false;
+    let timeout: ReturnType<typeof setTimeout>;
+
+    const type = () => {
+      const word = words[wordIndex];
+
+      if (!deleting && charIndex < word.length) {
+        charIndex++;
+        element.textContent = word.substring(0, charIndex);
+      } else if (!deleting && charIndex === word.length) {
+        deleting = true;
+        timeout = setTimeout(type, 2000);
+        return;
+      } else if (deleting && charIndex > 0) {
+        charIndex--;
+        element.textContent = word.substring(0, charIndex);
+      } else {
+        deleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+      }
+
+      timeout = setTimeout(type, deleting ? 70 : 120);
+    };
+
+    timeout = setTimeout(type, 2000);
+
+    document.addEventListener("astro:before-swap", () => clearTimeout(timeout), {
+      once: true,
+    });
+  });
+
+  const container = document.querySelector<HTMLElement>("#particles-container");
+
+  if (container && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const interval = window.setInterval(() => {
+      const particle = document.createElement("div");
+
+      particle.className = "particle";
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.width = `${Math.random() * 4 + 2}px`;
+      particle.style.height = particle.style.width;
+      particle.style.animationDuration = `${Math.random() * 3 + 5}s`;
+      particle.style.opacity = `${Math.random() * 0.5 + 0.2}`;
+
+      container.appendChild(particle);
+
+      window.setTimeout(() => particle.remove(), 8000);
+    }, 300);
+
+    document.addEventListener("astro:before-swap", () => window.clearInterval(interval), {
+      once: true,
+    });
+  }
+</script>
+
+<style>
+  .typing-cursor {
+    color: #ec4899;
+    animation: blink 0.8s step-end infinite;
+  }
+
+  .particle {
+    position: absolute;
+    bottom: -10px;
+    border-radius: 9999px;
+    background: #ec4899;
+    animation: float-up linear forwards;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes float-up {
+    to {
+      transform: translateY(-100vh);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .typing-cursor {
+      animation: none;
+    }
+  }
+</style>
