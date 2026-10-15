@@ -1,0 +1,318 @@
+---
+interface Props {
+  language?: string;
+}
+
+const { language = "en" } = Astro.props;
+
+const translations = {
+  en: {
+    description:
+      "We transform ideas into innovative digital solutions. Specialists in programming, web development, API integration, big data and data science.",
+    quickLinks: "Quick Links",
+    aboutLinks: "About Links",
+    home: "Home",
+    services: "Services",
+    whyUs: "Why Choose Us",
+    process: "Process",
+    contact: "Contact",
+    contactTitle: "Contact",
+    privacy: "Privacy Policy",
+    terms: "Terms of Service",
+    copyright: `© ${new Date().getFullYear()} OnnaSoft. All rights reserved.`,
+    mission: "Mission",
+    vision: "Vision",
+  },
+  es: {
+    description:
+      "Transformamos ideas en soluciones digitales innovadoras. Especialistas en programación, desarrollo web, integración de APIs, big data y ciencia de datos.",
+    quickLinks: "Enlaces Rápidos",
+    aboutLinks: "Enlaces Sobre Nosotros",
+    home: "Inicio",
+    services: "Servicios",
+    whyUs: "¿Por qué elegirnos?",
+    process: "Proceso",
+    contact: "Contacto",
+    contactTitle: "Contacto",
+    privacy: "Política de Privacidad",
+    terms: "Términos del Servicio",
+    copyright: `© ${new Date().getFullYear()} OnnaSoft. Todos los derechos reservados.`,
+    mission: "Misión",
+    vision: "Visión",
+  },
+  fr: {
+    description:
+      "Nous transformons les idées en solutions numériques innovantes. Spécialistes en programmation, développement web, intégration d'API, big data et science des données.",
+    quickLinks: "Liens Rapides",
+    aboutLinks: "Liens à Propos",
+    home: "Accueil",
+    services: "Services",
+    whyUs: "Pourquoi Nous Choisir",
+    process: "Processus",
+    contact: "Contact",
+    contactTitle: "Contact",
+    privacy: "Politique de Confidentialité",
+    terms: "Conditions d'Utilisation",
+    copyright: `© ${new Date().getFullYear()} OnnaSoft. Tous droits réservés.`,
+    mission: "Mission",
+    vision: "Vision",
+  },
+  ja: {
+    description:
+      "私たちはアイデアを革新的なデジタルソリューションに変えます。プログラミング、Web開発、API統合、ビッグデータ、データサイエンスの専門家です。",
+    quickLinks: "クイックリンク",
+    aboutLinks: "私たちについてのリンク",
+    home: "ホーム",
+    services: "サービス",
+    whyUs: "選ばれる理由",
+    process: "プロセス",
+    contact: "お問い合わせ",
+    contactTitle: "連絡先",
+    privacy: "プライバシーポリシー",
+    terms: "利用規約",
+    copyright: `© ${new Date().getFullYear()} OnnaSoft. 無断転載を禁じます。`,
+    mission: "ミッション",
+    vision: "ビジョン",
+  },
+  zh: {
+    description:
+      "我们将创意转化为创新的数字解决方案。专注于编程、网页开发、API 集成、大数据和数据科学。",
+    quickLinks: "快速链接",
+    aboutLinks: "关于我们的链接",
+    home: "首页",
+    services: "服务",
+    whyUs: "为什么选择我们",
+    process: "流程",
+    contact: "联系",
+    contactTitle: "联系方式",
+    privacy: "隐私政策",
+    terms: "服务条款",
+    copyright: `© ${new Date().getFullYear()} OnnaSoft. 保留所有权利。`,
+    mission: "使命",
+    vision: "愿景",
+  },
+} as const;
+
+type Language = keyof typeof translations;
+
+const currentLanguage: Language = language in translations
+  ? (language as Language)
+  : "en";
+
+const t = translations[currentLanguage];
+
+const location = import.meta.env.PUBLIC_LOCATION || "Madrid, Spain";
+const phone = import.meta.env.PUBLIC_PHONE_NUMBER || "+34 123 456 789";
+const email = import.meta.env.PUBLIC_EMAIL || "info@onnasoft.com";
+const linkedinUrl = import.meta.env.PUBLIC_LINKEDIN_URL || "";
+
+const links = {
+  services: `/${currentLanguage}/company/development-and-digital-transformation-services`,
+  whyUs: `/${currentLanguage}/company/why-choose-onnasoft-technology-tailored-to-you-results-scaled-to-your-needs`,
+  process: `/${currentLanguage}/company/our-process-for-creating-custom-solutions`,
+  mission: `/${currentLanguage}/company/onnasoft-transforming-businesses-with-custom-software-security-and-integration`,
+  vision: `/${currentLanguage}/company/our-vision-to-be-a-global-reference-in-innovative-and-scalable-technological-solutions`,
+  privacy: `/${currentLanguage}/company/privacy-policy-we-protect-your-data-responsibly-and-transparently`,
+  terms: `/${currentLanguage}/company/terms-of-service-clear-conditions-for-a-trusted-relationship`,
+  contact: `/${currentLanguage}/contact`,
+};
+---
+
+<footer class="bg-gray-900 py-12 text-white">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
+      <!-- Logo y descripción -->
+      <div>
+        <a href={`/${currentLanguage}`} class="mb-4 block text-2xl font-bold">
+          <span class="text-primary">Onna</span>soft
+        </a>
+
+        <p class="mb-4 text-gray-400">
+          {t.description}
+        </p>
+
+        {linkedinUrl && (
+          <div class="flex space-x-4">
+            <a
+              href={linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              class="text-gray-400 transition-colors hover:text-primary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+        )}
+      </div>
+
+      <!-- Enlaces rápidos -->
+      <div>
+        <h3 class="mb-4 font-bold">{t.quickLinks}</h3>
+
+        <ul class="space-y-2">
+          <li>
+            <a href={`/${currentLanguage}`} class="text-gray-400 transition-colors hover:text-primary">
+              {t.home}
+            </a>
+          </li>
+          <li>
+            <a href={links.services} class="text-gray-400 transition-colors hover:text-primary">
+              {t.services}
+            </a>
+          </li>
+          <li>
+            <a href={links.whyUs} class="text-gray-400 transition-colors hover:text-primary">
+              {t.whyUs}
+            </a>
+          </li>
+          <li>
+            <a href={links.process} class="text-gray-400 transition-colors hover:text-primary">
+              {t.process}
+            </a>
+          </li>
+          <li>
+            <a href={links.contact} class="text-gray-400 transition-colors hover:text-primary">
+              {t.contact}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Enlaces sobre la empresa -->
+      <div>
+        <h3 class="mb-4 font-bold">{t.aboutLinks}</h3>
+
+        <ul class="space-y-2">
+          <li>
+            <a href={links.mission} class="text-gray-400 transition-colors hover:text-primary">
+              {t.mission}
+            </a>
+          </li>
+          <li>
+            <a href={links.vision} class="text-gray-400 transition-colors hover:text-primary">
+              {t.vision}
+            </a>
+          </li>
+          <li>
+            <a href={links.privacy} class="text-gray-400 transition-colors hover:text-primary">
+              {t.privacy}
+            </a>
+          </li>
+          <li>
+            <a href={links.terms} class="text-gray-400 transition-colors hover:text-primary">
+              {t.terms}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Información de contacto -->
+      <div>
+        <h3 class="mb-4 font-bold">{t.contactTitle}</h3>
+
+        <ul class="space-y-3">
+          <li class="flex items-start">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-2 mt-1 shrink-0 text-primary"
+              aria-hidden="true"
+            >
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span class="text-gray-400">{location}</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-2 mt-1 shrink-0 text-primary"
+              aria-hidden="true"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <a
+              href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+              class="text-gray-400 transition-colors hover:text-primary"
+            >
+              {phone}
+            </a>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-2 mt-1 shrink-0 text-primary"
+              aria-hidden="true"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            <a
+              href={`mailto:${email}`}
+              class="break-all text-gray-400 transition-colors hover:text-primary"
+            >
+              {email}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-12 flex flex-col items-center justify-between border-t border-gray-800 pt-8 md:flex-row">
+      <p class="text-sm text-gray-400">
+        {t.copyright}
+      </p>
+
+      <div class="mt-4 flex space-x-6 md:mt-0">
+        <a
+          href={links.privacy}
+          class="text-sm text-gray-400 transition-colors hover:text-primary"
+        >
+          {t.privacy}
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,143 @@
+
+---
+interface Props {
+  language?: string;
+}
+
+const { language = "en" } = Astro.props;
+
+const images = {
+  finance: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=500&q=80",
+  healthcare: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=500&q=80",
+  education: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=500&q=80",
+  ecommerce: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=500&q=80",
+  realEstate: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=500&q=80",
+  airlines: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=500&q=80",
+};
+
+const translations = {
+  es: {
+    title: "Sectores con los que trabajamos",
+    description: "Nuestra experiencia abarca varios sectores, donde aplicamos tecnología de punta para resolver desafíos específicos de la industria.",
+    cta: "Hablemos de tu proyecto",
+    sectors: [
+      { title: "Finanzas", description: "Soluciones tecnológicas para instituciones financieras, bancos y compañías de inversión, optimizando procesos y mejorando la seguridad en transacciones.", tags: ["Banca Digital", "Análisis de Riesgo", "Seguridad"], image: images.finance },
+      { title: "Salud", description: "Sistemas para el sector salud que mejoran la gestión de pacientes, registros médicos electrónicos y análisis clínicos para una atención más eficiente.", tags: ["Telemedicina", "Gestión Hospitalaria", "Análisis Clínico"], image: images.healthcare },
+      { title: "Educación", description: "Plataformas educativas interactivas y herramientas digitales de aprendizaje que transforman la experiencia educativa para estudiantes y profesores.", tags: ["E-learning", "Gestión Académica", "Evaluación"], image: images.education },
+      { title: "Comercio Electrónico", description: "Desarrollo de tiendas en línea, sistemas de pago y plataformas de gestión de inventarios que impulsan las ventas y mejoran la experiencia del cliente.", tags: ["Comercio Electrónico", "Pagos en Línea", "Marketing Digital"], image: images.ecommerce },
+      { title: "Bienes Raíces", description: "Aplicaciones para el sector inmobiliario que facilitan la búsqueda, gestión y mantenimiento de propiedades, optimizando procesos para agentes y clientes.", tags: ["Bienes Raíces", "Casa Inteligente", "Gestión de Propiedades"], image: images.realEstate },
+      { title: "Aerolíneas", description: "Soluciones integrales para la industria aérea, incluyendo sistemas de reserva, gestión de vuelos y optimización de la experiencia del cliente.", tags: ["Gestión de Vuelos", "Sistemas de Reserva", "Experiencia del Cliente"], image: images.airlines },
+    ],
+  },
+  en: {
+    title: "Sectors We Work With",
+    description: "Our experience spans across various sectors, where we apply cutting-edge technology to solve industry-specific challenges.",
+    cta: "Let's talk about your project",
+    sectors: [
+      { title: "Finance", description: "Technological solutions for financial institutions, banks, and investment companies, optimizing processes and improving transaction security.", tags: ["Digital Banking", "Risk Analysis", "Security"], image: images.finance },
+      { title: "Healthcare", description: "Systems for the healthcare sector that improve patient management, electronic medical records, and clinical data analysis for more efficient care.", tags: ["Telemedicine", "Hospital Management", "Clinical Analysis"], image: images.healthcare },
+      { title: "Education", description: "Interactive educational platforms and digital learning tools that transform the educational experience for both students and teachers.", tags: ["E-learning", "Academic Management", "Assessment"], image: images.education },
+      { title: "E-commerce", description: "Development of online stores, payment systems, and inventory management platforms that boost sales and improve customer experience.", tags: ["E-commerce", "Online Payments", "Digital Marketing"], image: images.ecommerce },
+      { title: "Real Estate", description: "Applications for the real estate sector that facilitate property search, management, and maintenance, optimizing processes for agents and clients.", tags: ["Real Estate", "Smart Home", "Property Management"], image: images.realEstate },
+      { title: "Airlines", description: "Comprehensive solutions for the airline industry, including booking systems, flight management, and customer experience optimization.", tags: ["Flight Management", "Booking Systems", "Customer Experience"], image: images.airlines },
+    ],
+  },
+  fr: {
+    title: "Secteurs avec lesquels nous travaillons",
+    description: "Notre expérience couvre plusieurs secteurs où nous appliquons une technologie de pointe pour résoudre des défis spécifiques à l'industrie.",
+    cta: "Parlons de votre projet",
+    sectors: [
+      { title: "Finance", description: "Solutions technologiques pour les institutions financières, banques et sociétés d'investissement, optimisant les processus et améliorant la sécurité des transactions.", tags: ["Banque Digitale", "Analyse de Risque", "Sécurité"], image: images.finance },
+      { title: "Santé", description: "Systèmes pour le secteur de la santé améliorant la gestion des patients, les dossiers médicaux électroniques et l'analyse clinique pour des soins plus efficaces.", tags: ["Télémédecine", "Gestion Hospitalière", "Analyse Clinique"], image: images.healthcare },
+      { title: "Éducation", description: "Plateformes éducatives interactives et outils numériques d'apprentissage qui transforment l'expérience éducative pour étudiants et enseignants.", tags: ["E-learning", "Gestion Académique", "Évaluation"], image: images.education },
+      { title: "Commerce Électronique", description: "Développement de boutiques en ligne, systèmes de paiement et plateformes de gestion des stocks qui stimulent les ventes et améliorent l'expérience client.", tags: ["Commerce Électronique", "Paiements en Ligne", "Marketing Digital"], image: images.ecommerce },
+      { title: "Immobilier", description: "Applications pour le secteur immobilier facilitant la recherche, la gestion et l'entretien des propriétés, optimisant les processus pour agents et clients.", tags: ["Immobilier", "Maison Intelligente", "Gestion Immobilière"], image: images.realEstate },
+      { title: "Compagnies Aériennes", description: "Solutions complètes pour l'industrie aérienne, incluant systèmes de réservation, gestion des vols et optimisation de l'expérience client.", tags: ["Gestion des Vols", "Systèmes de Réservation", "Expérience Client"], image: images.airlines },
+    ],
+  },
+  ja: {
+    title: "私たちが取り組む分野",
+    description: "当社の経験は様々な分野にわたり、業界固有の課題を解決するために最先端技術を適用しています。",
+    cta: "プロジェクトについて話しましょう",
+    sectors: [
+      { title: "金融", description: "金融機関、銀行、投資会社向けの技術ソリューションで、プロセスを最適化し取引の安全性を向上させます。", tags: ["デジタルバンキング", "リスク分析", "セキュリティ"], image: images.finance },
+      { title: "医療", description: "患者管理、電子カルテ、臨床データ分析を改善し、より効率的なケアを提供する医療分野向けシステム。", tags: ["遠隔医療", "病院管理", "臨床分析"], image: images.healthcare },
+      { title: "教育", description: "学生と教師の教育体験を変革するインタラクティブな教育プラットフォームとデジタル学習ツール。", tags: ["eラーニング", "学術管理", "評価"], image: images.education },
+      { title: "電子商取引", description: "オンラインストア、決済システム、在庫管理プラットフォームの開発で売上を促進し、顧客体験を向上させます。", tags: ["電子商取引", "オンライン決済", "デジタルマーケティング"], image: images.ecommerce },
+      { title: "不動産", description: "物件検索、管理、メンテナンスを支援する不動産分野向けアプリケーションで、代理店や顧客のプロセスを最適化。", tags: ["不動産", "スマートホーム", "物件管理"], image: images.realEstate },
+      { title: "航空会社", description: "予約システム、フライト管理、顧客体験の最適化を含む航空業界向けの包括的なソリューション。", tags: ["フライト管理", "予約システム", "顧客体験"], image: images.airlines },
+    ],
+  },
+  zh: {
+    title: "我们合作的行业",
+    description: "我们的经验涵盖多个行业，应用尖端技术解决行业特定的挑战。",
+    cta: "让我们谈谈您的项目",
+    sectors: [
+      { title: "金融", description: "为金融机构、银行和投资公司提供技术解决方案，优化流程并提升交易安全性。", tags: ["数字银行", "风险分析", "安全"], image: images.finance },
+      { title: "医疗保健", description: "为医疗行业提供改善患者管理、电子病历和临床数据分析的系统，以实现更高效的护理。", tags: ["远程医疗", "医院管理", "临床分析"], image: images.healthcare },
+      { title: "教育", description: "互动式教育平台和数字学习工具，改变学生和教师的教育体验。", tags: ["在线学习", "学术管理", "评估"], image: images.education },
+      { title: "电子商务", description: "开发在线商店、支付系统和库存管理平台，提升销售额并改善客户体验。", tags: ["电子商务", "在线支付", "数字营销"], image: images.ecommerce },
+      { title: "房地产", description: "为房地产行业提供便捷的物业搜索、管理和维护应用，优化代理商和客户的流程。", tags: ["房地产", "智能家居", "物业管理"], image: images.realEstate },
+      { title: "航空公司", description: "为航空行业提供全面解决方案，包括预订系统、航班管理和客户体验优化。", tags: ["航班管理", "预订系统", "客户体验"], image: images.airlines },
+    ],
+  },
+};
+
+const t = translations[language as keyof typeof translations] ?? translations.en;
+---
+
+<section id="projects" class="section animate-fade-in-down bg-white py-16 dark:bg-gray-900">
+  <div class="container mx-auto px-4">
+    <div class="mb-16 text-center">
+      <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
+        {t.title}
+      </h2>
+      <p class="mx-auto max-w-2xl text-gray-600 dark:text-gray-300">
+        {t.description}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {t.sectors.map((sector) => (
+        <article class="group overflow-hidden rounded-xl shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg">
+          <div class="relative h-48">
+            <img
+              src={sector.image}
+              alt={sector.title}
+              class="h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="absolute inset-x-0 bottom-0 bg-black/50 p-4">
+              <h3 class="text-center text-2xl font-bold text-white">
+                {sector.title}
+              </h3>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 dark:bg-gray-800">
+            <p class="mb-4 text-gray-600 dark:text-gray-300">
+              {sector.description}
+            </p>
+            <div class="flex flex-wrap gap-2">
+              {sector.tags.map((tag) => (
+                <span class="rounded-full bg-primary-light px-3 py-1 text-sm font-bold text-white">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-12 text-center">
+      <a
+        href={`/${language}/contact`}
+        class="inline-block rounded-lg bg-primary px-8 py-3 font-medium text-white transition-colors hover:bg-primary-dark"
+      >
+        {t.cta}
+      </a>
+    </div>
+  </div>
+</section>
