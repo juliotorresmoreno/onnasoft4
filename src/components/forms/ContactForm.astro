@@ -186,7 +186,7 @@ const t = translations[language as keyof typeof translations] ?? translations.en
     data-submit
   >
     <span
-      class="hidden inline-flex items-center justify-center"
+      class="hidden items-center justify-center"
       data-spinner
       aria-hidden="true"
     >
@@ -212,7 +212,7 @@ const t = translations[language as keyof typeof translations] ?? translations.en
       </svg>
       <span data-sending-label>{t.sending}</span>
     </span>
-    <span data-submit-label>{t.send}</span>
+    <span data-submit-label class="cursor-pointer">{t.send}</span>
   </button>
 </form>
 
