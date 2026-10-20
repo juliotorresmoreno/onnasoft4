@@ -1,4 +1,9 @@
 ---
+import Layout from "../../../../layouts/Layout.astro";
+import Navbar from "../../../../components/Navbar/index.astro";
+import Footer from "../../../../components/Footer.astro";
+import Contact from "../../../../components/Contact.astro";
+
 export function getStaticPaths() {
     return [
         { params: { lang: "en" } },
@@ -9,9 +14,34 @@ export function getStaticPaths() {
     ];
 }
 
+import ENLang from "./locales/en.astro";
+import ESLang from "./locales/es.astro";
+import FRLang from "./locales/fr.astro";
+import JALang from "./locales/ja.astro";
+import ZHLang from "./locales/zh.astro";
+
 const { lang } = Astro.params;
+
+const Lang =
+    {
+        en: ENLang,
+        es: ESLang,
+        fr: FRLang,
+        ja: JALang,
+        zh: ZHLang,
+    }[lang] || ENLang;
 ---
 
-<div>
-    odoo-inventory-total-control-of-your-stock-in-real-time
-</div>
+<Layout>
+    <div id="container">
+        <Navbar />
+        <main
+            style="margin-top: 80px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto;"
+        >
+            <Lang />
+        </main>
+        <Contact />
+        <Footer />
+    </div>
+</Layout>
+<style></style>
