@@ -1,0 +1,10 @@
+export function getStaticPaths() {
+  return [
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "ja" } },
+    { params: { lang: "zh" } },
+  ];
+}
+

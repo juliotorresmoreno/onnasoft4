@@ -1,8 +1,11 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "onnasoft",
+  "name": "onnasoft4",
   "compatibility_date": "2026-10-29",
   "assets": {
     "directory": "./dist"
-  }
+  },
+  "observability": {
+    "enabled": false
+  },
 }
