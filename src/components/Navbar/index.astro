@@ -56,11 +56,14 @@ const translations = {
 };
 
 const HIDE_BLOG = import.meta.env.HIDE_BLOG === "true";
-const language: keyof typeof translations = Astro.props.language || "en";
+const { lang = "en" } = Astro.params;
+const language =
+  typeof lang === "string" && lang in translations
+    ? (lang as keyof typeof translations)
+    : "en";
 const t = translations[language] || translations.en;
 const path = Astro.url.pathname.substring(3) || "/";
 const query = Astro.url.search || "";
-console.log(path.substring(3), query);
 ---
 
 <header
