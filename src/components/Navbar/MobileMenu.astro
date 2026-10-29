@@ -1,5 +1,6 @@
 ---
 const HIDE_BLOG = import.meta.env.HIDE_BLOG === "true";
+const HIDE_GET_STARTED = import.meta.env.HIDE_GET_STARTED === "true";
 
 const translations = {
     en: {
@@ -208,20 +209,24 @@ const t =
                     }
 
                     {/* Get Started Today Section - Solo para productos */}
-                    <div class="mt-2 pt-2 border-t border-gray-200">
-                        <a
-                            href={`https://comunity.onnasoft.us?lang=${language === "es" ? "es" : "en"}`}
-                            target="_blank"
-                            class="block p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors duration-200"
-                        >
-                            <div class="font-bold text-gray-900 text-xl">
-                                {t.getStarted}
+                    {
+                        !HIDE_GET_STARTED && (
+                            <div class="mt-2 pt-2 border-t border-gray-200">
+                                <a
+                                    href={`https://comunity.onnasoft.us?lang=${language === "es" ? "es" : "en"}`}
+                                    target="_blank"
+                                    class="block p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors duration-200"
+                                >
+                                    <div class="font-bold text-gray-900 text-xl">
+                                        {t.getStarted}
+                                    </div>
+                                    <div class="text-gray-600 text-xs mt-1">
+                                        {t.getStartedDescription}
+                                    </div>
+                                </a>
                             </div>
-                            <div class="text-gray-600 text-xs mt-1">
-                                {t.getStartedDescription}
-                            </div>
-                        </a>
-                    </div>
+                        )
+                    }
                 </div>
             </div>
 
@@ -278,7 +283,7 @@ const t =
                 class="block py-2 px-4 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors duration-200 text-xl"
             >
                 {t.whyUs}
-        </a>
+            </a>
 
             {
                 !HIDE_BLOG && (
@@ -296,7 +301,7 @@ const t =
                 class="block py-3 px-4 bg-primary text-white rounded-md font-medium transition-all duration-300 hover:bg-primary/90 text-center mt-4 text-xl"
             >
                 {t.contact}
-        </a>
+            </a>
         </div>
     </div>
 </div>

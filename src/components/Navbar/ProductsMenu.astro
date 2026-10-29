@@ -1,4 +1,6 @@
 ---
+const HIDE_GET_STARTED = import.meta.env.HIDE_GET_STARTED === "true";
+
 const translations = {
     en: {
         getStarted: "Get started today",
@@ -184,16 +186,22 @@ const t =
             }
         </div>
         <div class="p-2 pt-0 pb-4">
-            <a
-                href={`https://comunity.onnasoft.us?lang=${language === "es" ? "es" : "en"}`}
-                target="_blank"
-                class="block px-4 py-2 hover:bg-gray-100"
-            >
-                <div class="text-gray-900 font-bold">{t.getStarted}</div>
-                <div class="text-gray-500 text-sm font-bold">
-                    {t.getStartedDescription}
-                </div>
-            </a>
+            {
+                !HIDE_GET_STARTED && (
+                    <a
+                        href={`https://comunity.onnasoft.us?lang=${language === "es" ? "es" : "en"}`}
+                        target="_blank"
+                        class="block px-4 py-2 hover:bg-gray-100"
+                    >
+                        <div class="text-gray-900 font-bold">
+                            {t.getStarted}
+                        </div>
+                        <div class="text-gray-500 text-sm font-bold">
+                            {t.getStartedDescription}
+                        </div>
+                    </a>
+                )
+            }
         </div>
     </div>
 </div>
