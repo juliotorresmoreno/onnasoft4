@@ -1,5 +1,5 @@
 ---
-const HIDE_BLOG = process.env.NEXT_PUBLIC_HIDE_BLOG === "true";
+const HIDE_BLOG = import.meta.env.HIDE_BLOG === "true";
 
 const translations = {
     en: {

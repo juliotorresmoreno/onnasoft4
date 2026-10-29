@@ -55,7 +55,7 @@ const translations = {
   },
 };
 
-const HIDE_BLOG = process.env.NEXT_PUBLIC_HIDE_BLOG === "true";
+const HIDE_BLOG = import.meta.env.HIDE_BLOG === "true";
 const language: keyof typeof translations = Astro.props.language || "en";
 const t = translations[language] || translations.en;
 const path = Astro.url.pathname.substring(3) || "/";
