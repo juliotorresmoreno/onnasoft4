@@ -1,0 +1,652 @@
+---
+import { getStaticPaths } from "../../../../../lib/langPaths.js";
+
+export { getStaticPaths };
+
+const { lang } = Astro.params;
+---
+
+<article class="space-y-8 text-gray-700 leading-8">
+    <header class="space-y-4">
+        <p class="text-sm font-semibold uppercase tracking-widest text-primary">
+            OnnaSoft · Technologie d'entreprise
+        </p>
+
+        <h1 class="text-4xl font-bold leading-tight text-gray-900 md:text-5xl">
+            Services de Développement et de Transformation Digitale :
+            Construisez, Connectez et Modernisez votre Entreprise
+        </h1>
+
+        <p class="text-lg leading-8 text-gray-500">
+            Découvrez les services de développement et de transformation
+            digitale d'OnnaSoft conçus pour aider les entreprises à moderniser
+            leur technologie, optimiser leurs opérations et accélérer
+            l'innovation. Du développement web personnalisé et de l'intégration
+            d'API au Big Data, à la Data Science, à la migration cloud, à
+            l'externalisation IT et à l'automatisation des processus métier,
+            nous fournissons des solutions technologiques qui connectent vos
+            systèmes, améliorent l'efficacité et soutiennent une croissance
+            durable de l'entreprise.
+        </p>
+    </header>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-900">
+            La Transformation Digitale Commence par la Bonne Stratégie
+            Technologique
+        </h2>
+
+        <p>
+            Les entreprises évoluent dans un environnement de plus en plus
+            numérique où la technologie influence les expériences clients,
+            l'efficacité opérationnelle, la prise de décision et la
+            compétitivité. Les organisations qui s'appuient sur des applications
+            déconnectées, une infrastructure obsolète et des processus manuels
+            peuvent avoir du mal à s'adapter à l'évolution des exigences du
+            marché.
+        </p>
+
+        <p>
+            La transformation digitale implique plus que l'introduction de
+            nouveaux logiciels ou le déplacement de systèmes existants vers le
+            cloud. Elle nécessite de comprendre les objectifs métier, d'évaluer
+            la technologie actuelle, d'identifier les limites opérationnelles et
+            de mettre en œuvre des solutions qui améliorent la façon dont les
+            informations, les applications et les équipes travaillent ensemble.
+        </p>
+
+        <p>
+            Chez OnnaSoft, nous combinons développement logiciel, ingénierie des
+            données, modernisation de l'infrastructure et conseil technologique
+            pour aider les organisations à construire un environnement numérique
+            connecté et évolutif. Nos services couvrent différentes étapes du
+            processus de transformation, de la planification et du développement
+            initiaux à l'intégration, l'automatisation et l'amélioration
+            continue.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-900">
+            Nos Services de Développement et de Transformation Digitale
+        </h2>
+
+        <p>
+            Chaque organisation a des exigences techniques et des priorités
+            commerciales différentes. Certaines ont besoin d'applications
+            personnalisées pour soutenir des flux de travail spécialisés, tandis
+            que d'autres doivent connecter des plateformes existantes,
+            moderniser l'infrastructure, analyser de grands volumes
+            d'informations ou élargir leurs équipes techniques.
+        </p>
+
+        <p>
+            OnnaSoft propose des services spécialisés qui peuvent fonctionner
+            indépendamment ou dans le cadre d'une stratégie de transformation
+            digitale plus large. Explorez nos capacités et découvrez comment
+            chaque service peut aider à relever des défis métier spécifiques.
+        </p>
+    </section>
+
+    <section class="space-y-6">
+        <div class="space-y-3">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Développement Web : Applications Digitales Modernes et
+                Évolutives
+            </h2>
+
+            <p>
+                Le développement web personnalisé permet aux entreprises de
+                créer des applications adaptées à leurs exigences
+                opérationnelles, aux attentes des clients et aux objectifs à
+                long terme. Des plateformes orientées client aux applications
+                d'entreprise complexes, le bon logiciel peut améliorer
+                l'accessibilité, rationaliser les flux de travail et soutenir de
+                nouveaux modèles commerciaux numériques.
+            </p>
+
+            <p>
+                OnnaSoft développe des applications web modernes en mettant
+                l'accent sur la performance, la convivialité, la maintenabilité
+                et l'évolutivité. Notre approche de développement prend en
+                compte les expériences frontend, l'architecture backend, la
+                gestion des bases de données, la sécurité des applications et
+                les exigences d'intégration.
+            </p>
+
+            <p>
+                Que vous ayez besoin d'un nouveau produit numérique, d'une
+                plateforme de gestion interne ou de la modernisation d'une
+                application existante, nous vous aidons à transformer les
+                exigences métier en solutions logicielles fiables.
+            </p>
+
+            <p>
+                <a
+                    href={`/${lang}/web-development/custom-web-development-create-modern-fast-and-scalable-applications`}
+                    class="font-semibold text-primary hover:underline"
+                >
+                    Découvrez nos services de Développement Web →
+                </a>
+            </p>
+        </div>
+
+        <figure class="overflow-hidden rounded-2xl">
+            <img
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=80"
+                alt="Développeurs logiciels travaillant sur le développement d'applications web modernes"
+                class="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+    </section>
+
+    <section class="space-y-6">
+        <div class="space-y-3">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Intégration d'API : Connectez les Systèmes de votre Entreprise
+            </h2>
+
+            <p>
+                Les organisations modernes dépendent de multiples applications
+                pour gérer les ventes, la comptabilité, les stocks, les
+                relations clients, la logistique et les opérations internes.
+                Lorsque ces systèmes fonctionnent indépendamment, les
+                informations deviennent fragmentées et les employés peuvent
+                avoir besoin d'effectuer des tâches manuelles répétitives.
+            </p>
+
+            <p>
+                L'intégration d'API permet aux applications et services
+                d'échanger des informations via des interfaces standardisées. En
+                connectant les plateformes existantes, les entreprises peuvent
+                améliorer l'interopérabilité, réduire le travail dupliqué et
+                établir des flux d'information plus cohérents.
+            </p>
+
+            <p>
+                OnnaSoft aide les organisations à intégrer des applications
+                d'entreprise, des services tiers, des bases de données et des
+                logiciels personnalisés via des architectures d'intégration
+                fiables. Nos solutions prennent en compte l'authentification, la
+                validation des données, la gestion des erreurs, la surveillance
+                et la gestion du cycle de vie des API.
+            </p>
+
+            <p>
+                <a
+                    href={`/${lang}/api-integration/api-integration-connect-your-systems-and-automate-key-processes`}
+                    class="font-semibold text-primary hover:underline"
+                >
+                    Découvrez nos services d'Intégration d'API →
+                </a>
+            </p>
+        </div>
+
+        <figure class="overflow-hidden rounded-2xl">
+            <img
+                src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1600&q=80"
+                alt="Serveurs et infrastructure connectés représentant l'intégration d'API et la connectivité système"
+                class="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+    </section>
+
+    <section class="space-y-6">
+        <div class="space-y-3">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Big Data : Transformez de Grands Volumes d'Informations en
+                Connaissances Métier
+            </h2>
+
+            <p>
+                À mesure que les organisations génèrent des informations à
+                travers les applications, les transactions, les appareils
+                connectés et les plateformes numériques, la gestion et l'analyse
+                des données deviennent de plus en plus complexes. Les approches
+                traditionnelles de gestion des données peuvent ne pas suffire
+                pour traiter de grands volumes, des formats divers et des
+                sources d'information en croissance continue.
+            </p>
+
+            <p>
+                Les technologies Big Data aident les organisations à collecter,
+                traiter, stocker et analyser des ensembles de données à grande
+                échelle. Les pipelines de données, les frameworks de traitement
+                distribué, les plateformes de données cloud et les architectures
+                analytiques permettent aux entreprises de travailler avec des
+                informations qui seraient autrement difficiles à gérer.
+            </p>
+
+            <p>
+                OnnaSoft aide les entreprises à concevoir des solutions de
+                données qui améliorent l'accessibilité de l'information,
+                soutiennent les charges de travail analytiques et établissent
+                des fondations fiables pour la business intelligence et
+                l'analytique avancée.
+            </p>
+
+            <p>
+                <a
+                    href={`/${lang}/big-data/big-data-convert-large-amounts-of-data-into-intelligent-decisions`}
+                    class="font-semibold text-primary hover:underline"
+                >
+                    Découvrez nos services Big Data →
+                </a>
+            </p>
+        </div>
+
+        <figure class="overflow-hidden rounded-2xl">
+            <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80"
+                alt="Tableau de bord d'analyse de données métier représentant le traitement de données à grande échelle"
+                class="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+    </section>
+
+    <section class="space-y-6">
+        <div class="space-y-3">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Data Science : Prenez de Meilleures Décisions grâce à
+                l'Analytique Prédictive
+            </h2>
+
+            <p>
+                Les données métier deviennent plus précieuses lorsque les
+                organisations peuvent identifier des modèles, comprendre les
+                relations et anticiper les résultats possibles. La Data Science
+                combine statistiques, mathématiques, programmation et
+                apprentissage automatique pour extraire des informations
+                significatives à partir d'ensembles de données complexes.
+            </p>
+
+            <p>
+                Les modèles prédictifs, les algorithmes de classification,
+                l'analyse statistique et les techniques d'apprentissage
+                automatique peuvent aider les organisations à prévoir la
+                demande, identifier les anomalies, comprendre le comportement
+                des clients et évaluer des scénarios métier.
+            </p>
+
+            <p>
+                OnnaSoft aide les entreprises à transformer les données en
+                capacités analytiques grâce à la préparation des données,
+                l'analyse exploratoire, la modélisation prédictive et les
+                applications intelligentes. Nous nous concentrons sur la
+                connexion des techniques analytiques avec des objectifs métier
+                clairement définis.
+            </p>
+
+            <p>
+                <a
+                    href={`/${lang}/data-science/data-science-anticipate-the-future-and-make-decisions-based-on-evidence`}
+                    class="font-semibold text-primary hover:underline"
+                >
+                    Découvrez nos services de Data Science →
+                </a>
+            </p>
+        </div>
+
+        <figure class="overflow-hidden rounded-2xl">
+            <img
+                src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1600&q=80"
+                alt="Équations mathématiques et concepts analytiques représentant la Data Science"
+                class="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+    </section>
+
+    <section class="space-y-6">
+        <div class="space-y-3">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Externalisation IT : Développez vos Capacités Techniques
+            </h2>
+
+            <p>
+                Construire et maintenir une équipe technologique interne
+                nécessite du temps, des ressources de recrutement et un
+                investissement continu dans des talents spécialisés. Les
+                organisations peuvent avoir besoin de développeurs, d'ingénieurs
+                ou de professionnels techniques supplémentaires pour soutenir
+                des projets, faire face à des augmentations temporaires de
+                charge de travail ou accéder à une expertise spécifique.
+            </p>
+
+            <p>
+                L'externalisation IT offre un accès à des professionnels
+                spécialisés qui peuvent contribuer au développement logiciel, à
+                la gestion de l'infrastructure, à la maintenance des
+                applications et à d'autres initiatives technologiques.
+            </p>
+
+            <p>
+                OnnaSoft aide les entreprises à étendre leurs capacités
+                techniques avec des talents IT spécialisés alignés sur les
+                exigences du projet et les structures d'équipe existantes. Cette
+                approche peut offrir une flexibilité supplémentaire tout en
+                permettant aux organisations de se concentrer sur leurs
+                activités commerciales principales.
+            </p>
+
+            <p>
+                <a
+                    href={`/${lang}/it-outsourcing/it-consulting-technology-strategy-for-the-sustainable-growth-of-your-company`}
+                    class="font-semibold text-primary hover:underline"
+                >
+                    Découvrez nos services d'Externalisation IT →
+                </a>
+            </p>
+        </div>
+
+        <figure class="overflow-hidden rounded-2xl">
+            <img
+                src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1600&q=80"
+                alt="Professionnels de la technologie collaborant en tant qu'équipe de développement IT étendue"
+                class="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+    </section>
+
+    <section class="space-y-6">
+        <div class="space-y-3">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Migration Cloud : Modernisez votre Infrastructure
+            </h2>
+
+            <p>
+                L'infrastructure héritée peut limiter les performances des
+                applications, augmenter la complexité de la maintenance et
+                rendre difficile pour les organisations de répondre à
+                l'évolution des exigences métier. La migration cloud offre une
+                opportunité de moderniser l'infrastructure et d'adopter des
+                environnements informatiques plus flexibles.
+            </p>
+
+            <p>
+                Déplacer des applications, des bases de données et des charges
+                de travail vers des plateformes cloud nécessite une
+                planification minutieuse, une évaluation de l'architecture, des
+                stratégies de migration de données, des contrôles de sécurité et
+                une validation opérationnelle.
+            </p>
+
+            <p>
+                OnnaSoft aide les entreprises à évaluer les exigences de
+                migration et à faire évoluer leurs environnements technologiques
+                grâce à des stratégies structurées de migration cloud. Nous
+                prenons en compte la compatibilité des charges de travail, la
+                configuration de l'infrastructure, la disponibilité, la
+                sécurité, les performances et les coûts d'exploitation.
+            </p>
+
+            <p>
+                <a
+                    href={`/${lang}/cloud-migration/cloud-migration-safe-and-efficient-transition-to-modern-infrastructure`}
+                    class="font-semibold text-primary hover:underline"
+                >
+                    Découvrez nos services de Migration Cloud →
+                </a>
+            </p>
+        </div>
+
+        <figure class="overflow-hidden rounded-2xl">
+            <img
+                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80"
+                alt="Infrastructure numérique mondiale représentant l'informatique en nuage et la migration cloud"
+                class="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+    </section>
+
+    <section class="space-y-6">
+        <div class="space-y-3">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Automatisation des Processus Métier : Améliorez l'Efficacité
+                Opérationnelle
+            </h2>
+
+            <p>
+                Les activités manuelles répétitives, les flux de travail
+                déconnectés et les informations fragmentées peuvent ralentir les
+                opérations commerciales. Les employés peuvent consacrer un temps
+                considérable à des tâches administratives qui pourraient être
+                standardisées ou automatisées grâce à des solutions
+                technologiques appropriées.
+            </p>
+
+            <p>
+                L'automatisation des processus métier aide les organisations à
+                rationaliser les activités récurrentes, à améliorer la
+                coordination entre les services et à réduire l'intervention
+                manuelle. Les workflows d'approbation automatisés, le traitement
+                de documents, les notifications, la synchronisation des données
+                et les intégrations d'applications d'entreprise peuvent
+                améliorer la cohérence opérationnelle.
+            </p>
+
+            <p>
+                OnnaSoft analyse les processus métier pour identifier les
+                opportunités d'automatisation et mettre en œuvre des solutions
+                alignées sur les exigences organisationnelles. Notre approche se
+                concentre sur la compréhension des flux de travail existants, la
+                définition d'objectifs mesurables et la livraison de systèmes
+                qui améliorent la productivité et la visibilité des processus.
+            </p>
+
+            <p>
+                <a
+                    href={`/${lang}/case-studies/business-process-automation-scalability-and-precision-with-tailored-solutions`}
+                    class="font-semibold text-primary hover:underline"
+                >
+                    Découvrez nos services d'Automatisation des Processus Métier
+                    →
+                </a>
+            </p>
+        </div>
+
+        <figure class="overflow-hidden rounded-2xl">
+            <img
+                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80"
+                alt="Professionnels métier analysant les flux de travail et les opportunités d'automatisation des processus"
+                class="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+    </section>
+
+    <section class="space-y-6">
+        <div class="space-y-3">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Conseil IT : Alignez la Technologie sur la Stratégie Métier
+            </h2>
+
+            <p>
+                Les investissements technologiques doivent soutenir des
+                objectifs métier mesurables. Sans une stratégie claire, les
+                organisations peuvent adopter des outils qui augmentent la
+                complexité, créent des coûts inutiles ou ne parviennent pas à
+                résoudre leurs défis opérationnels les plus importants.
+            </p>
+
+            <p>
+                Le conseil IT aide les entreprises à évaluer leurs
+                environnements technologiques existants, à identifier les
+                opportunités d'amélioration, à prioriser les initiatives et à
+                définir des stratégies de mise en œuvre pratiques.
+            </p>
+
+            <p>
+                OnnaSoft fournit des conseils technologiques pour aider les
+                organisations à évaluer les besoins logiciels, les options
+                d'infrastructure, les besoins d'intégration de systèmes et les
+                opportunités de transformation digitale. Nous prenons en compte
+                les contraintes techniques, les capacités organisationnelles,
+                les priorités opérationnelles et les objectifs à long terme lors
+                de l'évaluation des solutions possibles.
+            </p>
+
+            <p>
+                <a
+                    href={`/${lang}/it-outsourcing/it-consulting-technology-strategy-for-the-sustainable-growth-of-your-company`}
+                    class="font-semibold text-primary hover:underline"
+                >
+                    Découvrez nos services de Conseil IT →
+                </a>
+            </p>
+        </div>
+
+        <figure class="overflow-hidden rounded-2xl">
+            <img
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600&q=80"
+                alt="Consultants métier et technologiques collaborant sur une stratégie de transformation digitale"
+                class="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-900">
+            Construisez un Écosystème Technologique Connecté
+        </h2>
+
+        <p>
+            Les initiatives de transformation digitale nécessitent souvent
+            plusieurs capacités complémentaires. Une application personnalisée
+            peut avoir besoin d'intégrations d'API pour échanger des
+            informations avec les plateformes métier existantes. L'ingénierie
+            des données peut être nécessaire pour consolider les informations,
+            tandis que l'infrastructure cloud fournit les ressources nécessaires
+            pour exécuter des applications et des charges de travail
+            analytiques.
+        </p>
+
+        <p>
+            De même, l'automatisation des processus métier peut connecter
+            plusieurs services, tandis que le conseil IT aide à établir des
+            priorités et à coordonner les investissements technologiques. Ces
+            capacités deviennent plus précieuses lorsqu'elles sont conçues comme
+            des parties d'une stratégie technologique cohérente.
+        </p>
+
+        <p>
+            OnnaSoft rassemble des capacités de développement, d'intégration, de
+            données, d'infrastructure, d'automatisation et de conseil pour aider
+            les organisations à relever les défis technologiques sous plusieurs
+            angles.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-900">
+            Notre Approche de la Transformation Digitale
+        </h2>
+
+        <p>
+            Une transformation digitale réussie nécessite un processus structuré
+            qui relie les objectifs métier à la mise en œuvre technique. Chaque
+            projet doit commencer par une compréhension claire des défis
+            existants, des exigences opérationnelles et des résultats attendus.
+        </p>
+
+        <p>
+            Notre approche comprend l'évaluation des systèmes actuels, la
+            définition des exigences du projet, la sélection des technologies
+            appropriées, la conception d'architectures évolutives, la mise en
+            œuvre des solutions et la validation de leurs performances.
+        </p>
+
+        <p>
+            La collaboration, la documentation, les tests et l'amélioration
+            continue restent importants tout au long du processus. Cela aide à
+            garantir que les initiatives technologiques apportent une valeur
+            pratique et restent adaptables à mesure que les exigences
+            organisationnelles évoluent.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-900">
+            Pourquoi Choisir OnnaSoft pour le Développement et la Transformation
+            Digitale ?
+        </h2>
+
+        <p>
+            La transformation digitale nécessite plus que l'accès à des
+            technologies individuelles. Elle nécessite la capacité de comprendre
+            les défis métier, d'évaluer les alternatives techniques et de
+            coordonner des solutions à travers différentes zones de
+            l'environnement technologique d'une organisation.
+        </p>
+
+        <p>
+            OnnaSoft combine des capacités en développement logiciel
+            personnalisé, intégration d'API, Big Data, Data Science,
+            externalisation IT, migration cloud, automatisation des processus
+            métier et conseil IT.
+        </p>
+
+        <p>
+            Notre approche se concentre sur la construction de solutions
+            pratiques autour de vos exigences, l'intégration des systèmes
+            existants, l'amélioration des flux de travail opérationnels et
+            l'établissement de fondations technologiques qui peuvent évoluer
+            avec votre entreprise.
+        </p>
+
+        <p>
+            Que vous lanciez un nouveau produit numérique, modernisiez une
+            infrastructure héritée, développiez votre équipe de développement ou
+            amélioriez la prise de décision basée sur les données, nous vous
+            aidons à traduire vos objectifs en initiatives technologiques.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-900">
+            Transformez votre Entreprise avec OnnaSoft
+        </h2>
+
+        <p>
+            Les entreprises modernes ont besoin de technologies qui connectent
+            les personnes, les applications, les données et les processus. Une
+            stratégie de transformation digitale bien planifiée peut aider les
+            organisations à améliorer l'efficacité, renforcer leur
+            infrastructure technologique et répondre plus efficacement aux
+            conditions changeantes du marché.
+        </p>
+
+        <p>
+            Chez OnnaSoft, nous aidons les organisations à avancer grâce à
+            l'ingénierie logicielle, l'intégration de systèmes, l'analytique de
+            données, la modernisation cloud, les talents IT spécialisés et
+            l'automatisation des processus métier.
+        </p>
+
+        <p>
+            Chaque transformation commence par la compréhension de vos objectifs
+            commerciaux et l'identification des capacités technologiques
+            nécessaires pour les atteindre.
+        </p>
+
+        <p>
+            Associez-vous à OnnaSoft pour développer des applications modernes,
+            connecter vos systèmes, optimiser vos opérations et construire une
+            base numérique pour une croissance durable.
+        </p>
+    </section>
+</article>
