@@ -1,7 +1,5 @@
 ---
 const language = Astro.url.pathname.split("/")[1] ?? "en";
-
-console.log("Current language:", language, Astro.url.pathname.split("/")[1]);
 ---
 
 <div class="relative mr-4">
@@ -11,11 +9,21 @@ console.log("Current language:", language, Astro.url.pathname.split("/")[1]);
         value={language}
         aria-label="Select language"
     >
-        <option value="en" selected={language === "en"}>🇺🇸 EN</option>
-        <option value="es" selected={language === "es"}>🇪🇸 ES</option>
-        <option value="fr" selected={language === "fr"}>🇫🇷 FR</option>
-        <option value="ja" selected={language === "ja"}>🇯🇵 JA</option>
-        <option value="zh" selected={language === "zh"}>🇨🇳 ZH</option>
+        <option value="en" selected={language === "en"}>
+            🇺🇸 EN
+        </option>
+        <option value="es" selected={language === "es"}>
+            🇪🇸 ES
+        </option>
+        <option value="fr" selected={language === "fr"}>
+            🇫🇷 FR
+        </option>
+        <option value="ja" selected={language === "ja"}>
+            🇯🇵 JA
+        </option>
+        <option value="zh" selected={language === "zh"}>
+            🇨🇳 ZH
+        </option>
     </select>
     <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
         <svg
