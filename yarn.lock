@@ -234,6 +234,14 @@
     "@oslojs/encoding" "^1.1.0"
     clsx "^2.1.1"
 
+"@astrojs/sitemap@^3.7.6":
+  version "3.7.6"
+  resolved "https://registry.yarnpkg.com/@astrojs/sitemap/-/sitemap-3.7.6.tgz#8a4d95b00d7c0ba9364c1ff36d50e4a388efcaeb"
+  integrity sha512-QEKD3ubC0iJxpNzC4KvcKdxSP97U5SjuQ16+VkmUwx1TT+Hq7TIV8QGm/d2pvkN6+3GqGXLRzm7j6lZxHETm3A==
+  dependencies:
+    sitemap "^10.0.0"
+    zod "^4.6.7"
+
 "@astrojs/telemetry@^3.4.2":
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/@astrojs/telemetry/-/telemetry-3.4.2.tgz#5193c3c2533e8d4f32cf62636c127dda62bad0d5"
@@ -1309,7 +1317,7 @@
   dependencies:
     "@types/unist" "*"
 
-"@types/node@^26.6.6":
+"@types/node@*", "@types/node@^22.0.0 || ^24.0.0 || ^26.0.0", "@types/node@^26.6.6":
   version "26.6.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-26.6.6.tgz#9ed7b5817e728ed9216ef7c5b7d373fe3b777104"
   integrity sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog==
@@ -1327,6 +1335,13 @@
   integrity sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==
   dependencies:
     csstype "^3.2.2"
+
+"@types/sax@^1.2.1":
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/@types/sax/-/sax-1.2.7.tgz#ba5fe7df9aa9c89b6dff7688a19023dd2963091d"
+  integrity sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==
+  dependencies:
+    "@types/node" "*"
 
 "@types/unist@*", "@types/unist@^3.0.0", "@types/unist@^3.0.3":
   version "3.0.3"
@@ -2330,7 +2345,7 @@ satteri@^0.11.6:
     "@bruits/satteri-win32-arm64-msvc" "0.11.7"
     "@bruits/satteri-win32-x64-msvc" "0.11.7"
 
-sax@1.6.1:
+sax@1.6.1, sax@^1.4.1:
   version "1.6.1"
   resolved "https://registry.npmjs.org/sax/-/sax-1.6.1.tgz"
   integrity sha512-42tBVwLWnaQvW5zc4HbZrTuWccECCZfBi92FDuwtqxasH+JbPB3/FOKb1m222K42R4WxuxzzMsTswfzgtSu64Q==
@@ -2398,6 +2413,15 @@ sisteransi@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/sisteransi/-/sisteransi-1.0.5.tgz"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
+
+sitemap@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/sitemap/-/sitemap-10.0.0.tgz#d6da651b6efafb841a44e77028391bdd6f6aeb6a"
+  integrity sha512-KSjl4H4KBEnGX5KXgzInPAycdOFhwLar0EmksDcYn6NqW2O+zLiMGeV2THE6tpuv3LCVdv+6xsSo2SWLGaBDKw==
+  dependencies:
+    "@types/node" "^22.0.0 || ^24.0.0 || ^26.0.0"
+    "@types/sax" "^1.2.1"
+    sax "^1.4.1"
 
 smol-toml@^1.9.0, smol-toml@^1.9.1:
   version "1.9.1"
