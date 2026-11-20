@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Digital Transformation & Development Services | OnnaSoft",
+        description: "Build, connect and modernize your business with OnnaSoft's development and digital transformation services, from custom applications to legacy system modernization.",
+    },
+    es: {
+        title: "Desarrollo y Transformación Digital | Servicios OnnaSoft",
+        description: "Construye, conecta y moderniza tu negocio con los servicios de desarrollo y transformación digital de OnnaSoft, desde aplicaciones a medida hasta la modernización de sistemas heredados.",
+    },
+    fr: {
+        title: "Développement et Transformation Digitale | Services OnnaSoft",
+        description: "Construisez, connectez et modernisez votre entreprise avec les services de développement et de transformation digitale d'OnnaSoft, des applications sur mesure à la modernisation des systèmes existants.",
+    },
+    ja: {
+        title: "開発・デジタルトランスフォーメーションサービス｜OnnaSoft",
+        description: "アプリ開発からレガシーシステムの刷新まで、OnnaSoftの開発・DXサービスでビジネスの構築、連携、近代化を進めます。",
+    },
+    zh: {
+        title: "开发与数字化转型服务 | OnnaSoft",
+        description: "借助 OnnaSoft 的开发与数字化转型服务，从定制应用到遗留系统现代化，帮助您构建、连接并革新业务。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

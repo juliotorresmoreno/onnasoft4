@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Odoo Accounting Implementation | Automated Financial Management",
+        description: "Simplify financial management with Odoo Accounting implemented by OnnaSoft: automate bookkeeping, bank reconciliation, payables and receivables with real-time visibility.",
+    },
+    es: {
+        title: "Contabilidad en Odoo | Gestión financiera automatizada",
+        description: "Simplifica tu gestión financiera con Odoo Contabilidad implementado por OnnaSoft: automatiza la contabilidad, la conciliación bancaria, cuentas por pagar y cobrar con visibilidad en tiempo real.",
+    },
+    fr: {
+        title: "Comptabilité Odoo | Gestion financière automatisée",
+        description: "Simplifiez votre gestion financière avec Odoo Comptabilité, implémenté par OnnaSoft : automatisez la comptabilité, le rapprochement bancaire, les créances et dettes avec une visibilité en temps réel.",
+    },
+    ja: {
+        title: "Odoo会計の導入｜自動化された財務管理",
+        description: "OnnaSoftが導入するOdoo会計で財務管理を簡素化。会計業務、銀行照合、買掛金・売掛金を自動化し、リアルタイムで財務状況を把握できます。",
+    },
+    zh: {
+        title: "Odoo 会计实施 | 自动化财务管理",
+        description: "由 OnnaSoft 实施的 Odoo 会计解决方案，自动化记账、银行对账及应收应付管理，实时掌握财务状况，简化财务工作。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

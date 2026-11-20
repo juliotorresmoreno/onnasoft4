@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "IT Outsourcing Services | Specialized Developers for Your Team",
+        description: "Expand your team with specialized IT outsourcing talent. OnnaSoft provides skilled developers to scale projects, reduce hiring overhead and accelerate delivery.",
+    },
+    es: {
+        title: "Outsourcing de TI | Amplía tu equipo con talento especializado",
+        description: "Amplía tu equipo con talento especializado en outsourcing de TI. OnnaSoft aporta desarrolladores cualificados para escalar proyectos, reducir costes de contratación y acelerar entregas.",
+    },
+    fr: {
+        title: "Externalisation informatique | Développez votre équipe avec des experts",
+        description: "Renforcez votre équipe grâce à l'externalisation informatique d'OnnaSoft : talents spécialisés, montée en charge flexible, réduction des coûts de recrutement et livraison accélérée.",
+    },
+    ja: {
+        title: "ITアウトソーシングサービス｜専門人材でチームを拡張",
+        description: "ITアウトソーシングで専門性の高い人材を確保し、開発チームを柔軟に拡張します。OnnaSoftが、プロジェクトの加速と採用コスト削減を支援します。",
+    },
+    zh: {
+        title: "IT 外包服务 | 以专业人才扩展您的团队",
+        description: "借助 OnnaSoft 的 IT 外包服务快速扩展开发团队，获取专业技术人才，灵活应对项目需求，降低招聘成本并加快交付。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Odoo Purchasing Automation | Smarter Procurement Processes",
+        description: "Optimize purchasing with Odoo Purchase implemented by OnnaSoft: automate purchase orders and approvals, compare supplier quotations and control procurement costs.",
+    },
+    es: {
+        title: "Compras en Odoo | Optimiza tus compras con procesos automatizados",
+        description: "Optimiza tus compras con Odoo Compras implementado por OnnaSoft: automatiza pedidos y aprobaciones, compara cotizaciones de proveedores y controla los costes de compra.",
+    },
+    fr: {
+        title: "Achats Odoo | Optimisez vos approvisionnements",
+        description: "Optimisez vos achats avec Odoo Achats, implémenté par OnnaSoft : automatisez les bons de commande et approbations, comparez les devis fournisseurs et maîtrisez les coûts d'achat.",
+    },
+    ja: {
+        title: "Odoo購買管理の導入｜購買プロセスの自動化",
+        description: "OnnaSoftが導入するOdoo購買で、発注と承認を自動化し、仕入先見積の比較、購買コストの管理を効率化します。",
+    },
+    zh: {
+        title: "Odoo 采购管理实施 | 自动化与智能化采购流程",
+        description: "由 OnnaSoft 实施的 Odoo 采购管理，自动化采购订单与审批流程，比较供应商报价，控制采购成本并优化补货。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

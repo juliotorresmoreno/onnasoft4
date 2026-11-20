@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Odoo Invoicing Automation | Sales-to-Collections Accounting",
+        description: "Automate invoicing and collections with Odoo Invoicing implemented by OnnaSoft: create invoices from sales orders, track payments and improve cash flow visibility.",
+    },
+    es: {
+        title: "Facturación en Odoo | Automatiza la facturación y el cobro",
+        description: "Automatiza la facturación y el cobro con Odoo Facturación implementado por OnnaSoft: facturas desde pedidos de venta, seguimiento de pagos y mejor visibilidad del flujo de caja.",
+    },
+    fr: {
+        title: "Facturation Odoo | Automatisez la facturation et le recouvrement",
+        description: "Automatisez facturation et recouvrement avec Odoo Facturation, implémenté par OnnaSoft : factures issues des commandes, suivi des paiements et meilleure visibilité sur la trésorerie.",
+    },
+    ja: {
+        title: "Odoo請求管理の導入｜販売から入金までを自動化",
+        description: "OnnaSoftが導入するOdoo請求管理で、受注からの請求書発行、入金管理、督促を自動化。キャッシュフローの可視化を実現します。",
+    },
+    zh: {
+        title: "Odoo 发票管理实施 | 从销售到收款的会计自动化",
+        description: "由 OnnaSoft 实施的 Odoo 发票管理，基于销售订单自动开票，跟踪回款情况，提升现金流的可视性。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Our Vision | OnnaSoft, a Global Technology Solutions Reference",
+        description: "Discover OnnaSoft's vision to become a global reference in innovative, scalable technology solutions that drive digital transformation, AI and sustainable growth.",
+    },
+    es: {
+        title: "Nuestra Visión | OnnaSoft, referencia global en tecnología",
+        description: "Conoce la visión de OnnaSoft de convertirse en referencia global en soluciones tecnológicas innovadoras y escalables que impulsan la transformación digital, la IA y el crecimiento sostenible.",
+    },
+    fr: {
+        title: "Notre Vision | OnnaSoft, référence mondiale en technologie",
+        description: "Découvrez la vision d'OnnaSoft : devenir une référence mondiale en solutions technologiques innovantes et évolutives, au service de la transformation digitale, de l'IA et de la croissance durable.",
+    },
+    ja: {
+        title: "私たちのビジョン｜OnnaSoft、グローバルなテクノロジーの先導者へ",
+        description: "革新的でスケーラブルなテクノロジーソリューションで、デジタルトランスフォーメーション、AI、持続的成長を推進するOnnaSoftのビジョンをご紹介します。",
+    },
+    zh: {
+        title: "我们的愿景 | OnnaSoft，全球技术解决方案标杆",
+        description: "了解 OnnaSoft 的愿景：成为创新且可扩展的技术解决方案全球标杆，以数字化转型、人工智能和数据驱动创新推动可持续增长。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

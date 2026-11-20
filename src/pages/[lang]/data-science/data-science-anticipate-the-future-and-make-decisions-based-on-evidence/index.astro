@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Data Science Services | Predictive Analytics & Data-Driven Decisions",
+        description: "Anticipate the future and make evidence-based decisions with OnnaSoft's data science services: predictive analytics, machine learning and statistical analysis.",
+    },
+    es: {
+        title: "Servicios de Ciencia de Datos | Analítica predictiva y decisiones basadas en datos",
+        description: "Anticipa el futuro y toma decisiones basadas en evidencia con los servicios de ciencia de datos de OnnaSoft: analítica predictiva, machine learning y análisis estadístico.",
+    },
+    fr: {
+        title: "Services de data science | Analyse prédictive et décisions fondées sur les données",
+        description: "Anticipez l'avenir et prenez des décisions éclairées avec les services de data science d'OnnaSoft : analyse prédictive, machine learning et analyse statistique.",
+    },
+    ja: {
+        title: "データサイエンスサービス｜予測分析とエビデンスに基づく意思決定",
+        description: "OnnaSoftのデータサイエンスサービスで未来を予測し、エビデンスに基づいた意思決定を実現します。予測分析、機械学習、統計分析に対応します。",
+    },
+    zh: {
+        title: "数据科学服务 | 预测分析与数据驱动决策",
+        description: "借助 OnnaSoft 的数据科学服务预见未来，做出基于证据的决策，涵盖预测分析、机器学习与统计分析。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

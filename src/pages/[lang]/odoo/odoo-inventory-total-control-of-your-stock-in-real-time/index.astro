@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Odoo Inventory Management | Real-Time Stock Control",
+        description: "Gain total control of your stock in real time with Odoo Inventory implemented by OnnaSoft: track movements, optimize warehouses, automate replenishment and prevent stockouts.",
+    },
+    es: {
+        title: "Odoo Inventario | Control total de tu stock en tiempo real",
+        description: "Controla tu stock en tiempo real con Odoo Inventario implementado por OnnaSoft: seguimiento de movimientos, optimización de almacenes, reposición automática y prevención de roturas de stock.",
+    },
+    fr: {
+        title: "Odoo Inventaire | Contrôle des stocks en temps réel",
+        description: "Gardez le contrôle total de vos stocks en temps réel avec Odoo Inventaire, implémenté par OnnaSoft : suivi des mouvements, optimisation des entrepôts, réapprovisionnement automatique.",
+    },
+    ja: {
+        title: "Odoo在庫管理の導入｜リアルタイムの在庫管理",
+        description: "OnnaSoftが導入するOdoo在庫管理で、在庫移動をリアルタイムに追跡。倉庫運用の最適化、自動補充、欠品防止を実現します。",
+    },
+    zh: {
+        title: "Odoo 库存管理实施 | 实时全面掌控库存",
+        description: "由 OnnaSoft 实施的 Odoo 库存管理，实时追踪库存流转，优化仓储运营，自动补货并有效防止缺货。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

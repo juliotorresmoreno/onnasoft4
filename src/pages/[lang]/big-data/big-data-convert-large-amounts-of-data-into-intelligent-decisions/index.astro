@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Big Data Solutions | Turn Large Data Volumes into Insights",
+        description: "Turn large volumes of data into intelligent decisions with scalable big data architectures, data pipelines and analytics from OnnaSoft.",
+    },
+    es: {
+        title: "Soluciones de Big Data | Convierte grandes volúmenes en decisiones",
+        description: "Convierte grandes volúmenes de datos en decisiones inteligentes con arquitecturas big data escalables, pipelines de datos y analítica de OnnaSoft.",
+    },
+    fr: {
+        title: "Solutions Big Data | Transformez vos volumes de données en décisions",
+        description: "Transformez de gros volumes de données en décisions éclairées grâce aux architectures big data évolutives, aux pipelines de données et à l'analyse proposés par OnnaSoft.",
+    },
+    ja: {
+        title: "ビッグデータソリューション｜膨大なデータを意思決定に活かす",
+        description: "スケーラブルなビッグデータ基盤、データパイプライン、分析ソリューションで、膨大なデータをインテリジェントな意思決定につなげます。OnnaSoftが支援します。",
+    },
+    zh: {
+        title: "大数据解决方案 | 将海量数据转化为智能决策",
+        description: "借助 OnnaSoft 可扩展的大数据架构、数据管道和数据分析服务，将海量数据转化为智能决策。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

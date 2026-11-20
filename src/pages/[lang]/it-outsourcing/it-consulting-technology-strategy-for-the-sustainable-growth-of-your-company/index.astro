@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "IT Consulting Services | Technology Strategy for Growth",
+        description: "Build a sustainable technology strategy with OnnaSoft IT consulting: assess your infrastructure, design scalable architecture, strengthen cybersecurity and plan modernization.",
+    },
+    es: {
+        title: "Consultoría de TI | Estrategia tecnológica para el crecimiento",
+        description: "Define una estrategia tecnológica sostenible con la consultoría de TI de OnnaSoft: evaluación de infraestructura, arquitectura escalable, ciberseguridad y planes de modernización.",
+    },
+    fr: {
+        title: "Conseil en informatique | Stratégie technologique pour la croissance",
+        description: "Construisez une stratégie technologique durable avec le conseil en informatique d'OnnaSoft : audit de l'infrastructure, architecture évolutive, cybersécurité et plan de modernisation.",
+    },
+    ja: {
+        title: "ITコンサルティングサービス｜成長を支える技術戦略",
+        description: "OnnaSoftのITコンサルティングで持続可能な技術戦略を策定。インフラ評価、拡張可能なアーキテクチャ設計、サイバーセキュリティ強化、システム刷新計画を支援します。",
+    },
+    zh: {
+        title: "IT 咨询服务 | 助力企业可持续增长的技术战略",
+        description: "借助 OnnaSoft IT 咨询服务制定可持续的技术战略：评估现有基础设施、设计可扩展架构、加强网络安全并规划系统现代化。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Odoo Sales Management | End-to-End Sales Process",
+        description: "Accelerate your sales process with Odoo Sales implemented by OnnaSoft: professional quotations, automated sales activities, order fulfillment and sales analytics.",
+    },
+    es: {
+        title: "Ventas en Odoo | Acelera tu proceso comercial de principio a fin",
+        description: "Acelera tu proceso comercial con Odoo Ventas implementado por OnnaSoft: cotizaciones profesionales, automatización de actividades comerciales, gestión de pedidos y analítica de ventas.",
+    },
+    fr: {
+        title: "Ventes Odoo | Accélérez votre processus commercial",
+        description: "Accélérez votre processus commercial avec Odoo Ventes, implémenté par OnnaSoft : devis professionnels, automatisation des activités, suivi des commandes et analyses commerciales.",
+    },
+    ja: {
+        title: "Odoo販売管理の導入｜エンドツーエンドの販売プロセス",
+        description: "OnnaSoftが導入するOdoo販売で、見積作成から受注、出荷、請求、分析までの販売プロセスを加速します。",
+    },
+    zh: {
+        title: "Odoo 销售管理实施 | 端到端加速您的销售流程",
+        description: "由 OnnaSoft 实施的 Odoo 销售管理，涵盖专业报价、销售活动自动化、订单履行与销售分析，加速端到端业务流程。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

@@ -13,8 +13,35 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.params;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "OnnaSoft | Custom Software, Cloud, AI & Technology Consulting",
+        description: "OnnaSoft helps businesses solve real challenges with custom software development, cloud and DevOps, system integration, AI, data science and Odoo implementation.",
+    },
+    es: {
+        title: "OnnaSoft | Software a Medida, Cloud, IA y Consultoría Tecnológica",
+        description: "OnnaSoft ayuda a empresas a resolver desafíos reales con desarrollo de software a medida, cloud y DevOps, integración de sistemas, IA, ciencia de datos e implementación de Odoo.",
+    },
+    fr: {
+        title: "OnnaSoft | Logiciels sur mesure, Cloud, IA et Conseil technologique",
+        description: "OnnaSoft aide les entreprises à relever leurs défis grâce au développement logiciel sur mesure, au cloud et DevOps, à l'intégration de systèmes, à l'IA, à la data science et à l'implémentation Odoo.",
+    },
+    ja: {
+        title: "OnnaSoft｜カスタムソフトウェア・クラウド・AI・テクノロジーコンサルティング",
+        description: "OnnaSoftは、カスタムソフトウェア開発、クラウド・DevOps、システム統合、AI、データサイエンス、Odoo導入を通じて、企業の実際の課題解決を支援します。",
+    },
+    zh: {
+        title: "OnnaSoft | 定制软件、云服务、人工智能与技术咨询",
+        description: "OnnaSoft 通过定制软件开发、云与 DevOps、系统集成、人工智能、数据科学及 Odoo 实施，帮助企业解决实际业务挑战。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
 	<Welcome />
 </Layout>

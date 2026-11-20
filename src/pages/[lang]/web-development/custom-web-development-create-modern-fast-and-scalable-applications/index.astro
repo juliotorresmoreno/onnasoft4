@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Custom Web Development | Modern, Fast & Scalable Apps by OnnaSoft",
+        description: "Create modern, fast and scalable web applications with OnnaSoft custom web development: frontend and backend engineering, performance optimization and security by design.",
+    },
+    es: {
+        title: "Desarrollo Web a Medida | Aplicaciones modernas y escalables con OnnaSoft",
+        description: "Crea aplicaciones web modernas, rápidas y escalables con el desarrollo web a medida de OnnaSoft: frontend y backend, optimización del rendimiento y seguridad desde el diseño.",
+    },
+    fr: {
+        title: "Développement web sur mesure | Applications modernes avec OnnaSoft",
+        description: "Créez des applications web modernes, rapides et évolutives avec le développement web sur mesure d'OnnaSoft : frontend, backend, optimisation des performances et sécurité dès la conception.",
+    },
+    ja: {
+        title: "カスタムWeb開発｜モダンで高速・拡張性の高いアプリ",
+        description: "OnnaSoftのカスタムWeb開発で、モダンで高速、拡張性の高いWebアプリケーションを構築。フロントエンド・バックエンド開発、パフォーマンス最適化、設計段階からのセキュリティに対応します。",
+    },
+    zh: {
+        title: "定制 Web 开发 | OnnaSoft 现代、高速、可扩展的应用",
+        description: "借助 OnnaSoft 定制 Web 开发服务构建现代、高速且可扩展的应用：涵盖前后端开发、性能优化及设计阶段的安全保障。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Odoo Human Resources | Talent Management Implementation",
+        description: "Centralize talent management and improve productivity with Odoo Human Resources implemented by OnnaSoft: employee records, recruitment, onboarding and time off.",
+    },
+    es: {
+        title: "Odoo Recursos Humanos | Gestión centralizada del talento",
+        description: "Centraliza la gestión del talento y mejora la productividad con Odoo Recursos Humanos implementado por OnnaSoft: expedientes, reclutamiento, onboarding y control de ausencias.",
+    },
+    fr: {
+        title: "Odoo Ressources Humaines | Gestion centralisée des talents",
+        description: "Centralisez la gestion des talents et améliorez la productivité avec Odoo Ressources Humaines, implémenté par OnnaSoft : dossiers employés, recrutement, intégration et gestion des congés.",
+    },
+    ja: {
+        title: "Odoo人事の導入｜タレントマネジメントを一元化",
+        description: "OnnaSoftが導入するOdoo人事で、従業員情報・採用・オンボーディング・勤怠管理を一元化し、生産性の向上を支援します。",
+    },
+    zh: {
+        title: "Odoo 人力资源实施 | 集中人才管理，提升生产力",
+        description: "由 OnnaSoft 实施的 Odoo 人力资源解决方案，集中管理员工档案、招聘、入职与考勤休假，提升团队生产力。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

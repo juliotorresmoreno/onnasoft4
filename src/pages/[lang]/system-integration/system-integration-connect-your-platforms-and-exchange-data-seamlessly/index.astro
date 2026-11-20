@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "System Integration Services | Connect Platforms & Exchange Data",
+        description: "Connect your platforms and exchange data seamlessly with OnnaSoft system integration: API connections, event-driven integrations, data synchronization and legacy modernization.",
+    },
+    es: {
+        title: "Integración de Sistemas | Conecta plataformas e intercambia datos",
+        description: "Conecta tus plataformas e intercambia datos sin fricciones con la integración de sistemas de OnnaSoft: conexiones API, integraciones orientadas a eventos, sincronización y modernización de sistemas heredados.",
+    },
+    fr: {
+        title: "Intégration de systèmes | Connectez vos plateformes et vos données",
+        description: "Connectez vos plateformes et échangez vos données en toute fluidité avec l'intégration de systèmes d'OnnaSoft : connexions API, intégrations événementielles, synchronisation et modernisation des systèmes existants.",
+    },
+    ja: {
+        title: "システム統合サービス｜プラットフォーム連携とデータ交換",
+        description: "OnnaSoftのシステム統合で、業務プラットフォームをシームレスに接続しデータを交換。API連携、イベント駆動型統合、データ同期、レガシーシステムの刷新に対応します。",
+    },
+    zh: {
+        title: "系统集成服务 | 无缝连接平台并交换数据",
+        description: "借助 OnnaSoft 系统集成服务，无缝连接您的业务平台并实现数据交换，涵盖 API 连接、事件驱动集成、数据同步与遗留系统现代化。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

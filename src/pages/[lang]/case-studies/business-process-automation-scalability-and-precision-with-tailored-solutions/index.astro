@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Business Process Automation Services | Scalable, Precise Solutions",
+        description: "Automate business processes with tailored solutions that scale with your company. OnnaSoft reduces manual work, cuts errors and improves operational efficiency.",
+    },
+    es: {
+        title: "Automatización de Procesos de Negocio | Soluciones escalables y precisas",
+        description: "Automatiza tus procesos de negocio con soluciones a medida que crecen con tu empresa. OnnaSoft reduce el trabajo manual, disminuye errores y mejora la eficiencia operativa.",
+    },
+    fr: {
+        title: "Automatisation des Processus Métier | Solutions évolutives et précises",
+        description: "Automatisez vos processus métier avec des solutions sur mesure qui évoluent avec votre entreprise. OnnaSoft réduit les tâches manuelles, limite les erreurs et améliore l'efficacité opérationnelle.",
+    },
+    ja: {
+        title: "ビジネスプロセス自動化サービス｜拡張性と精度を備えたソリューション",
+        description: "企業の成長に合わせて拡張できるオーダーメイドのソリューションで業務プロセスを自動化します。手作業とミスを減らし、業務効率を高めます。OnnaSoft。",
+    },
+    zh: {
+        title: "业务流程自动化服务 | 可扩展、高精度的定制解决方案",
+        description: "通过随企业成长而扩展的定制解决方案实现业务流程自动化。OnnaSoft 帮您减少人工操作、降低错误率并提升运营效率。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

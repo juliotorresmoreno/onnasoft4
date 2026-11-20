@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Custom Software Development Process | OnnaSoft",
+        description: "See how OnnaSoft builds custom solutions: understanding your business, designing the right architecture, developing, testing, deploying and supporting your software.",
+    },
+    es: {
+        title: "Proceso de Desarrollo de Software a Medida | OnnaSoft",
+        description: "Conoce cómo OnnaSoft crea soluciones a medida: análisis de tu negocio, diseño de la arquitectura adecuada, desarrollo, pruebas, despliegue y soporte continuo.",
+    },
+    fr: {
+        title: "Processus de développement logiciel sur mesure | OnnaSoft",
+        description: "Découvrez comment OnnaSoft conçoit des solutions sur mesure : analyse de votre activité, architecture adaptée, développement, tests, déploiement et accompagnement.",
+    },
+    ja: {
+        title: "オーダーメイド開発のプロセス｜OnnaSoftの進め方",
+        description: "OnnaSoftがオーダーメイドソリューションを構築する流れをご紹介します。業務理解、設計、開発、テスト、導入、継続的なサポートまで段階的に進めます。",
+    },
+    zh: {
+        title: "定制软件开发流程 | OnnaSoft 的解决方案构建方法",
+        description: "了解 OnnaSoft 如何分步构建定制解决方案：深入了解业务、设计合适架构、开发、测试、部署并持续提供支持。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

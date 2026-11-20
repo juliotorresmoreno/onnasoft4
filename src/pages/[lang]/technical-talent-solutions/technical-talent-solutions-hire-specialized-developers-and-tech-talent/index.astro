@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Hire Specialized Developers | Technical Talent Solutions",
+        description: "Hire specialized developers and technical talent with OnnaSoft. We evaluate problem-solving, engineering judgment and communication to match the right candidates to your project.",
+    },
+    es: {
+        title: "Contratación de Desarrolladores Especializados | OnnaSoft",
+        description: "Contrata desarrolladores especializados y talento técnico con OnnaSoft. Evaluamos resolución de problemas, criterio técnico y comunicación para encontrar al candidato ideal para tu proyecto.",
+    },
+    fr: {
+        title: "Recrutement de développeurs spécialisés | Talents techniques OnnaSoft",
+        description: "Recrutez des développeurs spécialisés et des talents techniques avec OnnaSoft. Nous évaluons la résolution de problèmes, le jugement technique et la communication pour trouver le profil adapté à votre projet.",
+    },
+    ja: {
+        title: "専門開発者の採用｜テクニカルタレントソリューション",
+        description: "OnnaSoftで専門開発者とテック人材を採用。問題解決力、エンジニアとしての判断力、コミュニケーション力を評価し、プロジェクトに合う人材をご提案します。",
+    },
+    zh: {
+        title: "专业开发人员招聘 | 技术人才解决方案",
+        description: "借助 OnnaSoft 招聘专业开发人员与技术人才。我们评估候选人的问题解决能力、工程判断力与协作沟通能力，匹配贴合项目需求的人选。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main style="margin-top: 80px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto;">

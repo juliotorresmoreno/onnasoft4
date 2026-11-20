@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Why Choose OnnaSoft | Tailored Technology, Scalable Results",
+        description: "Discover why companies choose OnnaSoft: technology tailored to your business, scalable solutions, specialized expertise, automation, cloud and system integration.",
+    },
+    es: {
+        title: "Por qué elegir OnnaSoft | Tecnología a medida y resultados escalables",
+        description: "Descubra por qué las empresas eligen OnnaSoft: tecnología adaptada a su negocio, soluciones escalables, experiencia especializada, automatización, cloud e integración de sistemas.",
+    },
+    fr: {
+        title: "Pourquoi choisir OnnaSoft | Technologie sur mesure, résultats évolutifs",
+        description: "Découvrez pourquoi les entreprises choisissent OnnaSoft : une technologie adaptée à votre activité, des solutions évolutives, une expertise spécialisée, l'automatisation, le cloud et l'intégration de systèmes.",
+    },
+    ja: {
+        title: "OnnaSoftを選ぶ理由｜お客様に合わせた技術と拡張可能な成果",
+        description: "企業がOnnaSoftを選ぶ理由をご紹介します。お客様のビジネスに合わせた技術、拡張性の高いソリューション、専門性、業務自動化、クラウド、システム統合を提供します。",
+    },
+    zh: {
+        title: "为什么选择 OnnaSoft | 量身定制的技术，可扩展的成果",
+        description: "了解企业选择 OnnaSoft 的理由：贴合您业务的技术、可扩展的解决方案、专业能力，以及自动化、云与系统集成服务。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

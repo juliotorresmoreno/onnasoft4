@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Cloud Migration Services | Safe Move to Modern Infrastructure",
+        description: "Migrate to the cloud safely and efficiently. OnnaSoft plans and executes cloud migration to modern infrastructure with minimal downtime and risk.",
+    },
+    es: {
+        title: "Migración a la Nube | Transición segura a infraestructura moderna",
+        description: "Migra a la nube de forma segura y eficiente. OnnaSoft planifica y ejecuta la migración cloud hacia una infraestructura moderna con mínimo tiempo de inactividad y riesgo.",
+    },
+    fr: {
+        title: "Migration Cloud | Transition sûre vers une infrastructure moderne",
+        description: "Migrez vers le cloud en toute sécurité et efficacité. OnnaSoft planifie et réalise la migration cloud vers une infrastructure moderne, avec un minimum d'interruption et de risques.",
+    },
+    ja: {
+        title: "クラウド移行サービス｜安全で効率的なモダンインフラへの移行",
+        description: "ダウンタイムとリスクを最小限に抑えながら、クラウドへ安全かつ効率的に移行します。OnnaSoftが計画から実行まで、モダンインフラへの移行を支援します。",
+    },
+    zh: {
+        title: "云迁移服务 | 安全高效地迁移至现代化基础设施",
+        description: "OnnaSoft 为您安全高效地规划并执行云迁移，将业务平稳过渡到现代化基础设施，最大限度降低停机时间与风险。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

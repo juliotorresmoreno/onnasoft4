@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Technology Consulting Services | Strategy & Digital Transformation",
+        description: "Align technology with business goals through OnnaSoft consulting: strategy, software architecture, legacy modernization, technology stack selection and digital transformation.",
+    },
+    es: {
+        title: "Consultoría Tecnológica | Estrategia, arquitectura y transformación digital",
+        description: "Alinea la tecnología con tus objetivos de negocio con la consultoría de OnnaSoft: estrategia, arquitectura de software, modernización de aplicaciones heredadas, selección de stack y transformación digital.",
+    },
+    fr: {
+        title: "Conseil technologique | Stratégie, architecture et transformation digitale",
+        description: "Alignez la technologie sur vos objectifs avec le conseil d'OnnaSoft : stratégie, architecture logicielle, modernisation des applications existantes, choix de la stack et transformation digitale.",
+    },
+    ja: {
+        title: "テクノロジーコンサルティング｜戦略・アーキテクチャ・DX",
+        description: "OnnaSoftのテクノロジーコンサルティングで、技術戦略を事業目標に整合。ソフトウェアアーキテクチャ設計、レガシーシステムの刷新、技術スタック選定、DXを支援します。",
+    },
+    zh: {
+        title: "技术咨询服务 | 战略、架构与数字化转型",
+        description: "借助 OnnaSoft 技术咨询，使技术战略与业务目标保持一致，涵盖软件架构设计、遗留系统现代化、技术选型与数字化转型规划。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main style="margin-top: 80px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto;">

@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Privacy Policy | How OnnaSoft Protects Your Data",
+        description: "Read how OnnaSoft collects, uses, protects and shares personal information, along with your privacy rights and our cookie practices.",
+    },
+    es: {
+        title: "Política de Privacidad | Cómo OnnaSoft protege sus datos",
+        description: "Consulte cómo OnnaSoft recopila, usa, protege y comparte la información personal, además de sus derechos de privacidad y el uso de cookies.",
+    },
+    fr: {
+        title: "Politique de confidentialité | Comment OnnaSoft protège vos données",
+        description: "Découvrez comment OnnaSoft collecte, utilise, protège et partage vos informations personnelles, ainsi que vos droits en matière de vie privée et l'usage des cookies.",
+    },
+    ja: {
+        title: "プライバシーポリシー｜OnnaSoftのお客様データ保護方針",
+        description: "OnnaSoftが個人情報をどのように収集・利用・保護・共有するか、お客様のプライバシーの権利とCookieの利用について説明します。",
+    },
+    zh: {
+        title: "隐私政策 | OnnaSoft 如何负责任地保护您的数据",
+        description: "了解 OnnaSoft 如何收集、使用、保护和共享个人信息，以及您享有的隐私权利和 Cookie 使用政策。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

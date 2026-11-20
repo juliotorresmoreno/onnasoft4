@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Odoo CRM Implementation | Boost Sales with OnnaSoft",
+        description: "Manage leads, opportunities and customer relationships with Odoo CRM implemented by OnnaSoft. Automate sales tasks and connect your sales data across the business.",
+    },
+    es: {
+        title: "Odoo CRM | Impulsa tus ventas con una plataforma integrada",
+        description: "Gestiona oportunidades y relaciones con clientes con Odoo CRM implementado por OnnaSoft. Automatiza tareas comerciales y conecta tus datos de ventas con el resto del negocio.",
+    },
+    fr: {
+        title: "Odoo CRM | Boostez vos ventes avec OnnaSoft",
+        description: "Gérez prospects, opportunités et relations clients avec Odoo CRM, implémenté par OnnaSoft. Automatisez les tâches commerciales et reliez vos données de vente à l'ensemble de l'entreprise.",
+    },
+    ja: {
+        title: "Odoo CRMの導入｜OnnaSoftで売上を向上",
+        description: "OnnaSoftが導入するOdoo CRMで、リード・商談・顧客管理を一元化。営業業務を自動化し、売上データを社内全体で活用できます。",
+    },
+    zh: {
+        title: "Odoo CRM 实施 | 借助 OnnaSoft 提升销售业绩",
+        description: "由 OnnaSoft 实施的 Odoo CRM，统一管理线索、商机与客户关系，自动化重复性销售工作，并将销售数据与整体业务打通。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

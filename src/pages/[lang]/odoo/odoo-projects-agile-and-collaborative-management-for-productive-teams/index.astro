@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Odoo Project Management | Agile Collaboration for Teams",
+        description: "Organize tasks, track progress and improve collaboration with Odoo Projects implemented by OnnaSoft. Apply agile methods and monitor deadlines, resources and performance.",
+    },
+    es: {
+        title: "Proyectos en Odoo | Gestión ágil y colaborativa de proyectos",
+        description: "Organiza tareas, controla avances y mejora la colaboración con Odoo Proyectos implementado por OnnaSoft. Aplica metodologías ágiles y supervisa plazos, recursos y rendimiento.",
+    },
+    fr: {
+        title: "Gestion de projet Odoo | Collaboration agile pour vos équipes",
+        description: "Organisez les tâches, suivez l'avancement et améliorez la collaboration avec Odoo Projets, implémenté par OnnaSoft. Appliquez les méthodes agiles et suivez délais et ressources.",
+    },
+    ja: {
+        title: "Odooプロジェクト管理の導入｜アジャイルで協調的な管理",
+        description: "OnnaSoftが導入するOdooプロジェクトで、タスク管理、チーム連携、アジャイル手法を実践。進捗・納期・リソースを可視化します。",
+    },
+    zh: {
+        title: "Odoo 项目管理实施 | 敏捷协作，助力高效团队",
+        description: "由 OnnaSoft 实施的 Odoo 项目管理，清晰组织任务、强化团队协作、采用敏捷方法，并实时监控进度、工期与资源。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

@@ -16,9 +16,36 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params;
 
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Contact OnnaSoft | Request a Software and Technology Consultation",
+        description: "Contact OnnaSoft to discuss your project. Request a consultation for custom software, cloud, system integration, AI, or Odoo implementation.",
+    },
+    es: {
+        title: "Contacta a OnnaSoft | Solicita una consultoría de software y tecnología",
+        description: "Contacta a OnnaSoft para hablar de tu proyecto. Solicita una consultoría sobre software a medida, cloud, integración de sistemas, IA o implementación de Odoo.",
+    },
+    fr: {
+        title: "Contacter OnnaSoft | Demandez un conseil en logiciel et technologie",
+        description: "Contactez OnnaSoft pour discuter de votre projet. Demandez une consultation sur les logiciels sur mesure, le cloud, l'intégration de systèmes, l'IA ou l'implémentation d'Odoo.",
+    },
+    ja: {
+        title: "お問い合わせ｜OnnaSoft ソフトウェア・技術コンサルティング",
+        description: "OnnaSoftへお気軽にご相談ください。カスタムソフトウェア、クラウド、システム統合、AI、Odoo導入に関するプロジェクトのご相談を承ります。",
+    },
+    zh: {
+        title: "联系 OnnaSoft | 预约软件与技术咨询",
+        description: "联系 OnnaSoft 探讨您的项目需求。预约定制软件、云服务、系统集成、人工智能或 Odoo 实施相关的咨询。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

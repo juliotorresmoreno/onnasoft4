@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "API Integration Services | Connect Systems with OnnaSoft",
+        description: "Connect your systems and automate key processes with custom API integration. OnnaSoft builds secure, scalable connections between your software, platforms and data.",
+    },
+    es: {
+        title: "Integración de APIs | Conecta tus sistemas con OnnaSoft",
+        description: "Conecta tus sistemas y automatiza procesos clave con integración de APIs a medida. OnnaSoft crea conexiones seguras y escalables entre tu software, plataformas y datos.",
+    },
+    fr: {
+        title: "Intégration d'API | Connectez vos systèmes avec OnnaSoft",
+        description: "Connectez vos systèmes et automatisez vos processus clés grâce à une intégration d'API sur mesure. OnnaSoft conçoit des connexions sécurisées et évolutives entre vos logiciels, plateformes et données.",
+    },
+    ja: {
+        title: "API統合サービス｜OnnaSoftでシステムを連携・自動化",
+        description: "カスタムAPI統合で、システム間の連携と主要業務の自動化を実現します。OnnaSoftが、ソフトウェア・プラットフォーム・データを安全かつ拡張性の高い形でつなぎます。",
+    },
+    zh: {
+        title: "API 集成服务 | 借助 OnnaSoft 连接系统、自动化业务",
+        description: "通过定制 API 集成连接您的系统并自动化关键流程。OnnaSoft 为您的软件、平台和数据构建安全、可扩展的连接。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main

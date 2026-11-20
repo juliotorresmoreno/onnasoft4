@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Cloud & DevOps Services | Automated, Reliable Infrastructure",
+        description: "Build automated, reliable and optimized cloud infrastructure with DevOps practices, CI/CD pipelines and infrastructure as code. Services by OnnaSoft.",
+    },
+    es: {
+        title: "Servicios Cloud y DevOps | Infraestructura automatizada y confiable",
+        description: "Construye infraestructura cloud automatizada, confiable y optimizada con prácticas DevOps, pipelines CI/CD e infraestructura como código de OnnaSoft.",
+    },
+    fr: {
+        title: "Services Cloud et DevOps | Infrastructure automatisée et fiable",
+        description: "Construisez une infrastructure cloud automatisée, fiable et optimisée grâce aux pratiques DevOps, aux pipelines CI/CD et à l'infrastructure as code avec OnnaSoft.",
+    },
+    ja: {
+        title: "クラウド・DevOpsサービス｜自動化された信頼性の高いインフラ",
+        description: "DevOps、CI/CDパイプライン、IaCを活用し、自動化され信頼性と最適化を備えたクラウドインフラを構築します。OnnaSoftのクラウド・DevOpsサービス。",
+    },
+    zh: {
+        title: "云与 DevOps 服务 | 自动化、可靠且优化的基础设施",
+        description: "借助 OnnaSoft 的 DevOps 实践、CI/CD 流水线和基础设施即代码，构建自动化、可靠且优化的云基础设施。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main style="margin-top: 80px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto;">

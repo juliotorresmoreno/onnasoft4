@@ -1,4 +1,5 @@
 ---
+import Layout from "../../../../layouts/Layout.astro";
 export function getStaticPaths() {
     return [
         { params: { lang: "en" } },
@@ -10,8 +11,37 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.params;
----
 
+const seo = {
+    en: {
+        title: "Web Development Company | OnnaSoft, Building the Future Fast",
+        description: "Discover how OnnaSoft builds modern web development solutions quickly, delivering fast, scalable and high-quality digital products for businesses.",
+    },
+    es: {
+        title: "Empresa de Desarrollo Web | OnnaSoft, construyendo el futuro rápido",
+        description: "Descubre cómo OnnaSoft construye soluciones modernas de desarrollo web con rapidez, entregando productos digitales rápidos, escalables y de alta calidad para empresas.",
+    },
+    fr: {
+        title: "Entreprise de développement web | OnnaSoft, bâtir l'avenir rapidement",
+        description: "Découvrez comment OnnaSoft conçoit rapidement des solutions modernes de développement web et livre des produits digitaux rapides, évolutifs et de haute qualité pour les entreprises.",
+    },
+    ja: {
+        title: "Web開発会社｜OnnaSoft、スピーディーに未来を構築",
+        description: "OnnaSoftがモダンなWeb開発ソリューションを迅速に構築し、企業向けに高速・拡張性・高品質なデジタルプロダクトを提供する取り組みをご紹介します。",
+    },
+    zh: {
+        title: "Web 开发公司 | OnnaSoft，快速构建未来",
+        description: "了解 OnnaSoft 如何快速构建现代化 Web 开发解决方案，为企业交付高速、可扩展且高质量的数字产品。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
 <div>
     onnasoft-building-the-future-of-web-development-fast
 </div>
+</Layout>

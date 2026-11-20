@@ -32,18 +32,44 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
+const seo = {
+    en: {
+        title: "AI & Data Engineering Solutions | OnnaSoft",
+        description:
+            "Transform business data into intelligent automation with AI solutions, data pipelines, analytics, and scalable data engineering.",
+    },
+    es: {
+        title: "IA e Ingeniería de Datos | OnnaSoft",
+        description:
+            "Transformamos datos empresariales en automatización inteligente mediante soluciones de inteligencia artificial, ingeniería de datos y analítica.",
+    },
+    fr: {
+        title: "IA et ingénierie des données | OnnaSoft",
+        description:
+            "Transformez vos données en automatisation intelligente grâce à l'intelligence artificielle, l'ingénierie des données et l'analyse.",
+    },
+    ja: {
+        title: "AI・データエンジニアリング | OnnaSoft",
+        description:
+            "AI、データエンジニアリング、分析技術を活用し、企業データをインテリジェントな自動化へと変換します。",
+    },
+    zh: {
+        title: "人工智能与数据工程解决方案 | OnnaSoft",
+        description:
+            "通过人工智能、数据工程、数据分析和自动化解决方案，将企业数据转化为智能化业务流程。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
 ---
 
-<Layout>
+<Layout title={currentSeo.title} description={currentSeo.description}>
     <div id="container">
         <Navbar />
-        <main
-            style="margin-top: 80px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto;"
-        >
+        <main style="margin-top: 80px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
             <Lang />
         </main>
         <Contact />
         <Footer />
     </div>
 </Layout>
-<style></style>

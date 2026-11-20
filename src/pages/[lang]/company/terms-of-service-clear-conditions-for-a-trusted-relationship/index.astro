@@ -32,9 +32,36 @@ const LangMap = {
 
 const selectedLang = (lang ?? "en") as keyof typeof LangMap;
 const Lang = LangMap[selectedLang] ?? ENLang;
----
 
-<Layout>
+const seo = {
+    en: {
+        title: "Terms of Service | OnnaSoft Conditions for Technology Services",
+        description: "Review the terms of service for OnnaSoft's technology services, including proposals, payments, intellectual property, confidentiality and governing law.",
+    },
+    es: {
+        title: "Términos de Servicio | Condiciones de OnnaSoft para servicios tecnológicos",
+        description: "Revise los términos de servicio de OnnaSoft para sus servicios tecnológicos: propuestas, pagos, propiedad intelectual, confidencialidad y ley aplicable.",
+    },
+    fr: {
+        title: "Conditions d'utilisation | OnnaSoft, services technologiques",
+        description: "Consultez les conditions d'utilisation des services technologiques d'OnnaSoft : propositions, honoraires, propriété intellectuelle, confidentialité et droit applicable.",
+    },
+    ja: {
+        title: "利用規約｜OnnaSoftの技術サービスの条件",
+        description: "OnnaSoftの技術サービスに関する利用規約をご確認ください。提案・料金・お支払い、知的財産、機密保持、準拠法について定めています。",
+    },
+    zh: {
+        title: "服务条款 | OnnaSoft 技术服务的明确条件",
+        description: "查阅 OnnaSoft 技术服务条款，包括服务方案、费用与付款、知识产权、保密条款及适用法律等内容。",
+    },
+};
+
+const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
+---
+<Layout
+    title={currentSeo.title}
+    description={currentSeo.description}
+>
     <div id="container">
         <Navbar />
         <main
