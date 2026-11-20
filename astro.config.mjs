@@ -10,14 +10,16 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  vite: {
-      plugins: [tailwindcss()],
-  },
+    vite: {
+        plugins: [tailwindcss()],
+    },
 
-  redirects: {
-      "/": "/en",
-  },
+    redirects: {
+        "/": "/en",
+    },
 
-  integrations: [react(), sitemap()],
-  adapter: cloudflare(),
+    integrations: [react(), sitemap({
+        filenameBase: "sitemap.xml",
+    })],
+    adapter: cloudflare(),
 });
