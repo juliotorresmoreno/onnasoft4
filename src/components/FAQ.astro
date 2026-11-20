@@ -8,7 +8,8 @@ interface Props {
   language?: string;
 }
 
-const { language = "en" } = Astro.props;
+const { language = Astro.url.pathname.split("/").filter(Boolean)[0] || "en" } =
+    Astro.props;
 
 const translations = {
   en: {
@@ -19,7 +20,7 @@ const translations = {
       {
         question: "What services does OnnaSoft offer?",
         answer:
-          "OnnaSoft offers a comprehensive range of services including Programming and Web Development, API Integration, Big Data, Data Science, IT Outsourcing, and Cloud Migration. Our team of experts is equipped to handle projects of any size and complexity.",
+          "OnnaSoft is built on over a decade of software engineering experience. Our technical approach draws on hands-on experience developing backend systems, cloud infrastructure, integrations, and digital solutions across different industries.",
       },
       {
         question: "How experienced is your team?",
@@ -62,7 +63,7 @@ const translations = {
       {
         question: "¿Qué experiencia tiene su equipo?",
         answer:
-          "OnnaSoft se basa en la experiencia real de ingeniería de software y un compromiso con el aprendizaje continuo. Reunimos experiencia técnica, tecnologías modernas y resolución práctica de problemas para ofrecer soluciones adaptadas a las necesidades de cada cliente. Nuestro enfoque combina prácticas de ingeniería comprobadas con un enfoque constante en los avances tecnológicos.",
+          "OnnaSoft se basa en la experiencia real de ingeniería de software y un compromiso con el aprendizaje continuo. Combinamos experiencia técnica, tecnologías modernas y resolución práctica de problemas para ofrecer soluciones adaptadas a las necesidades de cada cliente. Nuestro enfoque combina prácticas de ingeniería probadas con un enfoque constante en los avances tecnológicos.",
       },
       {
         question: "¿Cómo abordan los nuevos proyectos?",
@@ -90,7 +91,7 @@ const translations = {
       {
         question: "Quels services propose OnnaSoft ?",
         answer:
-          "OnnaSoft propose une gamme complète de services, y compris le développement web, l'intégration d'API, le Big Data, la science des données, l'externalisation informatique et la migration vers le cloud.",
+          "OnnaSoft est construit sur plus d'une décennie d'expérience en ingénierie logicielle. Notre approche technique s'appuie sur une expérience pratique dans le développement de systèmes backend, d'infrastructures cloud, d'intégrations et de solutions numériques dans différents secteurs.",
       },
       {
         question: "Quelle est l'expérience de votre équipe ?",
@@ -127,7 +128,7 @@ const translations = {
       {
         question: "OnnaSoftはどのようなサービスを提供していますか？",
         answer:
-          "OnnaSoftは、プログラミング、Web開発、API統合、ビッグデータ、データサイエンス、ITアウトソーシング、クラウド移行など、幅広いサービスを提供しています。",
+          "OnnaSoftは、プログラミング、ウェブ開発、API統合、ビッグデータ、データサイエンス、ITアウトソーシング、クラウド移行などの包括的なサービスを提供しています。私たちの専門チームは、あらゆる規模と複雑さのプロジェクトに対応できる能力を備えています。",
       },
       {
         question: "チームの経験はどのくらいですか？",
@@ -164,7 +165,7 @@ const translations = {
       {
         question: "OnnaSoft 提供哪些服务？",
         answer:
-          "OnnaSoft 提供包括编程、网页开发、API 集成、大数据、数据科学、IT 外包及云迁移在内的综合服务。",
+          "OnnaSoft 提供全面的服务，包括编程和网页开发、API 集成、大数据、数据科学、IT 外包和云迁移。我们的专家团队能够处理各种规模和复杂度的项目。",
       },
       {
         question: "你们的团队有多丰富的经验？",

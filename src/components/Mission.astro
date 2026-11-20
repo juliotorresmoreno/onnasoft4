@@ -1,7 +1,8 @@
 ---
 import { FaLightbulb, FaUsers, FaChartLine, FaHandshake } from "react-icons/fa";
 
-const { language = "en" } = Astro.props;
+const { language = Astro.url.pathname.split("/").filter(Boolean)[0] || "en" } =
+    Astro.props;
 
 const translations = {
     en: {

@@ -4,7 +4,8 @@ interface Props {
   language?: string;
 }
 
-const { language = "en" } = Astro.props;
+const { language = Astro.url.pathname.split("/").filter(Boolean)[0] || "en" } =
+    Astro.props;
 
 const images = {
   finance: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=500&q=80",

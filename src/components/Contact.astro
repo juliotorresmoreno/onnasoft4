@@ -6,7 +6,8 @@ interface Props {
   language?: string;
 }
 
-const { language = "en" } = Astro.props;
+const { language = Astro.url.pathname.split("/").filter(Boolean)[0] || "en" } =
+    Astro.props;
 
 const phoneValue = import.meta.env.PUBLIC_PHONE_NUMBER || "+34 123 456 789";
 const emailValue = import.meta.env.PUBLIC_EMAIL || "info@onnasoft.com";
