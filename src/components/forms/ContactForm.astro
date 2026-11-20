@@ -110,6 +110,7 @@ const t = translations[language as keyof typeof translations] ?? translations.en
 
 <form
   class="space-y-4"
+  novalidate
   data-contact-form
   data-translations={JSON.stringify(t)}
 >
@@ -154,6 +155,7 @@ const t = translations[language as keyof typeof translations] ?? translations.en
       <p
         id={`contact-${field.name}-error`}
         class="hidden mt-1 text-sm text-red-600"
+        role="alert"
         data-field-error={field.name}
       ></p>
     </div>
@@ -177,6 +179,7 @@ const t = translations[language as keyof typeof translations] ?? translations.en
     <p
       id="contact-message-error"
       class="hidden mt-1 text-sm text-red-600"
+      role="alert"
       data-field-error="message"
     ></p>
   </div>

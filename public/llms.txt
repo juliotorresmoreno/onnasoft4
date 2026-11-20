@@ -1,0 +1,63 @@
+# OnnaSoft
+
+> OnnaSoft is a technology company that helps businesses solve real challenges through custom software engineering, web development, cloud and DevOps, cloud migration, system integration, API integration, AI and data engineering, big data, data science, Odoo implementation, IT consulting, IT outsourcing and technical talent solutions. The site is available in English, Spanish, French, Japanese and Chinese.
+
+Website: https://onnasoft.us
+Languages: /en, /es, /fr, /ja, /zh (each service page exists in all five languages; the English URLs are listed below)
+
+## Services
+
+- [Custom Software Engineering](https://onnasoft.us/en/software-engineering/software-engineering-custom-scalable-software-solutions-for-your-business): Scalable custom software solutions built around business requirements.
+- [Custom Web Development](https://onnasoft.us/en/web-development/custom-web-development-create-modern-fast-and-scalable-applications): Modern, fast and scalable web applications with frontend, backend and security by design.
+- [Cloud & DevOps](https://onnasoft.us/en/cloud-devops/cloud-and-devops-automated-reliable-and-optimized-infrastructure): Automated, reliable and optimized cloud infrastructure with CI/CD and infrastructure as code.
+- [Cloud Migration](https://onnasoft.us/en/cloud-migration/cloud-migration-safe-and-efficient-transition-to-modern-infrastructure): Safe and efficient migration to modern cloud infrastructure.
+- [System Integration](https://onnasoft.us/en/system-integration/system-integration-connect-your-platforms-and-exchange-data-seamlessly): Connecting platforms and exchanging data seamlessly.
+- [API Integration](https://onnasoft.us/en/api-integration/api-integration-connect-your-systems-and-automate-key-processes): Connecting systems and automating key business processes through APIs.
+- [AI & Data Engineering](https://onnasoft.us/en/ai-data-engineering/ai-and-data-engineering-turn-your-data-into-intelligent-automation): Turning business data into intelligent automation with AI, data pipelines and analytics.
+- [Big Data](https://onnasoft.us/en/big-data/big-data-convert-large-amounts-of-data-into-intelligent-decisions): Scalable data infrastructure and analytics for large data volumes.
+- [Data Science](https://onnasoft.us/en/data-science/data-science-anticipate-the-future-and-make-decisions-based-on-evidence): Predictive analytics, machine learning and evidence-based decision making.
+- [Business Process Automation](https://onnasoft.us/en/case-studies/business-process-automation-scalability-and-precision-with-tailored-solutions): Tailored automation that scales with the company and reduces manual work and errors.
+- [Technology Consulting](https://onnasoft.us/en/technology-consulting/technology-consulting-strategy-architecture-and-digital-transformation): Technology strategy, architecture and digital transformation.
+- [IT Consulting](https://onnasoft.us/en/it-outsourcing/it-consulting-technology-strategy-for-the-sustainable-growth-of-your-company): Technology strategy for the sustainable growth of your company.
+- [IT Outsourcing](https://onnasoft.us/en/it-outsourcing/it-outsourcing-expand-your-team-with-specialized-talent-without-complications): Expanding your team with specialized developers.
+- [Technical Talent Solutions](https://onnasoft.us/en/technical-talent-solutions/technical-talent-solutions-hire-specialized-developers-and-tech-talent): Hiring specialized developers and technical talent.
+- [Development & Digital Transformation Services](https://onnasoft.us/en/company/development-and-digital-transformation-services): Overview of OnnaSoft's development and digital transformation services.
+
+## Odoo Implementation
+
+- [Odoo Accounting](https://onnasoft.us/en/odoo/odoo-accounting-simplify-your-financial-management-with-automation-and-total-control): Automated financial management with Odoo Accounting.
+- [Odoo CRM](https://onnasoft.us/en/odoo/odoo-as-a-crm-boost-your-sales-with-an-integrated-platform): Lead, opportunity and customer management with Odoo CRM.
+- [Odoo Human Resources](https://onnasoft.us/en/odoo/odoo-human-resources-centralize-talent-management-and-improve-productivity): Talent management and employee administration with Odoo HR.
+- [Odoo Inventory](https://onnasoft.us/en/odoo/odoo-inventory-total-control-of-your-stock-in-real-time): Real-time stock control with Odoo Inventory.
+- [Odoo Invoicing](https://onnasoft.us/en/odoo/odoo-invoicing-automate-your-accounting-from-sales-to-collections): Invoice automation from sales to collections.
+- [Odoo Projects](https://onnasoft.us/en/odoo/odoo-projects-agile-and-collaborative-management-for-productive-teams): Agile and collaborative project management with Odoo Projects.
+- [Odoo Purchasing](https://onnasoft.us/en/odoo/odoo-purchasing-optimize-your-purchases-with-automated-and-intelligent-processes): Automated and intelligent purchasing processes with Odoo Purchase.
+- [Odoo Sales](https://onnasoft.us/en/odoo/odoo-sales-accelerate-your-end-to-end-business-process): End-to-end sales process with Odoo Sales.
+
+## Company
+
+- [About OnnaSoft](https://onnasoft.us/en/company/onnasoft-transforming-businesses-with-custom-software-security-and-integration): Custom software, security and integration to transform businesses.
+- [Why Choose OnnaSoft](https://onnasoft.us/en/company/why-choose-onnasoft-technology-tailored-to-you-results-scaled-to-your-needs): Technology tailored to each business and results scaled to its needs.
+- [Our Process](https://onnasoft.us/en/company/our-process-for-creating-custom-solutions): How OnnaSoft designs, builds, tests, deploys and supports custom solutions.
+- [Our Vision](https://onnasoft.us/en/company/our-vision-to-be-a-global-reference-in-innovative-and-scalable-technological-solutions): OnnaSoft's vision to be a global reference in innovative, scalable technology solutions.
+- [Contact](https://onnasoft.us/en/contact): Request a consultation about a software or technology project.
+- [Blog](https://onnasoft.us/en/blog): Articles on software, cloud, AI, data and digital transformation.
+
+## Legal
+
+- [Privacy Policy](https://onnasoft.us/en/company/privacy-policy-we-protect-your-data-responsibly-and-transparently): How OnnaSoft collects, uses and protects personal data.
+- [Terms of Service](https://onnasoft.us/en/company/terms-of-service-clear-conditions-for-a-trusted-relationship): Terms governing OnnaSoft's technology services.
+
+## Company description by language
+
+- Español: OnnaSoft ayuda a empresas a resolver desafíos reales con desarrollo de software a medida, cloud y DevOps, integración de sistemas, IA, ciencia de datos, implementación de Odoo y consultoría tecnológica.
+- Français: OnnaSoft aide les entreprises à relever leurs défis grâce au développement logiciel sur mesure, au cloud et DevOps, à l'intégration de systèmes, à l'IA, à la data science, à l'implémentation d'Odoo et au conseil technologique.
+- 日本語: OnnaSoftは、カスタムソフトウェア開発、クラウド・DevOps、システム統合、AI、データサイエンス、Odoo導入、テクノロジーコンサルティングを通じて、企業の実際の課題解決を支援します。
+- 中文: OnnaSoft 通过定制软件开发、云与 DevOps、系统集成、人工智能、数据科学、Odoo 实施及技术咨询，帮助企业解决实际业务挑战。
+
+## Optional
+
+- [Spanish version](https://onnasoft.us/es)
+- [French version](https://onnasoft.us/fr)
+- [Japanese version](https://onnasoft.us/ja)
+- [Chinese version](https://onnasoft.us/zh)

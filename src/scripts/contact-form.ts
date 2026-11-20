@@ -35,7 +35,7 @@ interface FormTranslations {
 
 interface ApiResult {
   error?: string;
-  details?: string[];
+  fields?: string[];
 }
 
 const fieldNames: FieldName[] = [
@@ -187,20 +187,22 @@ document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form)
         body: JSON.stringify(data),
       });
 
-      const result = (await response.json()) as ApiResult;
+      const result = (await response.json().catch(() => ({}))) as ApiResult;
 
       if (!response.ok) {
-        if (response.status === 400 && result.details) {
-          showApiError(t.errors.validation, result.details);
+        if (response.status === 400 && result.error === "validation_failed") {
+          const invalidFields = (result.fields ?? []).filter(
+            (field): field is FieldName => fieldNames.includes(field as FieldName),
+          );
+
+          invalidFields.forEach((field) => showFieldError(field, t.errors[field]));
+          showApiError(t.errors.validation);
+        } else if (response.status >= 500) {
+          showApiError(t.errors.emailFailed);
         } else {
-          showApiError(result.error || t.errors.server);
+          showApiError(t.errors.server);
         }
 
-        return;
-      }
-
-      if (result.error) {
-        showApiError(result.error || t.errors.emailFailed);
         return;
       }
 
