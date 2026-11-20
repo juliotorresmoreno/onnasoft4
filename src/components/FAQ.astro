@@ -1,4 +1,3 @@
-
 ---
 interface FAQItem {
   question: string;
@@ -25,7 +24,7 @@ const translations = {
       {
         question: "How experienced is your team?",
         answer:
-          "With over 10 years of experience in the industry and more than 50 successful projects completed, our team brings extensive expertise to every project. Our professionals are certified in various technologies and continuously update their skills to stay at the forefront of technological advancements.",
+          "OnnaSoft is built on real-world software engineering experience and a commitment to continuous learning. We bring together technical expertise, modern technologies, and practical problem-solving to deliver solutions tailored to each client's needs. Our approach combines proven engineering practices with an ongoing focus on technological advancements.",
       },
       {
         question: "What industries do you work with?",
@@ -38,7 +37,8 @@ const translations = {
           "We follow a structured methodology that begins with an initial consultation to understand your needs, followed by analysis and planning, development and implementation, thorough testing and optimization, and finally delivery with ongoing support. This approach ensures high-quality results and client satisfaction.",
       },
       {
-        question: "What makes OnnaSoft different from other software development companies?",
+        question:
+          "What makes OnnaSoft different from other software development companies?",
         answer:
           "What sets us apart is our combination of technical expertise, business understanding, and commitment to results. We don't just develop software; we create solutions that transform businesses. Our client-centered approach, transparent communication, and focus on long-term partnerships ensure that we deliver value beyond the initial project.",
       },
@@ -62,12 +62,7 @@ const translations = {
       {
         question: "¿Qué experiencia tiene su equipo?",
         answer:
-          "Con más de 10 años en la industria y más de 50 proyectos exitosos completados, nuestro equipo aporta una amplia experiencia a cada proyecto. Nuestros profesionales están certificados en diversas tecnologías y se actualizan constantemente para estar a la vanguardia.",
-      },
-      {
-        question: "¿Con qué industrias trabajan?",
-        answer:
-          "Trabajamos en múltiples sectores como Finanzas, Salud, Educación, Comercio Electrónico, Bienes Raíces y Aerolíneas. Esta diversidad nos permite entender los retos y requisitos únicos de cada industria.",
+          "OnnaSoft se basa en la experiencia real de ingeniería de software y un compromiso con el aprendizaje continuo. Reunimos experiencia técnica, tecnologías modernas y resolución práctica de problemas para ofrecer soluciones adaptadas a las necesidades de cada cliente. Nuestro enfoque combina prácticas de ingeniería comprobadas con un enfoque constante en los avances tecnológicos.",
       },
       {
         question: "¿Cómo abordan los nuevos proyectos?",
@@ -75,7 +70,8 @@ const translations = {
           "Seguimos una metodología estructurada que comienza con una consulta inicial, seguida de análisis y planificación, desarrollo e implementación, pruebas rigurosas y optimización, y finalmente entrega con soporte continuo.",
       },
       {
-        question: "¿Qué hace diferente a OnnaSoft de otras empresas de desarrollo?",
+        question:
+          "¿Qué hace diferente a OnnaSoft de otras empresas de desarrollo?",
         answer:
           "Nuestra combinación de experiencia técnica, entendimiento del negocio y compromiso con los resultados. No solo desarrollamos software, creamos soluciones que transforman negocios. Mantenemos una comunicación transparente y buscamos relaciones a largo plazo.",
       },
@@ -99,7 +95,7 @@ const translations = {
       {
         question: "Quelle est l'expérience de votre équipe ?",
         answer:
-          "Avec plus de 10 ans d'expérience et plus de 50 projets réussis, notre équipe apporte un savoir-faire approfondi. Nos experts sont certifiés et se tiennent à jour sur les dernières technologies.",
+          "OnnaSoft se base sur l'expérience réelle d'ingénierie logicielle et un engagement envers l'apprentissage continu. Nous réunissons une expertise technique, des technologies modernes et une résolution pratique des problèmes pour offrir des solutions adaptées aux besoins de chaque client. Notre approche combine des pratiques d'ingénierie éprouvées avec un focus constant sur les avancées technologiques.",
       },
       {
         question: "Dans quels secteurs travaillez-vous ?",
@@ -136,7 +132,7 @@ const translations = {
       {
         question: "チームの経験はどのくらいですか？",
         answer:
-          "10年以上の業界経験と50以上のプロジェクト実績を持ち、専門技術と最新トレンドを組み合わせて最高の成果を提供します。",
+          "OnnaSoftは、実務経験に基づくソフトウェアエンジニアリングの専門知識と、継続的な学習への取り組みに基づいて構築されています。技術的な専門知識、最新の技術、実践的な問題解決を組み合わせて、各クライアントのニーズに合わせたソリューションを提供します。",
       },
       {
         question: "どの業界と取引していますか？",
@@ -173,7 +169,7 @@ const translations = {
       {
         question: "你们的团队有多丰富的经验？",
         answer:
-          "我们拥有超过 10 年行业经验，已成功完成 50 多个项目。团队成员拥有多项技术认证，并不断学习新技术。",
+          "OnnaSoft 建立在实际的软件工程经验和持续学习的承诺之上。我们结合技术专长、现代技术和实际问题解决能力，为每位客户提供量身定制的解决方案。我们的方法将经过验证的工程实践与对技术进步的持续关注相结合。",
       },
       {
         question: "你们与哪些行业合作？",
@@ -206,18 +202,15 @@ const translations = {
   }
 >;
 
-const t = translations[language as keyof typeof translations] ?? translations.en;
+const t =
+  translations[language as keyof typeof translations] ?? translations.en;
 ---
 
 <section class="section bg-gray-50 animate-fade-in-down">
   <div class="container mx-auto">
     <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">
-        {t.title}
-      </h2>
-      <p class="text-gray-600 max-w-2xl mx-auto">
-        {t.subtitle}
-      </p>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">{t.title}</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">{t.subtitle}</p>
     </div>
 
     <div class="mx-auto">
@@ -228,9 +221,7 @@ const t = translations[language as keyof typeof translations] ?? translations.en
         >
           <summary class="list-none cursor-pointer">
             <div class="flex justify-between items-center gap-4 p-4 bg-white border border-gray-200 rounded-lg group-open:bg-primary/5 group-open:border-primary">
-              <span class="font-bold text-lg md:text-xl">
-                {faq.question}
-              </span>
+              <span class="font-bold text-lg md:text-xl">{faq.question}</span>
 
               <svg
                 xmlns="http://www.w3.org/2000/svg"
