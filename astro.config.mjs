@@ -10,6 +10,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
+    site: "https://onnasoft.us",
     vite: {
         plugins: [tailwindcss()],
     },
@@ -19,7 +20,7 @@ export default defineConfig({
     },
 
     integrations: [react(), sitemap({
-        filenameBase: "sitemap.xml",
+        filenameBase: "sitemap",
     })],
     adapter: cloudflare(),
 });
