@@ -8,4 +8,16 @@
   "observability": {
     "enabled": false
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "onnasoft-emdash"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "onnasoft-emdash-media"
+    }
+  ]
 }

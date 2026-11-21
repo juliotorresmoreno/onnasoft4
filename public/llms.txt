@@ -41,7 +41,7 @@ Languages: /en, /es, /fr, /ja, /zh (each service page exists in all five languag
 - [Our Process](https://onnasoft.us/en/company/our-process-for-creating-custom-solutions): How OnnaSoft designs, builds, tests, deploys and supports custom solutions.
 - [Our Vision](https://onnasoft.us/en/company/our-vision-to-be-a-global-reference-in-innovative-and-scalable-technological-solutions): OnnaSoft's vision to be a global reference in innovative, scalable technology solutions.
 - [Contact](https://onnasoft.us/en/contact): Request a consultation about a software or technology project.
-- [Blog](https://onnasoft.us/en/blog): Articles on software, cloud, AI, data and digital transformation.
+- [Blog](https://onnasoft.us/blog): Articles on software, cloud, AI, data and digital transformation.
 
 ## Legal
 

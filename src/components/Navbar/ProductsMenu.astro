@@ -247,7 +247,10 @@ const hrefs = [
     "/odoo/odoo-human-resources-centralize-talent-management-and-improve-productivity",
 ];
 
-const [, language] = Astro.url.pathname.split("/");
+const [, urlSegment] = Astro.url.pathname.split("/");
+
+// Only real language prefixes count; other routes (e.g. /blog, /pages) fall back to English.
+const language = urlSegment && urlSegment in translations ? urlSegment : "en";
 
 const t =
     translations[language as keyof typeof translations] || translations.en;

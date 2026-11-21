@@ -1,0 +1,43 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar/index.astro";
+import Footer from "../../components/Footer.astro";
+import { getEmDashCollection } from "emdash";
+
+// The blog is published in English only. Rendered on the server so newly
+// published posts appear without a rebuild.
+const title = "OnnaSoft Blog | Software, Cloud, AI & Digital Transformation Insights";
+const description =
+    "Read OnnaSoft articles on software engineering, cloud infrastructure, AI, data engineering, Odoo and digital transformation for growing businesses.";
+
+const { entries: posts } = await getEmDashCollection("posts", {
+    status: "published",
+});
+---
+
+<Layout title={title} description={description}>
+    <div id="container">
+        <Navbar />
+        <main class="mt-20 px-5 max-w-3xl mx-auto space-y-8">
+            <h1 class="text-4xl font-bold text-gray-900">Blog</h1>
+
+            {posts.length === 0 ? (
+                <p class="text-gray-600">No articles yet. Check back soon.</p>
+            ) : (
+                <ul class="space-y-4">
+                    {posts.map((post) => (
+                        <li>
+                            <a
+                                href={`/blog/${post.data.slug}`}
+                                class="text-xl font-semibold text-primary hover:underline"
+                            >
+                                {post.data.title}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </main>
+        <Footer />
+    </div>
+</Layout>
