@@ -55,7 +55,12 @@ const ui = {
 const t = ui[lang];
 const { slug } = Astro.params;
 
-const { entry: post } = await getEmDashEntry("posts", slug ?? "");
+let { entry: post } = await getEmDashEntry("posts", slug ?? "");
+
+// No fallback: an entry written in another language is not shown under this language.
+if (post && (post.data as { locale?: string }).locale !== undefined && (post.data as { locale?: string }).locale !== lang) {
+    post = null;
+}
 
 if (!post || !isSupported) {
     Astro.response.status = 404;

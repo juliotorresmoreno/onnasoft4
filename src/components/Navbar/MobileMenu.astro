@@ -162,6 +162,8 @@ const [, urlSegment] = Astro.url.pathname.split("/");
 
 // Only real language prefixes count; other routes (e.g. /blog, /pages) fall back to English.
 const language = urlSegment && urlSegment in translations ? urlSegment : "en";
+// The blog is only published in English and Spanish; other languages link to English.
+const blogLanguage = language === "es" ? "es" : "en";
 
 const t =
     translations[language as keyof typeof translations] || translations.en;
@@ -291,7 +293,7 @@ const t =
             {
                 !HIDE_BLOG && (
                     <a
-                        href={`/${language}/blog`}
+                        href={`/${blogLanguage}/blog`}
                         class="block py-2 px-4 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors duration-200 text-xl"
                     >
                         {t.blog}

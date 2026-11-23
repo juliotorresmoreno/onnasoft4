@@ -8,7 +8,6 @@ import {
     getEmDashEntry,
     extractPlainText,
     search,
-    getFallbackChain,
     getAllTermsForEntries,
     getTaxonomyTerms,
     type TaxonomyTerm,
@@ -241,20 +240,8 @@ function toCard(
     };
 }
 
-// Posts are written in English and Spanish. Other languages fall back along the
-// configured i18n chain (fr -> en -> es) to the first locale that has published posts.
-async function pickListLocale(): Promise<string> {
-    for (const candidate of getFallbackChain(lang)) {
-        const probe = await getEmDashCollection("posts", {
-            status: "published",
-            locale: candidate,
-            limit: 1,
-        });
-        if (probe.entries.length > 0) return candidate;
-    }
-    return lang;
-}
-const listLocale = await pickListLocale();
+// Only posts written in this language are listed. There is no fallback to other languages.
+const listLocale = lang;
 
 const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 100);
 const categorySlug = (Astro.url.searchParams.get("category") ?? "")
@@ -290,8 +277,9 @@ async function withTerms(list: Card[]): Promise<Card[]> {
         const terms = termsByEntry.get(card.id) ?? {};
         return {
             ...card,
-            categories: (terms.category ?? []).map(toLink),
-            tags: (terms.tag ?? []).map(toLink),
+            // Only terms in this language: no fallback to terms from other languages.
+            categories: (terms.category ?? []).filter((term) => term.locale === listLocale).map(toLink),
+            tags: (terms.tag ?? []).filter((term) => term.locale === listLocale).map(toLink),
         };
     });
 }
@@ -331,7 +319,7 @@ async function taxonomyOptions(
 ): Promise<TermOption[]> {
     const groups = new Map<string, TermOption & { preferred: boolean }>();
 
-    for (const locale of getFallbackChain(lang)) {
+    for (const locale of [lang]) {
         const terms = flattenTerms(await getTaxonomyTerms(name, { locale }));
 
         for (const term of terms) {

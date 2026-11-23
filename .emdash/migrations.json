@@ -111,12 +111,6 @@
 			"ja",
 			"zh"
 		],
-		"fallback": {
-			"en": "es",
-			"fr": "en",
-			"ja": "en",
-			"zh": "en"
-		},
 		"prefixDefaultLocale": true
 	},
 	"database": {
