@@ -1,0 +1,737 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Navbar from "../../../components/Navbar/index.astro";
+import Footer from "../../../components/Footer.astro";
+import Contact from "../../../components/Contact.astro";
+import {
+    getEmDashCollection,
+    getEmDashEntry,
+    extractPlainText,
+    search,
+    getFallbackChain,
+    getAllTermsForEntries,
+    getTaxonomyTerms,
+    type TaxonomyTerm,
+} from "emdash";
+
+// Rendered on the server so newly published posts appear without a rebuild.
+const SUPPORTED_LANGS = ["en", "es", "fr", "ja", "zh"] as const;
+type Lang = (typeof SUPPORTED_LANGS)[number];
+
+const requestedLang = Astro.params.lang ?? "en";
+const isSupported = (SUPPORTED_LANGS as readonly string[]).includes(
+    requestedLang,
+);
+if (!isSupported) {
+    Astro.response.status = 404;
+}
+const lang: Lang = isSupported ? (requestedLang as Lang) : "en";
+
+const ui = {
+    en: {
+        title: "OnnaSoft Blog | Software, Cloud, AI & Digital Transformation Insights",
+        description:
+            "Read OnnaSoft articles on software engineering, cloud infrastructure, AI, data engineering, Odoo and digital transformation for growing businesses.",
+        heading: "Blog",
+        searchLabel: "Search articles",
+        searchPlaceholder: "Search articles",
+        searchButton: "Search",
+        resultsFor: "Results for “{q}”.",
+        clearSearch: "Clear search",
+        noMatch: "No articles match “{q}”.",
+        noMore: "There are no more articles on this page.",
+        noArticles: "No articles yet. Check back soon.",
+        loadError: "The articles could not be loaded. Please try again later.",
+        previous: "← Previous",
+        next: "Next →",
+        page: "Page {n}",
+        categories: "Categories",
+        tags: "Tags",
+        all: "All",
+        noFilterMatch: "No articles found for this filter.",
+        readMore: "Read article →",
+    },
+    es: {
+        title: "Blog de OnnaSoft | Software, Cloud, IA y Transformación Digital",
+        description:
+            "Artículos de OnnaSoft sobre ingeniería de software, infraestructura cloud, IA, ingeniería de datos, Odoo y transformación digital para empresas en crecimiento.",
+        heading: "Blog",
+        searchLabel: "Buscar artículos",
+        searchPlaceholder: "Buscar artículos",
+        searchButton: "Buscar",
+        resultsFor: "Resultados para “{q}”.",
+        clearSearch: "Borrar búsqueda",
+        noMatch: "No hay artículos que coincidan con “{q}”.",
+        noMore: "No hay más artículos en esta página.",
+        noArticles: "Todavía no hay artículos. Vuelve pronto.",
+        loadError: "No se pudieron cargar los artículos. Inténtalo más tarde.",
+        previous: "← Anterior",
+        next: "Siguiente →",
+        page: "Página {n}",
+        categories: "Categorías",
+        tags: "Etiquetas",
+        all: "Todas",
+        noFilterMatch: "No hay artículos con este filtro.",
+        readMore: "Leer artículo →",
+    },
+    fr: {
+        title: "Blog OnnaSoft | Logiciel, Cloud, IA et Transformation Digitale",
+        description:
+            "Articles d'OnnaSoft sur l'ingénierie logicielle, l'infrastructure cloud, l'IA, l'ingénierie des données, Odoo et la transformation digitale pour les entreprises en croissance.",
+        heading: "Blog",
+        searchLabel: "Rechercher des articles",
+        searchPlaceholder: "Rechercher des articles",
+        searchButton: "Rechercher",
+        resultsFor: "Résultats pour « {q} ».",
+        clearSearch: "Effacer la recherche",
+        noMatch: "Aucun article ne correspond à « {q} ».",
+        noMore: "Il n'y a plus d'articles sur cette page.",
+        noArticles: "Pas encore d'articles. Revenez bientôt.",
+        loadError:
+            "Les articles n'ont pas pu être chargés. Réessayez plus tard.",
+        previous: "← Précédent",
+        next: "Suivant →",
+        page: "Page {n}",
+        categories: "Catégories",
+        tags: "Étiquettes",
+        all: "Toutes",
+        noFilterMatch: "Aucun article pour ce filtre.",
+        readMore: "Lire l'article →",
+    },
+    ja: {
+        title: "OnnaSoftブログ｜ソフトウェア・クラウド・AI・DXの最新情報",
+        description:
+            "ソフトウェア開発、クラウドインフラ、AI、データエンジニアリング、Odoo、デジタルトランスフォーメーションに関するOnnaSoftの記事をご覧ください。",
+        heading: "ブログ",
+        searchLabel: "記事を検索",
+        searchPlaceholder: "記事を検索",
+        searchButton: "検索",
+        resultsFor: "「{q}」の検索結果です。",
+        clearSearch: "検索をクリア",
+        noMatch: "「{q}」に一致する記事はありません。",
+        noMore: "このページには記事がありません。",
+        noArticles: "記事はまだありません。近日公開予定です。",
+        loadError: "記事を読み込めませんでした。後でもう一度お試しください。",
+        previous: "← 前へ",
+        next: "次へ →",
+        page: "{n} ページ",
+        categories: "カテゴリー",
+        tags: "タグ",
+        all: "すべて",
+        noFilterMatch: "このフィルターに一致する記事はありません。",
+        readMore: "記事を読む →",
+    },
+    zh: {
+        title: "OnnaSoft 博客 | 软件、云计算、人工智能与数字化转型洞察",
+        description:
+            "阅读 OnnaSoft 关于软件工程、云基础设施、人工智能、数据工程、Odoo 及数字化转型的文章，助力企业持续增长。",
+        heading: "博客",
+        searchLabel: "搜索文章",
+        searchPlaceholder: "搜索文章",
+        searchButton: "搜索",
+        resultsFor: "“{q}”的搜索结果。",
+        clearSearch: "清除搜索",
+        noMatch: "没有与“{q}”匹配的文章。",
+        noMore: "本页没有更多文章。",
+        noArticles: "暂无文章，敬请期待。",
+        loadError: "无法加载文章，请稍后再试。",
+        previous: "← 上一页",
+        next: "下一页 →",
+        page: "第 {n} 页",
+        categories: "分类",
+        tags: "标签",
+        all: "全部",
+        noFilterMatch: "没有符合此筛选条件的文章。",
+        readMore: "阅读文章 →",
+    },
+} as const;
+
+const t = ui[lang];
+const fill = (text: string, vars: Record<string, string | number>) =>
+    text.replace(/\{(\w+)\}/g, (_, key: string) => String(vars[key] ?? ""));
+
+const PER_PAGE = 9;
+// Search matches are fetched up to this many, then paginated in memory.
+const MAX_SEARCH_RESULTS = 200;
+const SUMMARY_LENGTH = 320;
+
+interface ImageLike {
+    src?: string;
+    previewUrl?: string;
+    url?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+    meta?: { storageKey?: string };
+}
+
+interface PostData {
+    // Database id (ULID). Taxonomy lookups need this, not the locale/slug entry.id.
+    id?: string;
+    title: string;
+    slug: string | null;
+    excerpt?: string;
+    content?: Parameters<typeof extractPlainText>[0];
+    featured_image?: ImageLike | string | null;
+}
+
+interface TermLink {
+    label: string;
+    slug: string;
+    // Translations of a term share this group, so filters match across locales.
+    group: string;
+}
+
+interface Card {
+    id: string;
+    slug: string;
+    title: string;
+    summary: string;
+    snippet?: string;
+    locale: string;
+    categories: TermLink[];
+    tags: TermLink[];
+    image?: { url: string; alt: string; width?: number; height?: number };
+}
+
+function getImageUrl(
+    image: ImageLike | string | null | undefined,
+): string | undefined {
+    if (!image) return undefined;
+    if (typeof image === "string") return image;
+    if (image.src) return image.src;
+    if (!image.meta?.storageKey) return undefined;
+    return "/_emdash/api/media/file/" + image.meta.storageKey;
+}
+
+function toCard(
+    entry: { id: string; data: unknown },
+    slug: string,
+    fallbackLocale: string,
+    snippet?: string,
+): Card {
+    const data = entry.data as PostData & { locale?: string };
+    const text = data.excerpt?.trim() || extractPlainText(data.content);
+    const summary =
+        text.length <= SUMMARY_LENGTH
+            ? text
+            : `${text.slice(0, SUMMARY_LENGTH).trimEnd()}…`;
+
+    const img = data.featured_image;
+    const url = getImageUrl(img);
+    const object = typeof img === "object" && img ? img : undefined;
+
+    return {
+        id: data.id ?? entry.id,
+        slug,
+        title: data.title,
+        summary,
+        snippet,
+        locale: data.locale ?? fallbackLocale,
+        categories: [],
+        tags: [],
+        image: url
+            ? {
+                  url,
+                  alt: object?.alt ?? data.title,
+                  width: object?.width,
+                  height: object?.height,
+              }
+            : undefined,
+    };
+}
+
+// Posts are written in English and Spanish. Other languages fall back along the
+// configured i18n chain (fr -> en -> es) to the first locale that has published posts.
+async function pickListLocale(): Promise<string> {
+    for (const candidate of getFallbackChain(lang)) {
+        const probe = await getEmDashCollection("posts", {
+            status: "published",
+            locale: candidate,
+            limit: 1,
+        });
+        if (probe.entries.length > 0) return candidate;
+    }
+    return lang;
+}
+const listLocale = await pickListLocale();
+
+const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 100);
+const categorySlug = (Astro.url.searchParams.get("category") ?? "")
+    .trim()
+    .slice(0, 100);
+const tagSlug = (Astro.url.searchParams.get("tag") ?? "").trim().slice(0, 100);
+const requestedPage = Number.parseInt(
+    Astro.url.searchParams.get("page") ?? "1",
+    10,
+);
+const page =
+    Number.isFinite(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+
+const MAX_ALL_POSTS = 500;
+
+const toLink = (term: TaxonomyTerm): TermLink => ({
+    label: term.label,
+    slug: term.slug,
+    group: term.translationGroup ?? term.id,
+});
+
+// Adds categories and tags to each card with one query for the whole list.
+async function withTerms(list: Card[]): Promise<Card[]> {
+    if (list.length === 0) return list;
+
+    const termsByEntry = await getAllTermsForEntries(
+        "posts",
+        list.map((card) => card.id),
+        { locale: listLocale },
+    );
+
+    return list.map((card) => {
+        const terms = termsByEntry.get(card.id) ?? {};
+        return {
+            ...card,
+            categories: (terms.category ?? []).map(toLink),
+            tags: (terms.tag ?? []).map(toLink),
+        };
+    });
+}
+
+// Every published post in the listing locale, used when a taxonomy filter needs all of them.
+async function loadAllCards(): Promise<Card[]> {
+    const result = await getEmDashCollection("posts", {
+        status: "published",
+        locale: listLocale,
+        limit: MAX_ALL_POSTS,
+    });
+
+    return withTerms(
+        result.entries.map((entry) =>
+            toCard(entry, (entry.data as PostData).slug ?? entry.id, listLocale),
+        ),
+    );
+}
+
+const flattenTerms = (terms: TaxonomyTerm[]): TaxonomyTerm[] =>
+    terms.flatMap((term) => [term, ...flattenTerms(term.children ?? [])]);
+
+interface TermOption {
+    group: string;
+    slug: string;
+    label: string;
+    slugs: string[];
+    active: boolean;
+    count: number;
+}
+
+// Options come from every locale in the fallback chain and are merged by translation
+// group, so a category that only exists in Spanish still appears on the English listing.
+async function taxonomyOptions(
+    name: "category" | "tag",
+    selectedSlug: string,
+): Promise<TermOption[]> {
+    const groups = new Map<string, TermOption & { preferred: boolean }>();
+
+    for (const locale of getFallbackChain(lang)) {
+        const terms = flattenTerms(await getTaxonomyTerms(name, { locale }));
+
+        for (const term of terms) {
+            const group = term.translationGroup ?? term.id;
+            const current = groups.get(group) ?? {
+                group,
+                slug: term.slug,
+                label: term.label,
+                slugs: [],
+                active: false,
+                count: 0,
+                preferred: false,
+            };
+
+            current.slugs.push(term.slug);
+            current.count += term.count ?? 0;
+
+            if (locale === listLocale && !current.preferred) {
+                current.slug = term.slug;
+                current.label = term.label;
+                current.preferred = true;
+            }
+
+            groups.set(group, current);
+        }
+    }
+
+    return [...groups.values()]
+        .filter((option) => option.count > 0)
+        .map(({ preferred: _preferred, ...option }) => ({
+            ...option,
+            active: selectedSlug !== "" && option.slugs.includes(selectedSlug),
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+const categoryOptions = await taxonomyOptions("category", categorySlug);
+const tagOptions = await taxonomyOptions("tag", tagSlug);
+const selectedCategory = categoryOptions.find((option) => option.active);
+const selectedTag = tagOptions.find((option) => option.active);
+
+const hasFilter = Boolean(categorySlug || tagSlug);
+
+const categoryMatches = (card: Card) =>
+    !categorySlug ||
+    (selectedCategory !== undefined &&
+        card.categories.some((term) => term.group === selectedCategory.group));
+const tagMatches = (card: Card) =>
+    !tagSlug ||
+    (selectedTag !== undefined &&
+        card.tags.some((term) => term.group === selectedTag.group));
+const passesFilter = (card: Card) => categoryMatches(card) && tagMatches(card);
+
+let cards: Card[] = [];
+let hasMore = false;
+let failed = false;
+
+if (!q && !hasFilter) {
+    const result = await getEmDashCollection("posts", {
+        status: "published",
+        locale: listLocale,
+        limit: PER_PAGE,
+        offset: (page - 1) * PER_PAGE,
+    });
+
+    cards = await withTerms(
+        result.entries.map((entry) =>
+            toCard(entry, (entry.data as PostData).slug ?? entry.id, listLocale),
+        ),
+    );
+    hasMore = Boolean(result.hasMore);
+    failed = Boolean(result.error);
+} else if (!q) {
+    try {
+        const matched = (await loadAllCards()).filter(passesFilter);
+        const start = (page - 1) * PER_PAGE;
+
+        cards = matched.slice(start, start + PER_PAGE);
+        hasMore = matched.length > start + PER_PAGE;
+    } catch {
+        failed = true;
+    }
+} else {
+    try {
+        const response = await search(q, {
+            collections: ["posts"],
+            locale: listLocale,
+            limit: MAX_SEARCH_RESULTS,
+        });
+
+        let matches = response.items.filter((item) => item.slug);
+
+        // Search cannot filter by taxonomy, so keep only the matches that also pass the filter.
+        if (hasFilter) {
+            const allowed = new Set(
+                (await loadAllCards()).filter(passesFilter).map((card) => card.slug),
+            );
+            matches = matches.filter((match) => allowed.has(match.slug as string));
+        }
+
+        const start = (page - 1) * PER_PAGE;
+        const pageMatches = matches.slice(start, start + PER_PAGE);
+
+        const loaded = await Promise.all(
+            pageMatches.map(async (match) => {
+                const { entry } = await getEmDashEntry(
+                    "posts",
+                    match.slug as string,
+                );
+                return entry
+                    ? toCard(
+                          entry,
+                          match.slug as string,
+                          listLocale,
+                          match.snippet,
+                      )
+                    : null;
+            }),
+        );
+
+        cards = await withTerms(
+            loaded.filter((card): card is Card => card !== null),
+        );
+        hasMore = matches.length > start + PER_PAGE;
+    } catch {
+        failed = true;
+    }
+}
+
+const readMoreLabel = t.readMore;
+const hasSidebar = categoryOptions.length > 0 || tagOptions.length > 0;
+const blogHref = `/${lang}/blog`;
+
+// Builds a listing URL keeping the current search and filters, with optional overrides.
+const hrefWith = (changes: Record<string, string | number | undefined>) => {
+    const values: Record<string, string | number | undefined> = {
+        q: q || undefined,
+        category: categorySlug || undefined,
+        tag: tagSlug || undefined,
+        ...changes,
+    };
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(values)) {
+        if (value === undefined || value === "") continue;
+        if (key === "page" && Number(value) <= 1) continue;
+        params.set(key, String(value));
+    }
+    const query = params.toString();
+    return query ? `${blogHref}?${query}` : blogHref;
+};
+
+const chipClass = (active: boolean) =>
+    `rounded-full border px-3 py-1 text-sm ${
+        active
+            ? "border-primary bg-primary text-white"
+            : "border-primary text-primary hover:bg-primary/10"
+    }`;
+
+const emptyMessage = q
+    ? fill(t.noMatch, { q })
+    : hasFilter
+      ? t.noFilterMatch
+      : page > 1
+        ? t.noMore
+        : t.noArticles;
+---
+
+<Layout title={t.title} description={t.description}>
+    <div id="container">
+        <Navbar />
+
+        <main class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8" style="margin-top: 80px;">
+            <h1 class="text-4xl font-bold text-gray-900">{t.heading}</h1>
+
+            <form
+                role="search"
+                action={blogHref}
+                method="get"
+                class="mt-4 mb-4 flex gap-2"
+            >
+                {categorySlug && (
+                    <input type="hidden" name="category" value={categorySlug} />
+                )}
+                {tagSlug && <input type="hidden" name="tag" value={tagSlug} />}
+                <label for="blog-search" class="sr-only">
+                    {t.searchLabel}
+                </label>
+                <input
+                    id="blog-search"
+                    type="search"
+                    name="q"
+                    value={q}
+                    placeholder={t.searchPlaceholder}
+                    maxlength="100"
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <button type="submit" class="btn-primary">
+                    {t.searchButton}
+                </button>
+            </form>
+
+            {q && (
+                <p class="text-sm text-gray-600">
+                    {fill(t.resultsFor, { q })}{" "}
+                    <a href={hrefWith({ q: undefined })} class="text-primary hover:underline">
+                        {t.clearSearch}
+                    </a>
+                </p>
+            )}
+
+            <div class={`mt-8 grid gap-10 ${hasSidebar ? "lg:grid-cols-[minmax(0,1fr)_260px]" : ""}`}>
+            {hasSidebar && (
+                <aside class="space-y-8 lg:sticky lg:top-28 lg:order-last lg:self-start">
+                    {categoryOptions.length > 0 && (
+                        <nav aria-label={t.categories} class="space-y-3">
+                            <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500">{t.categories}</h2>
+                            <ul class="flex flex-col gap-1">
+                                <li>
+                                    <a
+                                        href={hrefWith({ category: undefined })}
+                                        aria-current={!categorySlug ? "page" : undefined}
+                                        class={`block rounded-md px-3 py-1.5 text-sm ${!categorySlug ? "bg-primary/10 font-semibold text-primary" : "text-gray-700 hover:bg-gray-100 hover:text-primary"}`}
+                                    >
+                                        {t.all}
+                                    </a>
+                                </li>
+                                {categoryOptions.map((term) => (
+                                    <li>
+                                        <a
+                                            href={hrefWith({ category: term.slug })}
+                                            aria-current={term.active ? "page" : undefined}
+                                            class={`block rounded-md px-3 py-1.5 text-sm ${term.active ?"bg-primary/10 font-semibold text-primary" : "text-gray-700 hover:bg-gray-100 hover:text-primary"}`}
+                                        >
+                                            {term.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    )}
+
+                    {tagOptions.length > 0 && (
+                        <nav aria-label={t.tags} class="space-y-3">
+                            <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500">{t.tags}</h2>
+                            <div class="flex flex-wrap gap-2">
+                                <a
+                                    href={hrefWith({ tag: undefined })}
+                                    aria-current={!tagSlug ? "page" : undefined}
+                                    class={chipClass(!tagSlug)}
+                                >
+                                    {t.all}
+                                </a>
+                                {tagOptions.map((term) => (
+                                    <a
+                                        href={hrefWith({ tag: term.slug })}
+                                        aria-current={term.active ? "page" : undefined}
+                                        class={chipClass(term.active)}
+                                    >
+                                        #{term.label}
+                                    </a>
+                                ))}
+                            </div>
+                        </nav>
+                    )}
+                </aside>
+            )}
+
+            <div class="min-w-0">
+            {failed && <p class="text-red-600">{t.loadError}</p>}
+
+            {cards.length === 0 && !failed ? (
+                <p class="text-gray-600">{emptyMessage}</p>
+            ) : (
+                <ul class="flex flex-col divide-y divide-gray-200">
+                    {cards.map((card) => (
+                        <li
+                            class={`grid items-start gap-6 py-10 md:gap-10 ${card.image ? "md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]" : ""}`}
+                        >
+                            {card.image && (
+                                <a
+                                    href={`${blogHref}/${card.slug}`}
+                                    tabindex="-1"
+                                    aria-hidden="true"
+                                    class="block overflow-hidden rounded-2xl"
+                                >
+                                    <img
+                                        src={card.image.url}
+                                        alt={card.image.alt}
+                                        width={card.image.width}
+                                        height={card.image.height}
+                                        loading="lazy"
+                                        decoding="async"
+                                        class="h-auto w-full object-cover"
+                                    />
+                                </a>
+                            )}
+
+                            <div class="min-w-0 space-y-4">
+                                <div class="flex flex-wrap items-center gap-2 text-sm">
+                                    <span class="rounded bg-gray-900 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">
+                                        {card.locale}
+                                    </span>
+                                    {card.categories.map((category) => (
+                                        <a
+                                            href={hrefWith({ category: category.slug })}
+                                            class="rounded-full border border-primary px-3 py-0.5 text-primary hover:bg-primary/10"
+                                        >
+                                            {category.label}
+                                        </a>
+                                    ))}
+                                </div>
+
+                                <h2 class="text-2xl font-bold leading-tight text-gray-900">
+                                    <a
+                                        href={`${blogHref}/${card.slug}`}
+                                        class="hover:underline"
+                                    >
+                                        {card.title}
+                                    </a>
+                                </h2>
+
+                                {card.snippet ? (
+                                    <p
+                                        class="text-lg leading-8 text-gray-700"
+                                        set:html={card.snippet}
+                                    />
+                                ) : (
+                                    card.summary && (
+                                        <p class="text-lg leading-8 text-gray-700">
+                                            {card.summary}
+                                        </p>
+                                    )
+                                )}
+
+                                {card.tags.length > 0 && (
+                                    <ul class="flex flex-wrap gap-2 text-sm text-gray-500">
+                                        {card.tags.map((tag) => (
+                                            <li>
+                                                <a
+                                                    href={hrefWith({ tag: tag.slug })}
+                                                    class="hover:text-primary hover:underline"
+                                                >
+                                                    #{tag.label}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+
+                                <a
+                                    href={`${blogHref}/${card.slug}`}
+                                    class="inline-block font-semibold text-primary hover:underline"
+                                >
+                                    {readMoreLabel}
+                                </a>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+            {(page > 1 || hasMore) && (
+                <nav
+                    aria-label={t.heading}
+                    class="flex items-center justify-between pt-4"
+                >
+                    {page > 1 ? (
+                        <a
+                            href={hrefWith({ page: page - 1 })}
+                            rel="prev"
+                            class="text-primary hover:underline"
+                        >
+                            {t.previous}
+                        </a>
+                    ) : (
+                        <span />
+                    )}
+
+                    <span class="text-sm text-gray-500">
+                        {fill(t.page, { n: page })}
+                    </span>
+
+                    {hasMore ? (
+                        <a
+                            href={hrefWith({ page: page + 1 })}
+                            rel="next"
+                            class="text-primary hover:underline"
+                        >
+                            {t.next}
+                        </a>
+                    ) : (
+                        <span />
+                    )}
+                </nav>
+            )}
+            </div>
+            </div>
+        </main>
+
+        <Contact />
+        <Footer />
+    </div>
+</Layout>

@@ -31,4 +31,17 @@ export default defineConfig({
         storage: r2({ binding: "MEDIA" }),
     })],
     adapter: cloudflare(),
+    i18n: {
+        defaultLocale: "es",
+        locales: ["es", "en", "fr", "ja", "zh"],
+        fallback: {
+            en: "es",
+            fr: "en",
+            ja: "en",
+            zh: "en",
+        },
+        routing: {
+            prefixDefaultLocale: true,
+        },
+    },
 });

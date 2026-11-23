@@ -1,0 +1,199 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Navbar from "../../../components/Navbar/index.astro";
+import Footer from "../../../components/Footer.astro";
+import Contact from "../../../components/Contact.astro";
+import { getEmDashEntry, getAllTermsForEntries, getCollectionInfo } from "emdash";
+import { PortableText } from "emdash/ui";
+import { Comments, CommentForm } from "emdash/ui/comments";
+
+const SUPPORTED_LANGS = ["en", "es", "fr", "ja", "zh"] as const;
+type Lang = (typeof SUPPORTED_LANGS)[number];
+
+const requestedLang = Astro.params.lang ?? "en";
+const isSupported = (SUPPORTED_LANGS as readonly string[]).includes(requestedLang);
+const lang: Lang = isSupported ? (requestedLang as Lang) : "en";
+
+const ui = {
+    en: {
+        eyebrow: "OnnaSoft · Blog",
+        notFound: "This article could not be found.",
+        fallbackTitle: "Blog | OnnaSoft",
+        fallbackDescription: "Read the latest OnnaSoft article on software, cloud, AI and digital transformation.",
+        dateLocale: "en-US",
+    },
+    es: {
+        eyebrow: "OnnaSoft · Blog",
+        notFound: "No se encontró este artículo.",
+        fallbackTitle: "Blog | OnnaSoft",
+        fallbackDescription: "Lee el último artículo de OnnaSoft sobre software, cloud, IA y transformación digital.",
+        dateLocale: "es-ES",
+    },
+    fr: {
+        eyebrow: "OnnaSoft · Blog",
+        notFound: "Cet article est introuvable.",
+        fallbackTitle: "Blog | OnnaSoft",
+        fallbackDescription: "Lisez le dernier article d'OnnaSoft sur le logiciel, le cloud, l'IA et la transformation digitale.",
+        dateLocale: "fr-FR",
+    },
+    ja: {
+        eyebrow: "OnnaSoft · ブログ",
+        notFound: "この記事は見つかりませんでした。",
+        fallbackTitle: "ブログ | OnnaSoft",
+        fallbackDescription: "OnnaSoftの最新記事で、ソフトウェア、クラウド、AI、DXについてご覧ください。",
+        dateLocale: "ja-JP",
+    },
+    zh: {
+        eyebrow: "OnnaSoft · 博客",
+        notFound: "未找到该文章。",
+        fallbackTitle: "博客 | OnnaSoft",
+        fallbackDescription: "阅读 OnnaSoft 关于软件、云计算、人工智能与数字化转型的最新文章。",
+        dateLocale: "zh-CN",
+    },
+} as const;
+
+const t = ui[lang];
+const { slug } = Astro.params;
+
+const { entry: post } = await getEmDashEntry("posts", slug ?? "");
+
+if (!post || !isSupported) {
+    Astro.response.status = 404;
+}
+
+const image = post?.data.featured_image;
+const imageUrl = image?.src ?? image?.previewUrl;
+// Social previews need an absolute URL.
+const ogImage = imageUrl ? new URL(imageUrl, Astro.site ?? Astro.url).href : undefined;
+const excerpt = post?.data.excerpt?.trim();
+const publishedAt = post?.data.publishedAt
+    ? new Date(post.data.publishedAt).toLocaleDateString(t.dateLocale, {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+      })
+    : null;
+
+const title = post ? `${post.data.title} | OnnaSoft Blog` : t.fallbackTitle;
+const description = excerpt || t.fallbackDescription;
+
+// Categories and tags are stored per locale, so look them up in the post's own locale.
+const postId = (post?.data as { id?: string } | undefined)?.id ?? post?.id ?? "";
+const postLocale = (post?.data as { locale?: string } | undefined)?.locale ?? lang;
+const termsByEntry = post
+    ? await getAllTermsForEntries("posts", [postId], { locale: postLocale })
+    : new Map();
+const terms = termsByEntry.get(postId) ?? {};
+const categories = (terms.category ?? []).map((term) => ({ label: term.label, slug: term.slug }));
+const tags = (terms.tag ?? []).map((term) => ({ label: term.label, slug: term.slug }));
+
+// Comments are opt-in per collection in the EmDash admin.
+const commentsEnabled = post
+    ? Boolean((await getCollectionInfo("posts"))?.commentsEnabled)
+    : false;
+
+const commentLabels = {
+    en: {
+        list: { heading: (n: number) => `Comments (${n})`, member: "Member", like: "Like" },
+        form: { name: "Name", email: "Email", comment: "Comment", submit: "Post comment", submitting: "Posting...", published: "Thanks! Your comment has been published.", pending: "Thanks! Your comment is waiting for approval.", error: "Your comment could not be posted.", networkError: "Network error. Please try again." },
+    },
+    es: {
+        list: { heading: (n: number) => `Comentarios (${n})`, member: "Miembro", like: "Me gusta" },
+        form: { name: "Nombre", email: "Correo electrónico", comment: "Comentario", submit: "Publicar comentario", submitting: "Publicando...", published: "¡Gracias! Tu comentario se ha publicado.", pending: "¡Gracias! Tu comentario está pendiente de aprobación.", error: "No se pudo publicar tu comentario.", networkError: "Error de red. Inténtalo de nuevo." },
+    },
+    fr: {
+        list: { heading: (n: number) => `Commentaires (${n})`, member: "Membre", like: "J'aime" },
+        form: { name: "Nom", email: "E-mail", comment: "Commentaire", submit: "Publier le commentaire", submitting: "Publication...", published: "Merci ! Votre commentaire a été publié.", pending: "Merci ! Votre commentaire est en attente de validation.", error: "Impossible de publier votre commentaire.", networkError: "Erreur réseau. Veuillez réessayer." },
+    },
+    ja: {
+        list: { heading: (n: number) => `コメント（${n}）`, member: "メンバー", like: "いいね" },
+        form: { name: "名前", email: "メールアドレス", comment: "コメント", submit: "コメントを投稿", submitting: "投稿中...", published: "ありがとうございます！コメントが公開されました。", pending: "ありがとうございます！コメントは承認待ちです。", error: "コメントを投稿できませんでした。", networkError: "ネットワークエラーです。もう一度お試しください。" },
+    },
+    zh: {
+        list: { heading: (n: number) => `评论（${n}）`, member: "成员", like: "赞" },
+        form: { name: "姓名", email: "电子邮件", comment: "评论", submit: "发表评论", submitting: "正在发表...", published: "谢谢！您的评论已发布。", pending: "谢谢！您的评论正在等待审核。", error: "无法发表您的评论。", networkError: "网络错误，请重试。" },
+    },
+}[lang];
+---
+
+<Layout title={title} description={description} image={ogImage}>
+    <div id="container">
+        <Navbar />
+        <main style="margin-top: 80px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
+            {post ? (
+                <article class="space-y-8 text-gray-700 leading-8">
+                    <header class="space-y-4">
+                        <p class="text-sm font-semibold uppercase tracking-widest text-primary">
+                            {t.eyebrow}{publishedAt && ` · ${publishedAt}`}
+                        </p>
+
+                        <h1 class="text-4xl font-bold leading-tight text-gray-900 md:text-5xl">
+                            {post.data.title}
+                        </h1>
+
+                        {excerpt && <p class="text-lg leading-8 text-gray-500">{excerpt}</p>}
+
+                        {(categories.length > 0 || tags.length > 0) && (
+                            <div class="flex flex-wrap items-center gap-2 text-sm">
+                                {categories.map((category) => (
+                                    <a
+                                        href={`/${lang}/blog?category=${encodeURIComponent(category.slug)}`}
+                                        class="rounded-full border border-primary px-3 py-0.5 text-primary hover:bg-primary/10"
+                                    >
+                                        {category.label}
+                                    </a>
+                                ))}
+                                {tags.map((tag) => (
+                                    <a
+                                        href={`/${lang}/blog?tag=${encodeURIComponent(tag.slug)}`}
+                                        class="text-gray-500 hover:text-primary hover:underline"
+                                    >
+                                        #{tag.label}
+                                    </a>
+                                ))}
+                            </div>
+                        )}
+                    </header>
+
+                    {imageUrl && (
+                        <figure class="my-10 overflow-hidden rounded-2xl">
+                            <img
+                                src={imageUrl}
+                                alt={image?.alt ?? ""}
+                                width={image?.width}
+                                height={image?.height}
+                                loading="lazy"
+                                decoding="async"
+                                class="h-auto w-full object-cover"
+                            />
+                        </figure>
+                    )}
+
+                    <div class="space-y-4 [&_h2]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-gray-900 [&_a]:text-primary [&_a]:underline">
+                        <PortableText value={post.data.content} />
+                    </div>
+                </article>
+            ) : (
+                <p class="text-gray-600">{t.notFound}</p>
+            )}
+
+            {post && commentsEnabled && (
+                <section class="mt-16 space-y-8 border-t border-gray-200 pt-10">
+                    <Comments
+                        collection="posts"
+                        contentId={postId}
+                        locale={t.dateLocale}
+                        labels={commentLabels.list}
+                    />
+                    <CommentForm
+                        collection="posts"
+                        contentId={postId}
+                        labels={commentLabels.form}
+                    />
+                </section>
+            )}
+        </main>
+        <Contact />
+        <Footer />
+    </div>
+</Layout>
