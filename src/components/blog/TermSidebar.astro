@@ -1,0 +1,103 @@
+---
+// Column of taxonomy links (categories and tags) for the blog.
+// `list` groups render as vertical links (categories); `chips` groups as pills (tags).
+
+export interface TermLink {
+    label: string;
+    href: string;
+    active?: boolean;
+}
+
+export interface TermGroup {
+    heading: string;
+    variant: "list" | "chips";
+    items: TermLink[];
+    // Optional "All" entry shown first, used on listings to clear a filter.
+    all?: TermLink;
+}
+
+interface Props {
+    groups: TermGroup[];
+    class?: string;
+}
+
+const { groups, class: className = "" } = Astro.props;
+
+const listClass = (active: boolean) =>
+    `block rounded-md px-3 py-1.5 text-sm ${
+        active
+            ? "bg-primary/10 font-semibold text-primary"
+            : "text-gray-700 hover:bg-gray-100 hover:text-primary"
+    }`;
+
+const chipClass = (active: boolean) =>
+    `rounded-full border px-3 py-1 text-sm ${
+        active
+            ? "border-primary bg-primary text-white"
+            : "border-primary text-primary hover:bg-primary/10"
+    }`;
+
+const visibleGroups = groups.filter((group) => group.items.length > 0 || group.all);
+---
+
+{
+    visibleGroups.length > 0 && (
+        <aside class:list={["space-y-8", className]}>
+            {visibleGroups.map((group) => (
+                <nav aria-label={group.heading} class="space-y-3">
+                    <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                        {group.heading}
+                    </h2>
+
+                    {group.variant === "list" ? (
+                        <ul class="flex flex-col gap-1">
+                            {group.all && (
+                                <li>
+                                    <a
+                                        href={group.all.href}
+                                        aria-current={group.all.active ? "page" : undefined}
+                                        class={listClass(Boolean(group.all.active))}
+                                    >
+                                        {group.all.label}
+                                    </a>
+                                </li>
+                            )}
+                            {group.items.map((item) => (
+                                <li>
+                                    <a
+                                        href={item.href}
+                                        aria-current={item.active ? "page" : undefined}
+                                        class={listClass(Boolean(item.active))}
+                                    >
+                                        {item.label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <div class="flex flex-wrap gap-2">
+                            {group.all && (
+                                <a
+                                    href={group.all.href}
+                                    aria-current={group.all.active ? "page" : undefined}
+                                    class={chipClass(Boolean(group.all.active))}
+                                >
+                                    {group.all.label}
+                                </a>
+                            )}
+                            {group.items.map((item) => (
+                                <a
+                                    href={item.href}
+                                    aria-current={item.active ? "page" : undefined}
+                                    class={chipClass(Boolean(item.active))}
+                                >
+                                    {item.label}
+                                </a>
+                            ))}
+                        </div>
+                    )}
+                </nav>
+            ))}
+        </aside>
+    )
+}

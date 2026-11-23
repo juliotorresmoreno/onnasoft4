@@ -3,6 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import Navbar from "../../../components/Navbar/index.astro";
 import Footer from "../../../components/Footer.astro";
 import Contact from "../../../components/Contact.astro";
+import TermSidebar, { type TermGroup } from "../../../components/blog/TermSidebar.astro";
 import {
     getEmDashCollection,
     getEmDashEntry,
@@ -449,6 +450,7 @@ if (!q && !hasFilter) {
     }
 }
 
+
 const readMoreLabel = t.readMore;
 const hasSidebar = categoryOptions.length > 0 || tagOptions.length > 0;
 const blogHref = `/${lang}/blog`;
@@ -477,6 +479,29 @@ const chipClass = (active: boolean) =>
             ? "border-primary bg-primary text-white"
             : "border-primary text-primary hover:bg-primary/10"
     }`;
+
+const termGroups: TermGroup[] = [
+    {
+        heading: t.categories,
+        variant: "list",
+        all: { label: t.all, href: hrefWith({ category: undefined }), active: !categorySlug },
+        items: categoryOptions.map((term) => ({
+            label: term.label,
+            href: hrefWith({ category: term.slug }),
+            active: term.active,
+        })),
+    },
+    {
+        heading: t.tags,
+        variant: "chips",
+        all: { label: t.all, href: hrefWith({ tag: undefined }), active: !tagSlug },
+        items: tagOptions.map((term) => ({
+            label: `#${term.label}`,
+            href: hrefWith({ tag: term.slug }),
+            active: term.active,
+        })),
+    },
+];
 
 const emptyMessage = q
     ? fill(t.noMatch, { q })
@@ -532,59 +557,10 @@ const emptyMessage = q
 
             <div class={`mt-8 grid gap-10 ${hasSidebar ? "lg:grid-cols-[minmax(0,1fr)_260px]" : ""}`}>
             {hasSidebar && (
-                <aside class="space-y-8 lg:sticky lg:top-28 lg:order-last lg:self-start">
-                    {categoryOptions.length > 0 && (
-                        <nav aria-label={t.categories} class="space-y-3">
-                            <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500">{t.categories}</h2>
-                            <ul class="flex flex-col gap-1">
-                                <li>
-                                    <a
-                                        href={hrefWith({ category: undefined })}
-                                        aria-current={!categorySlug ? "page" : undefined}
-                                        class={`block rounded-md px-3 py-1.5 text-sm ${!categorySlug ? "bg-primary/10 font-semibold text-primary" : "text-gray-700 hover:bg-gray-100 hover:text-primary"}`}
-                                    >
-                                        {t.all}
-                                    </a>
-                                </li>
-                                {categoryOptions.map((term) => (
-                                    <li>
-                                        <a
-                                            href={hrefWith({ category: term.slug })}
-                                            aria-current={term.active ? "page" : undefined}
-                                            class={`block rounded-md px-3 py-1.5 text-sm ${term.active ?"bg-primary/10 font-semibold text-primary" : "text-gray-700 hover:bg-gray-100 hover:text-primary"}`}
-                                        >
-                                            {term.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </nav>
-                    )}
-
-                    {tagOptions.length > 0 && (
-                        <nav aria-label={t.tags} class="space-y-3">
-                            <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500">{t.tags}</h2>
-                            <div class="flex flex-wrap gap-2">
-                                <a
-                                    href={hrefWith({ tag: undefined })}
-                                    aria-current={!tagSlug ? "page" : undefined}
-                                    class={chipClass(!tagSlug)}
-                                >
-                                    {t.all}
-                                </a>
-                                {tagOptions.map((term) => (
-                                    <a
-                                        href={hrefWith({ tag: term.slug })}
-                                        aria-current={term.active ? "page" : undefined}
-                                        class={chipClass(term.active)}
-                                    >
-                                        #{term.label}
-                                    </a>
-                                ))}
-                            </div>
-                        </nav>
-                    )}
-                </aside>
+                <TermSidebar
+                    class="lg:sticky lg:top-28 lg:order-last lg:self-start"
+                    groups={termGroups}
+                />
             )}
 
             <div class="min-w-0">

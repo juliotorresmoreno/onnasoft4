@@ -3,6 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import Navbar from "../../../components/Navbar/index.astro";
 import Footer from "../../../components/Footer.astro";
 import Contact from "../../../components/Contact.astro";
+import TermSidebar, { type TermGroup } from "../../../components/blog/TermSidebar.astro";
 import { getEmDashEntry, getAllTermsForEntries, getCollectionInfo } from "emdash";
 import { PortableText } from "emdash/ui";
 import { Comments, CommentForm } from "emdash/ui/comments";
@@ -21,6 +22,9 @@ const ui = {
         fallbackTitle: "Blog | OnnaSoft",
         fallbackDescription: "Read the latest OnnaSoft article on software, cloud, AI and digital transformation.",
         dateLocale: "en-US",
+        categories: "Categories",
+        tags: "Tags",
+        all: "All",
     },
     es: {
         eyebrow: "OnnaSoft · Blog",
@@ -28,6 +32,9 @@ const ui = {
         fallbackTitle: "Blog | OnnaSoft",
         fallbackDescription: "Lee el último artículo de OnnaSoft sobre software, cloud, IA y transformación digital.",
         dateLocale: "es-ES",
+        categories: "Categorías",
+        tags: "Etiquetas",
+        all: "Todas",
     },
     fr: {
         eyebrow: "OnnaSoft · Blog",
@@ -35,6 +42,9 @@ const ui = {
         fallbackTitle: "Blog | OnnaSoft",
         fallbackDescription: "Lisez le dernier article d'OnnaSoft sur le logiciel, le cloud, l'IA et la transformation digitale.",
         dateLocale: "fr-FR",
+        categories: "Catégories",
+        tags: "Étiquettes",
+        all: "Toutes",
     },
     ja: {
         eyebrow: "OnnaSoft · ブログ",
@@ -42,6 +52,9 @@ const ui = {
         fallbackTitle: "ブログ | OnnaSoft",
         fallbackDescription: "OnnaSoftの最新記事で、ソフトウェア、クラウド、AI、DXについてご覧ください。",
         dateLocale: "ja-JP",
+        categories: "カテゴリー",
+        tags: "タグ",
+        all: "すべて",
     },
     zh: {
         eyebrow: "OnnaSoft · 博客",
@@ -49,6 +62,9 @@ const ui = {
         fallbackTitle: "博客 | OnnaSoft",
         fallbackDescription: "阅读 OnnaSoft 关于软件、云计算、人工智能与数字化转型的最新文章。",
         dateLocale: "zh-CN",
+        categories: "分类",
+        tags: "标签",
+        all: "全部",
     },
 } as const;
 
@@ -58,7 +74,8 @@ const { slug } = Astro.params;
 let { entry: post } = await getEmDashEntry("posts", slug ?? "");
 
 // No fallback: an entry written in another language is not shown under this language.
-if (post && (post.data as { locale?: string }).locale !== undefined && (post.data as { locale?: string }).locale !== lang) {
+const entryLocale = (post?.data as { locale?: string } | undefined)?.locale;
+if (post && entryLocale && entryLocale !== lang) {
     post = null;
 }
 
@@ -84,13 +101,37 @@ const description = excerpt || t.fallbackDescription;
 
 // Categories and tags are stored per locale, so look them up in the post's own locale.
 const postId = (post?.data as { id?: string } | undefined)?.id ?? post?.id ?? "";
-const postLocale = (post?.data as { locale?: string } | undefined)?.locale ?? lang;
+const postLocale = entryLocale ?? lang;
 const termsByEntry = post
     ? await getAllTermsForEntries("posts", [postId], { locale: postLocale })
     : new Map();
 const terms = termsByEntry.get(postId) ?? {};
-const categories = (terms.category ?? []).map((term) => ({ label: term.label, slug: term.slug }));
-const tags = (terms.tag ?? []).map((term) => ({ label: term.label, slug: term.slug }));
+// Only terms in the entry's language, like the listing: no fallback to other languages.
+const ownTerms = <T extends { locale: string }>(list: T[] | undefined) =>
+    (list ?? []).filter((term) => term.locale === postLocale);
+const categories = ownTerms(terms.category).map((term) => ({ label: term.label, slug: term.slug }));
+const tags = ownTerms(terms.tag).map((term) => ({ label: term.label, slug: term.slug }));
+const hasSidebar = categories.length > 0 || tags.length > 0;
+
+// Clicking a term opens the listing filtered by it.
+const termGroups: TermGroup[] = [
+    {
+        heading: t.categories,
+        variant: "list",
+        items: categories.map((category) => ({
+            label: category.label,
+            href: `/${lang}/blog?category=${encodeURIComponent(category.slug)}`,
+        })),
+    },
+    {
+        heading: t.tags,
+        variant: "chips",
+        items: tags.map((tag) => ({
+            label: `#${tag.label}`,
+            href: `/${lang}/blog?tag=${encodeURIComponent(tag.slug)}`,
+        })),
+    },
+];
 
 // Comments are opt-in per collection in the EmDash admin.
 const commentsEnabled = post
@@ -124,79 +165,69 @@ const commentLabels = {
 <Layout title={title} description={description} image={ogImage}>
     <div id="container">
         <Navbar />
-        <main style="margin-top: 80px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
-            {post ? (
-                <article class="space-y-8 text-gray-700 leading-8">
-                    <header class="space-y-4">
-                        <p class="text-sm font-semibold uppercase tracking-widest text-primary">
-                            {t.eyebrow}{publishedAt && ` · ${publishedAt}`}
-                        </p>
+        <main class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8" style="margin-top: 80px;">
+            <div class={`grid gap-10 ${hasSidebar ? "lg:grid-cols-[minmax(0,1fr)_260px]" : ""}`}>
+                <div class="min-w-0">
+                    {post ? (
+                        <article class="space-y-8 text-gray-700 leading-8">
+                            <header class="space-y-4">
+                                <p class="text-sm font-semibold uppercase tracking-widest text-primary">
+                                    {t.eyebrow}{publishedAt && ` · ${publishedAt}`}
+                                </p>
 
-                        <h1 class="text-4xl font-bold leading-tight text-gray-900 md:text-5xl">
-                            {post.data.title}
-                        </h1>
+                                <h1 class="text-4xl font-bold leading-tight text-gray-900 md:text-5xl">
+                                    {post.data.title}
+                                </h1>
 
-                        {excerpt && <p class="text-lg leading-8 text-gray-500">{excerpt}</p>}
+                                {excerpt && <p class="text-lg leading-8 text-gray-500">{excerpt}</p>}
+                            </header>
 
-                        {(categories.length > 0 || tags.length > 0) && (
-                            <div class="flex flex-wrap items-center gap-2 text-sm">
-                                {categories.map((category) => (
-                                    <a
-                                        href={`/${lang}/blog?category=${encodeURIComponent(category.slug)}`}
-                                        class="rounded-full border border-primary px-3 py-0.5 text-primary hover:bg-primary/10"
-                                    >
-                                        {category.label}
-                                    </a>
-                                ))}
-                                {tags.map((tag) => (
-                                    <a
-                                        href={`/${lang}/blog?tag=${encodeURIComponent(tag.slug)}`}
-                                        class="text-gray-500 hover:text-primary hover:underline"
-                                    >
-                                        #{tag.label}
-                                    </a>
-                                ))}
+                            {imageUrl && (
+                                <figure class="my-10 overflow-hidden rounded-2xl">
+                                    <img
+                                        src={imageUrl}
+                                        alt={image?.alt ?? ""}
+                                        width={image?.width}
+                                        height={image?.height}
+                                        loading="lazy"
+                                        decoding="async"
+                                        class="h-auto w-full object-cover"
+                                    />
+                                </figure>
+                            )}
+
+                            <div class="space-y-4 [&_h2]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-gray-900 [&_a]:text-primary [&_a]:underline">
+                                <PortableText value={post.data.content} />
                             </div>
-                        )}
-                    </header>
-
-                    {imageUrl && (
-                        <figure class="my-10 overflow-hidden rounded-2xl">
-                            <img
-                                src={imageUrl}
-                                alt={image?.alt ?? ""}
-                                width={image?.width}
-                                height={image?.height}
-                                loading="lazy"
-                                decoding="async"
-                                class="h-auto w-full object-cover"
-                            />
-                        </figure>
+                        </article>
+                    ) : (
+                        <p class="text-gray-600">{t.notFound}</p>
                     )}
 
-                    <div class="space-y-4 [&_h2]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-gray-900 [&_a]:text-primary [&_a]:underline">
-                        <PortableText value={post.data.content} />
-                    </div>
-                </article>
-            ) : (
-                <p class="text-gray-600">{t.notFound}</p>
-            )}
+                    {post && commentsEnabled && (
+                        <section class="mt-16 space-y-8 border-t border-gray-200 pt-10">
+                            <Comments
+                                collection="posts"
+                                contentId={postId}
+                                locale={t.dateLocale}
+                                labels={commentLabels.list}
+                            />
+                            <CommentForm
+                                collection="posts"
+                                contentId={postId}
+                                labels={commentLabels.form}
+                            />
+                        </section>
+                    )}
+                </div>
 
-            {post && commentsEnabled && (
-                <section class="mt-16 space-y-8 border-t border-gray-200 pt-10">
-                    <Comments
-                        collection="posts"
-                        contentId={postId}
-                        locale={t.dateLocale}
-                        labels={commentLabels.list}
+                {post && hasSidebar && (
+                    <TermSidebar
+                        class="lg:sticky lg:top-28 lg:order-last lg:self-start"
+                        groups={termGroups}
                     />
-                    <CommentForm
-                        collection="posts"
-                        contentId={postId}
-                        labels={commentLabels.form}
-                    />
-                </section>
-            )}
+                )}
+            </div>
         </main>
         <Contact />
         <Footer />
