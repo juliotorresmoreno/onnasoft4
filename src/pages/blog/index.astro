@@ -2,42 +2,315 @@
 import Layout from "../../layouts/Layout.astro";
 import Navbar from "../../components/Navbar/index.astro";
 import Footer from "../../components/Footer.astro";
-import { getEmDashCollection } from "emdash";
+import {
+    getEmDashCollection,
+    getEmDashEntry,
+    extractPlainText,
+    search,
+} from "emdash";
 
-// The blog is published in English only. Rendered on the server so newly
-// published posts appear without a rebuild.
-const title = "OnnaSoft Blog | Software, Cloud, AI & Digital Transformation Insights";
+const title =
+    "OnnaSoft Blog | Software, Cloud, AI & Digital Transformation Insights";
 const description =
     "Read OnnaSoft articles on software engineering, cloud infrastructure, AI, data engineering, Odoo and digital transformation for growing businesses.";
 
-const { entries: posts } = await getEmDashCollection("posts", {
-    status: "published",
-});
+const PER_PAGE = 9;
+const MAX_SEARCH_RESULTS = 200;
+const SUMMARY_LENGTH = 180;
+
+interface ImageLike {
+    src?: string;
+    previewUrl?: string;
+    url?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+
+    meta?: {
+        storageKey?: string;
+    };
+}
+
+interface PostData {
+    title: string;
+    slug: string | null;
+    excerpt?: string;
+    content?: Parameters<typeof extractPlainText>[0];
+    featured_image?: ImageLike | string | null;
+}
+
+interface Card {
+    slug: string;
+    title: string;
+    summary: string;
+    snippet?: string;
+    image?: {
+        url: string;
+        alt: string;
+        width?: number;
+        height?: number;
+    };
+}
+
+function getImageUrl(
+    image: ImageLike | string | null | undefined,
+): string | undefined {
+    if (!image) return undefined;
+
+    if (typeof image === "string") {
+        return image;
+    }
+
+    if (image.src) {
+        return image.src;
+    }
+    if (!image.meta?.storageKey) {
+        return undefined;
+    }
+    const url = "/_emdash/api/media/file/" + (image.meta?.storageKey ?? "");
+
+    return url;
+}
+
+function toCard(data: PostData, slug: string, snippet?: string): Card {
+    const text = data.excerpt?.trim() || extractPlainText(data.content);
+    const summary =
+        text.length <= SUMMARY_LENGTH
+            ? text
+            : `${text.slice(0, SUMMARY_LENGTH).trimEnd()}…`;
+
+    const img = data.featured_image;
+    const url = getImageUrl(img);
+
+    return {
+        slug,
+        title: data.title,
+        summary,
+        snippet,
+        image: url
+            ? {
+                  url,
+                  alt:
+                      typeof img === "object" && img
+                          ? (img.alt ?? data.title)
+                          : data.title,
+                  width: typeof img === "object" && img ? img.width : undefined,
+                  height:
+                      typeof img === "object" && img ? img.height : undefined,
+              }
+            : undefined,
+    };
+}
+
+const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 100);
+
+const requestedPage = Number.parseInt(
+    Astro.url.searchParams.get("page") ?? "1",
+    10,
+);
+
+const page =
+    Number.isFinite(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+
+let cards: Card[] = [];
+let hasMore = false;
+let failed = false;
+
+if (!q) {
+    const result = await getEmDashCollection("posts", {
+        status: "published",
+        limit: PER_PAGE,
+        offset: (page - 1) * PER_PAGE,
+    });
+
+    cards = result.entries.map((entry) =>
+        toCard(entry.data as PostData, entry.data.slug ?? entry.id),
+    );
+
+    hasMore = Boolean(result.hasMore);
+    failed = Boolean(result.error);
+} else {
+    try {
+        const response = await search(q, {
+            collections: ["posts"],
+            limit: MAX_SEARCH_RESULTS,
+        });
+
+        const matches = response.items.filter((item) => item.slug);
+        const start = (page - 1) * PER_PAGE;
+        const pageMatches = matches.slice(start, start + PER_PAGE);
+
+        const loaded = await Promise.all(
+            pageMatches.map(async (match) => {
+                const { entry } = await getEmDashEntry(
+                    "posts",
+                    match.slug as string,
+                );
+
+                return entry
+                    ? toCard(
+                          entry.data as PostData,
+                          match.slug as string,
+                          match.snippet,
+                      )
+                    : null;
+            }),
+        );
+
+        cards = loaded.filter((card): card is Card => card !== null);
+        hasMore = matches.length > start + PER_PAGE;
+    } catch {
+        failed = true;
+    }
+}
+
+const pageHref = (target: number) => {
+    const params = new URLSearchParams();
+
+    if (q) params.set("q", q);
+    if (target > 1) params.set("page", String(target));
+
+    const query = params.toString();
+
+    return query ? `/blog?${query}` : "/blog";
+};
 ---
 
 <Layout title={title} description={description}>
     <div id="container">
         <Navbar />
-        <main class="mt-20 px-5 max-w-3xl mx-auto space-y-8">
+
+        <main class="mt-20 px-5 max-w-5xl mx-auto space-y-8 pb-8">
             <h1 class="text-4xl font-bold text-gray-900">Blog</h1>
 
-            {posts.length === 0 ? (
-                <p class="text-gray-600">No articles yet. Check back soon.</p>
+            <form role="search" action="/blog" method="get" class="flex gap-2">
+                <label for="blog-search" class="sr-only">
+                    Search articles
+                </label>
+
+                <input
+                    id="blog-search"
+                    type="search"
+                    name="q"
+                    value={q}
+                    placeholder="Search articles"
+                    maxlength="100"
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+
+                <button type="submit" class="btn-primary">
+                    Search
+                </button>
+            </form>
+
+            {q && (
+                <p class="text-sm text-gray-600">
+                    Results for “{q}”.{" "}
+                    <a href="/blog" class="text-primary hover:underline">
+                        Clear search
+                    </a>
+                </p>
+            )}
+
+            {failed && (
+                <p class="text-red-600">
+                    The articles could not be loaded. Please try again later.
+                </p>
+            )}
+
+            {cards.length === 0 && !failed ? (
+                <p class="text-gray-600">
+                    {q
+                        ? `No articles match “${q}”.`
+                        : page > 1
+                          ? "There are no more articles on this page."
+                          : "No articles yet. Check back soon."}
+                </p>
             ) : (
-                <ul class="space-y-4">
-                    {posts.map((post) => (
-                        <li>
-                            <a
-                                href={`/blog/${post.data.slug}`}
-                                class="text-xl font-semibold text-primary hover:underline"
-                            >
-                                {post.data.title}
-                            </a>
+                <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    {cards.map((card) => (
+                        <li class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
+                            {card.image && (
+                                <a
+                                    href={`/blog/${card.slug}`}
+                                    tabindex="-1"
+                                    aria-hidden="true"
+                                    class="block"
+                                >
+                                    <img
+                                        src={card.image.url}
+                                        alt={card.image.alt}
+                                        width={card.image.width}
+                                        height={card.image.height}
+                                        loading="lazy"
+                                        decoding="async"
+                                        class="aspect-video w-full object-cover"
+                                    />
+                                </a>
+                            )}
+
+                            <div class="flex flex-1 flex-col gap-3 p-5">
+                                <h2 class="text-xl font-semibold text-gray-900">
+                                    <a
+                                        href={`/blog/${card.slug}`}
+                                        class="text-primary hover:underline"
+                                    >
+                                        {card.title}
+                                    </a>
+                                </h2>
+
+                                {card.snippet ? (
+                                    <p
+                                        class="text-gray-600 leading-7"
+                                        set:html={card.snippet}
+                                    />
+                                ) : (
+                                    card.summary && (
+                                        <p class="text-gray-600 leading-7">
+                                            {card.summary}
+                                        </p>
+                                    )
+                                )}
+                            </div>
                         </li>
                     ))}
                 </ul>
             )}
+
+            {(page > 1 || hasMore) && (
+                <nav
+                    aria-label="Blog pagination"
+                    class="flex items-center justify-between pt-4"
+                >
+                    {page > 1 ? (
+                        <a
+                            href={pageHref(page - 1)}
+                            rel="prev"
+                            class="text-primary hover:underline"
+                        >
+                            ← Previous
+                        </a>
+                    ) : (
+                        <span />
+                    )}
+
+                    <span class="text-sm text-gray-500">Page {page}</span>
+
+                    {hasMore ? (
+                        <a
+                            href={pageHref(page + 1)}
+                            rel="next"
+                            class="text-primary hover:underline"
+                        >
+                            Next →
+                        </a>
+                    ) : (
+                        <span />
+                    )}
+                </nav>
+            )}
         </main>
+
         <Footer />
     </div>
 </Layout>
