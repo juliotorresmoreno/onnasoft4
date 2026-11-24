@@ -26,6 +26,8 @@ export default defineConfig({
 
     integrations: [react(), sitemap({
         filenameBase: "sitemap",
+        // Exclude the content fragments under /locales/; they are not real pages.
+        filter: (page) => !page.includes("/locales/"),
     }), emdash({
         database: d1({ binding: "DB", session: "auto", coalesce: true }),
         storage: r2({ binding: "MEDIA" }),
