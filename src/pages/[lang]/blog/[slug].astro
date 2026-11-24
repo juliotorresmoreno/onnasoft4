@@ -3,6 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import Navbar from "../../../components/Navbar/index.astro";
 import Footer from "../../../components/Footer.astro";
 import Contact from "../../../components/Contact.astro";
+import ShareButtons from "../../../components/blog/ShareButtons.astro";
 import TermSidebar, { type TermGroup } from "../../../components/blog/TermSidebar.astro";
 import { getEmDashEntry, getAllTermsForEntries, getCollectionInfo } from "emdash";
 import { PortableText } from "emdash/ui";
@@ -71,7 +72,8 @@ const ui = {
 const t = ui[lang];
 const { slug } = Astro.params;
 
-let { entry: post } = await getEmDashEntry("posts", slug ?? "");
+// Ask for this language explicitly: the same slug can exist in several locales.
+let { entry: post } = await getEmDashEntry("posts", slug ?? "", { locale: lang });
 
 // No fallback: an entry written in another language is not shown under this language.
 const entryLocale = (post?.data as { locale?: string } | undefined)?.locale;
@@ -132,6 +134,17 @@ const termGroups: TermGroup[] = [
         })),
     },
 ];
+
+// Absolute URL of this entry, used by the share buttons.
+const shareUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+
+const shareLabels = {
+    en: { heading: "Share", copy: "Copy link", copied: "Link copied", native: "More…" },
+    es: { heading: "Compartir", copy: "Copiar enlace", copied: "Enlace copiado", native: "Más…" },
+    fr: { heading: "Partager", copy: "Copier le lien", copied: "Lien copié", native: "Plus…" },
+    ja: { heading: "シェア", copy: "リンクをコピー", copied: "リンクをコピーしました", native: "その他…" },
+    zh: { heading: "分享", copy: "复制链接", copied: "链接已复制", native: "更多…" },
+}[lang];
 
 // Comments are opt-in per collection in the EmDash admin.
 const commentsEnabled = post
@@ -204,14 +217,24 @@ const commentLabels = {
                         <p class="text-gray-600">{t.notFound}</p>
                     )}
 
+                    {post && (
+                        <ShareButtons
+                            url={shareUrl}
+                            title={post.data.title}
+                            labels={shareLabels}
+                        />
+                    )}
+
                     {post && commentsEnabled && (
-                        <section class="mt-16 space-y-8 border-t border-gray-200 pt-10">
-                            <Comments
-                                collection="posts"
-                                contentId={postId}
-                                locale={t.dateLocale}
-                                labels={commentLabels.list}
-                            />
+                        <section data-blog-comments class="blog-comments mt-16 space-y-8 border-t border-gray-200 pt-10">
+                            <div id="comments-list">
+                                <Comments
+                                    collection="posts"
+                                    contentId={postId}
+                                    locale={t.dateLocale}
+                                    labels={commentLabels.list}
+                                />
+                            </div>
                             <CommentForm
                                 collection="posts"
                                 contentId={postId}
@@ -233,3 +256,59 @@ const commentLabels = {
         <Footer />
     </div>
 </Layout>
+
+<style is:global>
+    /* Primary button for the comment form, matching the site's primary color. */
+    .blog-comments .ec-comment-form-submit {
+        background-color: var(--color-primary);
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: box-shadow 0.3s, transform 0.3s, opacity 0.3s;
+    }
+    .blog-comments .ec-comment-form-submit:hover:not(:disabled) {
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        transform: translateY(-2px);
+    }
+    .blog-comments .ec-comment-form-submit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+</style>
+
+<script>
+    // After a comment is accepted, reload only the comment list, not the whole page.
+    const section = document.querySelector<HTMLElement>("[data-blog-comments]");
+    const list = document.getElementById("comments-list");
+    const status = section?.querySelector<HTMLElement>(".ec-comment-form-status");
+
+    if (section && list && status) {
+        let refreshing = false;
+
+        const refreshList = async () => {
+            if (refreshing) return;
+            refreshing = true;
+
+            try {
+                const response = await fetch(window.location.href, {
+                    headers: { Accept: "text/html" },
+                });
+                const doc = new DOMParser().parseFromString(await response.text(), "text/html");
+                const fresh = doc.getElementById("comments-list");
+
+                if (fresh) list.innerHTML = fresh.innerHTML;
+            } finally {
+                refreshing = false;
+            }
+        };
+
+        // Only watch the status message: replacing the list must not retrigger this.
+        new MutationObserver(() => {
+            if (status.classList.contains("ec-comment-form-success")) {
+                refreshList();
+            }
+        }).observe(status, { attributes: true, attributeFilter: ["class"] });
+    }
+</script>

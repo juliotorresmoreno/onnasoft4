@@ -429,6 +429,7 @@ if (!q && !hasFilter) {
                 const { entry } = await getEmDashEntry(
                     "posts",
                     match.slug as string,
+                    { locale: listLocale },
                 );
                 return entry
                     ? toCard(

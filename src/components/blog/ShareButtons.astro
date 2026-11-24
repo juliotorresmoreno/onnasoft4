@@ -1,0 +1,84 @@
+---
+// Share links for a blog post. Needs no backend: each button opens the network's
+// share dialog, copies the link, or uses the browser's native share sheet.
+
+interface Props {
+    url: string;
+    title: string;
+    labels: {
+        heading: string;
+        copy: string;
+        copied: string;
+        native: string;
+    };
+}
+
+const { url, title, labels } = Astro.props;
+
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+
+const networks = [
+    { name: "X", href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}` },
+    { name: "LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}` },
+    { name: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}` },
+    { name: "WhatsApp", href: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}` },
+];
+
+const buttonClass =
+    "rounded-full border border-primary px-4 py-1.5 text-sm text-primary hover:bg-primary/10";
+---
+
+<section class="share-buttons flex flex-wrap items-center gap-2" data-url={url} data-title={title} data-copied={labels.copied}>
+    <span class="mr-1 text-sm font-semibold text-gray-700">{labels.heading}:</span>
+
+    {networks.map((network) => (
+        <a href={network.href} target="_blank" rel="noopener noreferrer" class={buttonClass}>
+            {network.name}
+        </a>
+    ))}
+
+    <button type="button" data-copy class={buttonClass}>
+        <span data-copy-label>{labels.copy}</span>
+    </button>
+
+    <button type="button" data-native hidden class={buttonClass}>
+        {labels.native}
+    </button>
+</section>
+
+<script>
+    document.querySelectorAll<HTMLElement>(".share-buttons").forEach((container) => {
+        const url = container.dataset.url ?? window.location.href;
+        const title = container.dataset.title ?? document.title;
+        const copiedText = container.dataset.copied ?? "Link copied";
+
+        const copyButton = container.querySelector<HTMLButtonElement>("[data-copy]");
+        const copyLabel = container.querySelector<HTMLElement>("[data-copy-label]");
+        const nativeButton = container.querySelector<HTMLButtonElement>("[data-native]");
+
+        copyButton?.addEventListener("click", async () => {
+            const originalText = copyLabel?.textContent ?? "";
+
+            try {
+                await navigator.clipboard.writeText(url);
+                if (copyLabel) copyLabel.textContent = copiedText;
+                window.setTimeout(() => {
+                    if (copyLabel) copyLabel.textContent = originalText;
+                }, 2000);
+            } catch {
+                // Clipboard can be blocked (e.g. insecure context); the links above still work.
+            }
+        });
+
+        // Show the native share sheet only where the browser provides it.
+        if (nativeButton && typeof navigator.share === "function") {
+            nativeButton.hidden = false;
+            nativeButton.addEventListener("click", () => {
+                navigator.share({ title, url }).catch(() => {
+                    // User cancelled the share sheet.
+                });
+            });
+        }
+    });
+</script>
