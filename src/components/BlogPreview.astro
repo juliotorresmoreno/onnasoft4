@@ -1,0 +1,134 @@
+---
+import { getEmDashCollection, extractPlainText } from "emdash";
+
+const SUPPORTED_LANGS = ["en", "es", "fr", "ja", "zh"] as const;
+type Lang = (typeof SUPPORTED_LANGS)[number];
+
+const requested = Astro.url.pathname.split("/").filter(Boolean)[0] ?? "en";
+const lang: Lang = (SUPPORTED_LANGS as readonly string[]).includes(requested)
+    ? (requested as Lang)
+    : "en";
+
+const ui = {
+    en: {
+        heading: "From our blog",
+        viewAll: "View all articles →",
+        readMore: "Read article →",
+        empty: "New articles are coming soon.",
+    },
+    es: {
+        heading: "Del blog",
+        viewAll: "Ver todos los artículos →",
+        readMore: "Leer artículo →",
+        empty: "Pronto publicaremos nuevos artículos.",
+    },
+    fr: {
+        heading: "Depuis notre blog",
+        viewAll: "Voir tous les articles →",
+        readMore: "Lire l'article →",
+        empty: "De nouveaux articles arrivent bientôt.",
+    },
+    ja: {
+        heading: "ブログから",
+        viewAll: "すべての記事を見る →",
+        readMore: "記事を読む →",
+        empty: "新しい記事は近日公開予定です。",
+    },
+    zh: {
+        heading: "来自博客",
+        viewAll: "查看全部文章 →",
+        readMore: "阅读文章 →",
+        empty: "新文章即将推出。",
+    },
+};
+
+const t = ui[lang];
+const SUMMARY_LENGTH = 160;
+
+function getImageUrl(image: any): string | undefined {
+    if (!image) return undefined;
+    if (typeof image === "string") return image;
+    if (image.src) return image.src;
+    if (!image.meta?.storageKey) return undefined;
+    return "/_emdash/api/media/file/" + image.meta.storageKey;
+}
+
+// Latest three published posts in the current language.
+let posts: { slug: string; title: string; summary: string; image?: { url: string; alt: string } }[] = [];
+
+try {
+    const result = await getEmDashCollection("posts", {
+        status: "published",
+        locale: lang,
+        limit: 3,
+    });
+
+    posts = result.entries.map((entry) => {
+        const data = entry.data as any;
+        const text: string = data.excerpt?.trim() || extractPlainText(data.content);
+        const summary =
+            text.length <= SUMMARY_LENGTH
+                ? text
+                : `${text.slice(0, SUMMARY_LENGTH).trimEnd()}…`;
+        const url = getImageUrl(data.featured_image);
+
+        return {
+            slug: data.slug ?? entry.id,
+            title: data.title,
+            summary,
+            image: url
+                ? { url, alt: data.featured_image?.alt ?? data.title }
+                : undefined,
+        };
+    });
+} catch {
+    posts = [];
+}
+---
+
+<section id="blog" class="section bg-white py-16 animate-fade-in-down">
+    <div class="container mx-auto px-4">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <h2 class="text-3xl font-bold text-gray-900">{t.heading}</h2>
+            <a href={`/${lang}/blog`} class="font-semibold text-primary hover:underline">
+                {t.viewAll}
+            </a>
+        </div>
+
+        {posts.length === 0 ? (
+            <p class="text-gray-600">{t.empty}</p>
+        ) : (
+            <ul class="grid gap-8 md:grid-cols-3">
+                {posts.map((post) => (
+                    <li class="flex flex-col overflow-hidden rounded-2xl bg-gray-50 shadow-sm transition-shadow duration-300 hover:shadow-lg">
+                        {post.image && (
+                            <a href={`/${lang}/blog/${post.slug}`} tabindex="-1" aria-hidden="true">
+                                <img
+                                    src={post.image.url}
+                                    alt={post.image.alt}
+                                    loading="lazy"
+                                    decoding="async"
+                                    class="aspect-video w-full object-cover"
+                                />
+                            </a>
+                        )}
+                        <div class="flex flex-1 flex-col gap-3 p-6">
+                            <h3 class="text-xl font-bold leading-snug text-gray-900">
+                                <a href={`/${lang}/blog/${post.slug}`} class="hover:underline">
+                                    {post.title}
+                                </a>
+                            </h3>
+                            <p class="leading-relaxed text-gray-600">{post.summary}</p>
+                            <a
+                                href={`/${lang}/blog/${post.slug}`}
+                                class="mt-auto pt-2 font-semibold text-primary hover:underline"
+                            >
+                                {t.readMore}
+                            </a>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        )}
+    </div>
+</section>

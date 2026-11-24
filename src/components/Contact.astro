@@ -4,9 +4,11 @@ import ContactForm from "./forms/ContactForm.astro";
 
 interface Props {
   language?: string;
+  // Background tone, so the section can keep the white/gray alternation of its page.
+  tone?: "white" | "gray";
 }
 
-const { language = Astro.url.pathname.split("/").filter(Boolean)[0] || "en" } =
+const { language = Astro.url.pathname.split("/").filter(Boolean)[0] || "en", tone = "white" } =
     Astro.props;
 
 const phoneValue = import.meta.env.PUBLIC_PHONE_NUMBER || "+34 123 456 789";
@@ -75,7 +77,7 @@ const t = translations[language as keyof typeof translations] ?? translations.en
 const whatsappNumber = phoneValue.replace(/\D/g, "");
 ---
 
-<section id="contact" class="section bg-white animate-fade-in-down">
+<section id="contact" class={`section ${tone === "gray" ? "bg-gray-50" : "bg-white"} animate-fade-in-down`}>
   <div class="container mx-auto">
     <div class="mx-auto">
       <div class="text-center mb-16">
