@@ -1,0 +1,92 @@
+---
+export const prerender = true;
+import Layout from "../../../layouts/Layout.astro";
+import Navbar from "../../../components/Navbar/index.astro";
+import Footer from "../../../components/Footer.astro";
+import Contact from "../../../components/Contact.astro";
+
+export function getStaticPaths() {
+    return [
+        { params: { lang: "en" } },
+        { params: { lang: "es" } },
+        { params: { lang: "fr" } },
+        { params: { lang: "ja" } },
+        { params: { lang: "zh" } },
+    ];
+}
+
+const { lang } = Astro.params;
+
+const content = {
+    en: {
+        title: "Our Work | OnnaSoft Software Engineering & Technology Consultancy",
+        description: "Explore how OnnaSoft designs, builds and scales software, cloud, integration and AI solutions for growing businesses.",
+        heading: "Our work",
+        intro: "We build modular, scalable software systems that connect your platforms, grow with your business and remain reliable over time.",
+        cta: "Discuss your project",
+        ctaHref: "/en/contact",
+    },
+    es: {
+        title: "Nuestro trabajo | OnnaSoft consultoría de ingeniería de software y tecnología",
+        description: "Descubre cómo OnnaSoft diseña, construye y escala soluciones de software, cloud, integración e IA para empresas en crecimiento.",
+        heading: "Nuestro trabajo",
+        intro: "Construimos sistemas de software modulares y escalables que conectan tus plataformas, crecen con tu negocio y se mantienen confiables con el tiempo.",
+        cta: "Conversemos sobre tu proyecto",
+        ctaHref: "/es/contact",
+    },
+    fr: {
+        title: "Nos réalisations | OnnaSoft conseil en ingénierie logicielle et technologie",
+        description: "Découvrez comment OnnaSoft conçoit, construit et fait évoluer des solutions logicielles, cloud, d'intégration et d'IA pour les entreprises en croissance.",
+        heading: "Nos réalisations",
+        intro: "Nous concevons des systèmes logiciels modulaires et évolutifs qui connectent vos plateformes, grandissent avec votre entreprise et restent fiables dans le temps.",
+        cta: "Discutons de votre projet",
+        ctaHref: "/fr/contact",
+    },
+    ja: {
+        title: "実績紹介｜OnnaSoft ソフトウェア・技術コンサルティング",
+        description: "OnnaSoftが成長企業向けに、ソフトウェア、クラウド、システム統合、AIのソリューションをどのように設計・構築・拡張しているかをご覧ください。",
+        heading: "実績",
+        intro: "プラットフォーム同士をつなぎ、事業の成長に合わせて拡張でき、長期にわたって信頼性を保つ、モジュール型でスケーラブルなソフトウェアシステムを構築します。",
+        cta: "プロジェクトについてご相談ください",
+        ctaHref: "/ja/contact",
+    },
+    zh: {
+        title: "我们的案例 | OnnaSoft 软件工程与技术咨询",
+        description: "了解 OnnaSoft 如何为成长中的企业设计、构建和扩展软件、云服务、系统集成与人工智能解决方案。",
+        heading: "我们的案例",
+        intro: "我们构建模块化、可扩展的软件系统，连接您的各类平台，随业务增长而演进，并长期保持可靠。",
+        cta: "洽谈您的项目",
+        ctaHref: "/zh/contact",
+    },
+};
+
+// Any language without its own copy falls back to English.
+const currentContent = content[(lang as keyof typeof content) ?? "en"] ?? content.en;
+---
+<Layout
+    title={currentContent.title}
+    description={currentContent.description}
+>
+    <div id="container">
+        <Navbar />
+        <main class="mt-20 mx-auto max-w-3xl px-5">
+            <section class="pt-16 pb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                    {currentContent.heading}
+                </h1>
+                <p class="text-lg leading-relaxed text-gray-600 mb-8">
+                    {currentContent.intro}
+                </p>
+                <a
+                    href={currentContent.ctaHref}
+                    class="inline-flex items-center rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                    {currentContent.cta}
+                </a>
+            </section>
+        </main>
+        <Contact />
+        <Footer />
+    </div>
+</Layout>
+<style></style>

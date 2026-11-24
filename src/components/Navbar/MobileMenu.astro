@@ -6,7 +6,7 @@ const translations = {
     en: {
         products: "Products",
         services: "Services",
-        whyUs: "Why Us",
+        whyUs: "Our Work",
         blog: "Blog",
         contact: "Contact",
         getStarted: "Get started today",
@@ -69,7 +69,7 @@ const translations = {
     es: {
         products: "Productos",
         services: "Servicios",
-        whyUs: "Por qué nosotros",
+        whyUs: "Nuestro trabajo",
         blog: "Blog",
         contact: "Contacto",
         getStarted: "Comienza hoy",
@@ -173,7 +173,7 @@ const t =
     <div class="bg-white shadow-lg border-t">
         <div class="container mx-auto px-4 py-4 flex flex-col space-y-2">
             {/* Products with submenu */}
-            <div class="relative">
+            <div class="relative" style="margin-bottom: 0; padding-bottom: 0">
                 <input
                     type="checkbox"
                     id="products-toggle"
@@ -195,50 +195,47 @@ const t =
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width={2}
-                            d="M19 9l-7 7-7-7"></path>
+                            d="M19 9l-7 7-7-7"
+                        ></path>
                     </svg>
                 </label>
 
                 <div class="products-submenu ml-4">
-                    {
-                        t.productItems.map((product, index) => (
-                            <a
-                                href={`/${language}${productHrefs[index]}`}
-                                class="menu-item block py-2 px-4 rounded-md transition-all duration-200"
-                            >
-                                <div class="font-medium text-gray-800 text-xl">
-                                    {product.name}
-                                </div>
-                            </a>
-                        ))
-                    }
+                    {t.productItems.map((product, index) => (
+                        <a
+                            href={`/${language}${productHrefs[index]}`}
+                            class="menu-item block py-2 px-4 rounded-md transition-all duration-200"
+                        >
+                            <div class="font-medium text-gray-800 text-xl">
+                                {product.name}
+                            </div>
+                        </a>
+                    ))}
 
                     {/* Get Started Today Section - Solo para productos */}
-                    {
-                        !HIDE_GET_STARTED && (
-                            <div class="mt-2 pt-2 border-t border-gray-200">
-                                <a
-                                    href={`https://comunity.onnasoft.us?lang=${language === "es" ? "es" : "en"}`}
-                                    target="_blank"
-                                    class="block p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors duration-200"
-                                >
-                                    <div class="font-bold text-gray-900 text-xl">
-                                        {t.getStarted}
-                                    </div>
-                                    <div class="text-gray-600 text-xs mt-1">
-                                        {t.getStartedDescription}
-                                    </div>
-                                </a>
-                            </div>
-                        )
-                    }
+                    {!HIDE_GET_STARTED && (
+                        <div class="mt-2 pt-2 border-t border-gray-200">
+                            <a
+                                href={`https://comunity.onnasoft.us?lang=${language === "es" ? "es" : "en"}`}
+                                target="_blank"
+                                class="block p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors duration-200"
+                            >
+                                <div class="font-bold text-gray-900 text-xl">
+                                    {t.getStarted}
+                                </div>
+                                <div class="text-gray-600 text-xs mt-1">
+                                    {t.getStartedDescription}
+                                </div>
+                            </a>
+                        </div>
+                    )}
                 </div>
             </div>
 
             <div class="submenu-divider"></div>
 
             {/* Services with submenu */}
-            <div class="relative">
+            <div class="relative" style="margin-bottom: 0; padding-bottom: 0">
                 <input
                     type="checkbox"
                     id="services-toggle"
@@ -260,23 +257,22 @@ const t =
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width={2}
-                            d="M19 9l-7 7-7-7"></path>
+                            d="M19 9l-7 7-7-7"
+                        ></path>
                     </svg>
                 </label>
 
                 <div class="services-submenu ml-4">
-                    {
-                        t.serviceItems.map((service, index) => (
-                            <a
-                                href={`/${language}${serviceHrefs[index]}`}
-                                class="menu-item block py-2 px-4 rounded-md transition-all duration-200"
-                            >
-                                <div class="font-medium text-gray-800 text-xl">
-                                    {service.name}
-                                </div>
-                            </a>
-                        ))
-                    }
+                    {t.serviceItems.map((service, index) => (
+                        <a
+                            href={`/${language}${serviceHrefs[index]}`}
+                            class="menu-item block py-2 px-4 rounded-md transition-all duration-200"
+                        >
+                            <div class="font-medium text-gray-800 text-xl">
+                                {service.name}
+                            </div>
+                        </a>
+                    ))}
                 </div>
             </div>
 
@@ -284,22 +280,20 @@ const t =
 
             {/* Other menu items */}
             <a
-                href={`/${language}/company/why-choose-onnasoft-technology-tailored-to-you-results-scaled-to-your-needs`}
+                href={`/${language}/work`}
                 class="block py-2 px-4 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors duration-200 text-xl"
             >
                 {t.whyUs}
             </a>
 
-            {
-                !HIDE_BLOG && (
-                    <a
-                        href={`/${blogLanguage}/blog`}
-                        class="block py-2 px-4 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors duration-200 text-xl"
-                    >
-                        {t.blog}
-                    </a>
-                )
-            }
+            {!HIDE_BLOG && (
+                <a
+                    href={`/${blogLanguage}/blog`}
+                    class="block py-2 px-4 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors duration-200 text-xl"
+                >
+                    {t.blog}
+                </a>
+            )}
 
             <a
                 href={`/${language}/contact`}

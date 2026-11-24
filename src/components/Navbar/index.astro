@@ -15,7 +15,7 @@ const links = [
 const translations = {
   en: {
     services: "Services",
-    whyUs: "Why Choose Us",
+    whyUs: "Our Work",
     process: "Process",
     sectors: "Sectors",
     blog: "Blog",
@@ -23,7 +23,7 @@ const translations = {
   },
   es: {
     services: "Servicios",
-    whyUs: "Por qué elegirnos",
+    whyUs: "Nuestro trabajo",
     process: "Proceso",
     sectors: "Sectores",
     blog: "Blog",
@@ -31,7 +31,7 @@ const translations = {
   },
   fr: {
     services: "Services",
-    whyUs: "Pourquoi nous choisir",
+    whyUs: "Nos réalisations",
     process: "Processus",
     sectors: "Secteurs",
     blog: "Blog",
@@ -39,7 +39,7 @@ const translations = {
   },
   ja: {
     services: "サービス",
-    whyUs: "選ばれる理由",
+    whyUs: "実績",
     process: "プロセス",
     sectors: "分野",
     blog: "ブログ",
@@ -47,7 +47,7 @@ const translations = {
   },
   zh: {
     services: "服务",
-    whyUs: "为何选择我们",
+    whyUs: "我们的案例",
     process: "流程",
     sectors: "行业",
     blog: "博客",
@@ -97,7 +97,7 @@ const query = Astro.url.search || "";
       <ServicesMenu language={language} />
 
       <a
-        href={`/${language}/company/why-choose-onnasoft-technology-tailored-to-you-results-scaled-to-your-needs`}
+        href={`/${language}/work`}
         class="nav-link"
       >
         {t.whyUs}
