@@ -105,9 +105,7 @@ const image = post?.data.featured_image;
 const imageUrl = getImageUrl(image);
 
 // Social previews need an absolute URL.
-const ogImage = imageUrl
-    ? new URL(imageUrl, Astro.site ?? Astro.url).href
-    : undefined;
+const ogImage = imageUrl ? new URL(imageUrl, Astro.url).href : undefined;
 const excerpt = post?.data.excerpt?.trim();
 const publishedAt = post?.data.publishedAt
     ? new Date(post.data.publishedAt).toLocaleDateString(t.dateLocale, {
