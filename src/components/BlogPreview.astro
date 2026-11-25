@@ -4,7 +4,9 @@ import { getEmDashCollection, extractPlainText } from "emdash";
 const SUPPORTED_LANGS = ["en", "es", "fr", "ja", "zh"] as const;
 type Lang = (typeof SUPPORTED_LANGS)[number];
 
-const requested = Astro.url.pathname.split("/").filter(Boolean)[0] ?? "en";
+// Passed as a prop because server islands are requested from an internal URL, not the page's.
+const { lang: langProp } = Astro.props as { lang?: string };
+const requested = langProp ?? Astro.url.pathname.split("/").filter(Boolean)[0] ?? "en";
 const lang: Lang = (SUPPORTED_LANGS as readonly string[]).includes(requested)
     ? (requested as Lang)
     : "en";

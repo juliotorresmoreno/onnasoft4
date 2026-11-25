@@ -44,5 +44,5 @@ const currentSeo = seo[(lang as keyof typeof seo) ?? "en"] ?? seo.en;
     title={currentSeo.title}
     description={currentSeo.description}
 >
-	<Welcome />
+	<Welcome lang={lang} />
 </Layout>
