@@ -3,7 +3,9 @@ import Layout from "../../../layouts/Layout.astro";
 import Navbar from "../../../components/Navbar/index.astro";
 import Footer from "../../../components/Footer.astro";
 import Contact from "../../../components/Contact.astro";
-import TermSidebar, { type TermGroup } from "../../../components/blog/TermSidebar.astro";
+import TermSidebar, {
+    type TermGroup,
+} from "../../../components/blog/TermSidebar.astro";
 import {
     getEmDashCollection,
     getEmDashEntry,
@@ -13,6 +15,7 @@ import {
     getTaxonomyTerms,
     type TaxonomyTerm,
 } from "emdash";
+import { getImageUrl, type ImageLike } from "../../../lib/image";
 
 // Rendered on the server so newly published posts appear without a rebuild.
 const SUPPORTED_LANGS = ["en", "es", "fr", "ja", "zh"] as const;
@@ -155,16 +158,6 @@ const PER_PAGE = 9;
 const MAX_SEARCH_RESULTS = 200;
 const SUMMARY_LENGTH = 320;
 
-interface ImageLike {
-    src?: string;
-    previewUrl?: string;
-    url?: string;
-    alt?: string;
-    width?: number;
-    height?: number;
-    meta?: { storageKey?: string };
-}
-
 interface PostData {
     // Database id (ULID). Taxonomy lookups need this, not the locale/slug entry.id.
     id?: string;
@@ -192,16 +185,6 @@ interface Card {
     categories: TermLink[];
     tags: TermLink[];
     image?: { url: string; alt: string; width?: number; height?: number };
-}
-
-function getImageUrl(
-    image: ImageLike | string | null | undefined,
-): string | undefined {
-    if (!image) return undefined;
-    if (typeof image === "string") return image;
-    if (image.src) return image.src;
-    if (!image.meta?.storageKey) return undefined;
-    return "/_emdash/api/media/file/" + image.meta.storageKey;
 }
 
 function toCard(
@@ -279,8 +262,12 @@ async function withTerms(list: Card[]): Promise<Card[]> {
         return {
             ...card,
             // Only terms in this language: no fallback to terms from other languages.
-            categories: (terms.category ?? []).filter((term) => term.locale === listLocale).map(toLink),
-            tags: (terms.tag ?? []).filter((term) => term.locale === listLocale).map(toLink),
+            categories: (terms.category ?? [])
+                .filter((term) => term.locale === listLocale)
+                .map(toLink),
+            tags: (terms.tag ?? [])
+                .filter((term) => term.locale === listLocale)
+                .map(toLink),
         };
     });
 }
@@ -295,7 +282,11 @@ async function loadAllCards(): Promise<Card[]> {
 
     return withTerms(
         result.entries.map((entry) =>
-            toCard(entry, (entry.data as PostData).slug ?? entry.id, listLocale),
+            toCard(
+                entry,
+                (entry.data as PostData).slug ?? entry.id,
+                listLocale,
+            ),
         ),
     );
 }
@@ -388,7 +379,11 @@ if (!q && !hasFilter) {
 
     cards = await withTerms(
         result.entries.map((entry) =>
-            toCard(entry, (entry.data as PostData).slug ?? entry.id, listLocale),
+            toCard(
+                entry,
+                (entry.data as PostData).slug ?? entry.id,
+                listLocale,
+            ),
         ),
     );
     hasMore = Boolean(result.hasMore);
@@ -416,9 +411,13 @@ if (!q && !hasFilter) {
         // Search cannot filter by taxonomy, so keep only the matches that also pass the filter.
         if (hasFilter) {
             const allowed = new Set(
-                (await loadAllCards()).filter(passesFilter).map((card) => card.slug),
+                (await loadAllCards())
+                    .filter(passesFilter)
+                    .map((card) => card.slug),
             );
-            matches = matches.filter((match) => allowed.has(match.slug as string));
+            matches = matches.filter((match) =>
+                allowed.has(match.slug as string),
+            );
         }
 
         const start = (page - 1) * PER_PAGE;
@@ -450,7 +449,6 @@ if (!q && !hasFilter) {
         failed = true;
     }
 }
-
 
 const readMoreLabel = t.readMore;
 const hasSidebar = categoryOptions.length > 0 || tagOptions.length > 0;
@@ -485,7 +483,11 @@ const termGroups: TermGroup[] = [
     {
         heading: t.categories,
         variant: "list",
-        all: { label: t.all, href: hrefWith({ category: undefined }), active: !categorySlug },
+        all: {
+            label: t.all,
+            href: hrefWith({ category: undefined }),
+            active: !categorySlug,
+        },
         items: categoryOptions.map((term) => ({
             label: term.label,
             href: hrefWith({ category: term.slug }),
@@ -495,7 +497,11 @@ const termGroups: TermGroup[] = [
     {
         heading: t.tags,
         variant: "chips",
-        all: { label: t.all, href: hrefWith({ tag: undefined }), active: !tagSlug },
+        all: {
+            label: t.all,
+            href: hrefWith({ tag: undefined }),
+            active: !tagSlug,
+        },
         items: tagOptions.map((term) => ({
             label: `#${term.label}`,
             href: hrefWith({ tag: term.slug }),
@@ -517,7 +523,10 @@ const emptyMessage = q
     <div id="container">
         <Navbar />
 
-        <main class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8" style="margin-top: 80px;">
+        <main
+            class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
+            style="margin-top: 80px;"
+        >
             <h1 class="text-4xl font-bold text-gray-900">{t.heading}</h1>
 
             <form
@@ -550,149 +559,158 @@ const emptyMessage = q
             {q && (
                 <p class="text-sm text-gray-600">
                     {fill(t.resultsFor, { q })}{" "}
-                    <a href={hrefWith({ q: undefined })} class="text-primary hover:underline">
+                    <a
+                        href={hrefWith({ q: undefined })}
+                        class="text-primary hover:underline"
+                    >
                         {t.clearSearch}
                     </a>
                 </p>
             )}
 
-            <div class={`mt-8 grid gap-10 ${hasSidebar ? "lg:grid-cols-[minmax(0,1fr)_260px]" : ""}`}>
-            {hasSidebar && (
-                <TermSidebar
-                    class="lg:sticky lg:top-28 lg:order-last lg:self-start"
-                    groups={termGroups}
-                />
-            )}
+            <div
+                class={`mt-8 grid gap-10 ${hasSidebar ? "lg:grid-cols-[minmax(0,1fr)_260px]" : ""}`}
+            >
+                {hasSidebar && (
+                    <TermSidebar
+                        class="lg:sticky lg:top-28 lg:order-last lg:self-start"
+                        groups={termGroups}
+                    />
+                )}
 
-            <div class="min-w-0">
-            {failed && <p class="text-red-600">{t.loadError}</p>}
+                <div class="min-w-0">
+                    {failed && <p class="text-red-600">{t.loadError}</p>}
 
-            {cards.length === 0 && !failed ? (
-                <p class="text-gray-600">{emptyMessage}</p>
-            ) : (
-                <ul class="flex flex-col divide-y divide-gray-200">
-                    {cards.map((card) => (
-                        <li
-                            class={`grid items-start gap-6 py-10 md:gap-10 ${card.image ? "md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]" : ""}`}
-                        >
-                            {card.image && (
-                                <a
-                                    href={`${blogHref}/${card.slug}`}
-                                    tabindex="-1"
-                                    aria-hidden="true"
-                                    class="block overflow-hidden rounded-2xl"
+                    {cards.length === 0 && !failed ? (
+                        <p class="text-gray-600">{emptyMessage}</p>
+                    ) : (
+                        <ul class="flex flex-col divide-y divide-gray-200">
+                            {cards.map((card) => (
+                                <li
+                                    class={`grid items-start gap-6 py-10 md:gap-10 ${card.image ? "md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]" : ""}`}
                                 >
-                                    <img
-                                        src={card.image.url}
-                                        alt={card.image.alt}
-                                        width={card.image.width}
-                                        height={card.image.height}
-                                        loading="lazy"
-                                        decoding="async"
-                                        class="h-auto w-full object-cover"
-                                    />
+                                    {card.image && (
+                                        <a
+                                            href={`${blogHref}/${card.slug}`}
+                                            tabindex="-1"
+                                            aria-hidden="true"
+                                            class="block overflow-hidden rounded-2xl"
+                                        >
+                                            <img
+                                                src={card.image.url}
+                                                alt={card.image.alt}
+                                                width={card.image.width}
+                                                height={card.image.height}
+                                                loading="lazy"
+                                                decoding="async"
+                                                class="h-auto w-full object-cover"
+                                            />
+                                        </a>
+                                    )}
+
+                                    <div class="min-w-0 space-y-4">
+                                        <div class="flex flex-wrap items-center gap-2 text-sm">
+                                            <span class="rounded bg-gray-900 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">
+                                                {card.locale}
+                                            </span>
+                                            {card.categories.map((category) => (
+                                                <a
+                                                    href={hrefWith({
+                                                        category: category.slug,
+                                                    })}
+                                                    class="rounded-full border border-primary px-3 py-0.5 text-primary hover:bg-primary/10"
+                                                >
+                                                    {category.label}
+                                                </a>
+                                            ))}
+                                        </div>
+
+                                        <h2 class="text-2xl font-bold leading-tight text-gray-900">
+                                            <a
+                                                href={`${blogHref}/${card.slug}`}
+                                                class="hover:underline"
+                                            >
+                                                {card.title}
+                                            </a>
+                                        </h2>
+
+                                        {card.snippet ? (
+                                            <p
+                                                class="text-lg leading-8 text-gray-700"
+                                                set:html={card.snippet}
+                                            />
+                                        ) : (
+                                            card.summary && (
+                                                <p class="text-lg leading-8 text-gray-700">
+                                                    {card.summary}
+                                                </p>
+                                            )
+                                        )}
+
+                                        {card.tags.length > 0 && (
+                                            <ul class="flex flex-wrap gap-2 text-sm text-gray-500">
+                                                {card.tags.map((tag) => (
+                                                    <li>
+                                                        <a
+                                                            href={hrefWith({
+                                                                tag: tag.slug,
+                                                            })}
+                                                            class="hover:text-primary hover:underline"
+                                                        >
+                                                            #{tag.label}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+
+                                        <a
+                                            href={`${blogHref}/${card.slug}`}
+                                            class="inline-block font-semibold text-primary hover:underline"
+                                        >
+                                            {readMoreLabel}
+                                        </a>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                    {(page > 1 || hasMore) && (
+                        <nav
+                            aria-label={t.heading}
+                            class="flex items-center justify-between pt-4"
+                        >
+                            {page > 1 ? (
+                                <a
+                                    href={hrefWith({ page: page - 1 })}
+                                    rel="prev"
+                                    class="text-primary hover:underline"
+                                >
+                                    {t.previous}
                                 </a>
+                            ) : (
+                                <span />
                             )}
 
-                            <div class="min-w-0 space-y-4">
-                                <div class="flex flex-wrap items-center gap-2 text-sm">
-                                    <span class="rounded bg-gray-900 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">
-                                        {card.locale}
-                                    </span>
-                                    {card.categories.map((category) => (
-                                        <a
-                                            href={hrefWith({ category: category.slug })}
-                                            class="rounded-full border border-primary px-3 py-0.5 text-primary hover:bg-primary/10"
-                                        >
-                                            {category.label}
-                                        </a>
-                                    ))}
-                                </div>
+                            <span class="text-sm text-gray-500">
+                                {fill(t.page, { n: page })}
+                            </span>
 
-                                <h2 class="text-2xl font-bold leading-tight text-gray-900">
-                                    <a
-                                        href={`${blogHref}/${card.slug}`}
-                                        class="hover:underline"
-                                    >
-                                        {card.title}
-                                    </a>
-                                </h2>
-
-                                {card.snippet ? (
-                                    <p
-                                        class="text-lg leading-8 text-gray-700"
-                                        set:html={card.snippet}
-                                    />
-                                ) : (
-                                    card.summary && (
-                                        <p class="text-lg leading-8 text-gray-700">
-                                            {card.summary}
-                                        </p>
-                                    )
-                                )}
-
-                                {card.tags.length > 0 && (
-                                    <ul class="flex flex-wrap gap-2 text-sm text-gray-500">
-                                        {card.tags.map((tag) => (
-                                            <li>
-                                                <a
-                                                    href={hrefWith({ tag: tag.slug })}
-                                                    class="hover:text-primary hover:underline"
-                                                >
-                                                    #{tag.label}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-
+                            {hasMore ? (
                                 <a
-                                    href={`${blogHref}/${card.slug}`}
-                                    class="inline-block font-semibold text-primary hover:underline"
+                                    href={hrefWith({ page: page + 1 })}
+                                    rel="next"
+                                    class="text-primary hover:underline"
                                 >
-                                    {readMoreLabel}
+                                    {t.next}
                                 </a>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            )}
-
-            {(page > 1 || hasMore) && (
-                <nav
-                    aria-label={t.heading}
-                    class="flex items-center justify-between pt-4"
-                >
-                    {page > 1 ? (
-                        <a
-                            href={hrefWith({ page: page - 1 })}
-                            rel="prev"
-                            class="text-primary hover:underline"
-                        >
-                            {t.previous}
-                        </a>
-                    ) : (
-                        <span />
+                            ) : (
+                                <span />
+                            )}
+                        </nav>
                     )}
-
-                    <span class="text-sm text-gray-500">
-                        {fill(t.page, { n: page })}
-                    </span>
-
-                    {hasMore ? (
-                        <a
-                            href={hrefWith({ page: page + 1 })}
-                            rel="next"
-                            class="text-primary hover:underline"
-                        >
-                            {t.next}
-                        </a>
-                    ) : (
-                        <span />
-                    )}
-                </nav>
-            )}
-            </div>
+                </div>
             </div>
         </main>
 

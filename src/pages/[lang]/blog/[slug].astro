@@ -4,16 +4,25 @@ import Navbar from "../../../components/Navbar/index.astro";
 import Footer from "../../../components/Footer.astro";
 import Contact from "../../../components/Contact.astro";
 import ShareButtons from "../../../components/blog/ShareButtons.astro";
-import TermSidebar, { type TermGroup } from "../../../components/blog/TermSidebar.astro";
-import { getEmDashEntry, getAllTermsForEntries, getCollectionInfo } from "emdash";
+import TermSidebar, {
+    type TermGroup,
+} from "../../../components/blog/TermSidebar.astro";
+import {
+    getEmDashEntry,
+    getAllTermsForEntries,
+    getCollectionInfo,
+} from "emdash";
 import { PortableText } from "emdash/ui";
 import { Comments, CommentForm } from "emdash/ui/comments";
+import { getImageUrl } from "../../../lib/image";
 
 const SUPPORTED_LANGS = ["en", "es", "fr", "ja", "zh"] as const;
 type Lang = (typeof SUPPORTED_LANGS)[number];
 
 const requestedLang = Astro.params.lang ?? "en";
-const isSupported = (SUPPORTED_LANGS as readonly string[]).includes(requestedLang);
+const isSupported = (SUPPORTED_LANGS as readonly string[]).includes(
+    requestedLang,
+);
 const lang: Lang = isSupported ? (requestedLang as Lang) : "en";
 
 const ui = {
@@ -21,7 +30,8 @@ const ui = {
         eyebrow: "OnnaSoft · Blog",
         notFound: "This article could not be found.",
         fallbackTitle: "Blog | OnnaSoft",
-        fallbackDescription: "Read the latest OnnaSoft article on software, cloud, AI and digital transformation.",
+        fallbackDescription:
+            "Read the latest OnnaSoft article on software, cloud, AI and digital transformation.",
         dateLocale: "en-US",
         categories: "Categories",
         tags: "Tags",
@@ -31,7 +41,8 @@ const ui = {
         eyebrow: "OnnaSoft · Blog",
         notFound: "No se encontró este artículo.",
         fallbackTitle: "Blog | OnnaSoft",
-        fallbackDescription: "Lee el último artículo de OnnaSoft sobre software, cloud, IA y transformación digital.",
+        fallbackDescription:
+            "Lee el último artículo de OnnaSoft sobre software, cloud, IA y transformación digital.",
         dateLocale: "es-ES",
         categories: "Categorías",
         tags: "Etiquetas",
@@ -41,7 +52,8 @@ const ui = {
         eyebrow: "OnnaSoft · Blog",
         notFound: "Cet article est introuvable.",
         fallbackTitle: "Blog | OnnaSoft",
-        fallbackDescription: "Lisez le dernier article d'OnnaSoft sur le logiciel, le cloud, l'IA et la transformation digitale.",
+        fallbackDescription:
+            "Lisez le dernier article d'OnnaSoft sur le logiciel, le cloud, l'IA et la transformation digitale.",
         dateLocale: "fr-FR",
         categories: "Catégories",
         tags: "Étiquettes",
@@ -51,7 +63,8 @@ const ui = {
         eyebrow: "OnnaSoft · ブログ",
         notFound: "この記事は見つかりませんでした。",
         fallbackTitle: "ブログ | OnnaSoft",
-        fallbackDescription: "OnnaSoftの最新記事で、ソフトウェア、クラウド、AI、DXについてご覧ください。",
+        fallbackDescription:
+            "OnnaSoftの最新記事で、ソフトウェア、クラウド、AI、DXについてご覧ください。",
         dateLocale: "ja-JP",
         categories: "カテゴリー",
         tags: "タグ",
@@ -61,7 +74,8 @@ const ui = {
         eyebrow: "OnnaSoft · 博客",
         notFound: "未找到该文章。",
         fallbackTitle: "博客 | OnnaSoft",
-        fallbackDescription: "阅读 OnnaSoft 关于软件、云计算、人工智能与数字化转型的最新文章。",
+        fallbackDescription:
+            "阅读 OnnaSoft 关于软件、云计算、人工智能与数字化转型的最新文章。",
         dateLocale: "zh-CN",
         categories: "分类",
         tags: "标签",
@@ -73,7 +87,9 @@ const t = ui[lang];
 const { slug } = Astro.params;
 
 // Ask for this language explicitly: the same slug can exist in several locales.
-let { entry: post } = await getEmDashEntry("posts", slug ?? "", { locale: lang });
+let { entry: post } = await getEmDashEntry("posts", slug ?? "", {
+    locale: lang,
+});
 
 // No fallback: an entry written in another language is not shown under this language.
 const entryLocale = (post?.data as { locale?: string } | undefined)?.locale;
@@ -86,9 +102,12 @@ if (!post || !isSupported) {
 }
 
 const image = post?.data.featured_image;
-const imageUrl = image?.src ?? image?.previewUrl;
+const imageUrl = getImageUrl(image);
+
 // Social previews need an absolute URL.
-const ogImage = imageUrl ? new URL(imageUrl, Astro.site ?? Astro.url).href : undefined;
+const ogImage = imageUrl
+    ? new URL(imageUrl, Astro.site ?? Astro.url).href
+    : undefined;
 const excerpt = post?.data.excerpt?.trim();
 const publishedAt = post?.data.publishedAt
     ? new Date(post.data.publishedAt).toLocaleDateString(t.dateLocale, {
@@ -102,17 +121,25 @@ const title = post ? `${post.data.title} | OnnaSoft Blog` : t.fallbackTitle;
 const description = excerpt || t.fallbackDescription;
 
 // Categories and tags are stored per locale, so look them up in the post's own locale.
-const postId = (post?.data as { id?: string } | undefined)?.id ?? post?.id ?? "";
+const postId =
+    (post?.data as { id?: string } | undefined)?.id ?? post?.id ?? "";
 const postLocale = entryLocale ?? lang;
 const termsByEntry = post
     ? await getAllTermsForEntries("posts", [postId], { locale: postLocale })
     : new Map();
 const terms = termsByEntry.get(postId) ?? {};
 // Only terms in the entry's language, like the listing: no fallback to other languages.
-const ownTerms = <T extends { locale: string }>(list: T[] | undefined) =>
-    (list ?? []).filter((term) => term.locale === postLocale);
-const categories = ownTerms(terms.category).map((term) => ({ label: term.label, slug: term.slug }));
-const tags = ownTerms(terms.tag).map((term) => ({ label: term.label, slug: term.slug }));
+const ownTerms = <T extends { locale: string; label: string; slug: string }>(
+    list: T[] | undefined,
+) => (list ?? []).filter((term) => term.locale === postLocale);
+const categories = ownTerms(terms.category).map((term) => ({
+    label: term.label,
+    slug: term.slug,
+}));
+const tags = ownTerms(terms.tag).map((term) => ({
+    label: term.label,
+    slug: term.slug,
+}));
 const hasSidebar = categories.length > 0 || tags.length > 0;
 
 // Clicking a term opens the listing filtered by it.
@@ -139,11 +166,36 @@ const termGroups: TermGroup[] = [
 const shareUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
 
 const shareLabels = {
-    en: { heading: "Share", copy: "Copy link", copied: "Link copied", native: "More…" },
-    es: { heading: "Compartir", copy: "Copiar enlace", copied: "Enlace copiado", native: "Más…" },
-    fr: { heading: "Partager", copy: "Copier le lien", copied: "Lien copié", native: "Plus…" },
-    ja: { heading: "シェア", copy: "リンクをコピー", copied: "リンクをコピーしました", native: "その他…" },
-    zh: { heading: "分享", copy: "复制链接", copied: "链接已复制", native: "更多…" },
+    en: {
+        heading: "Share",
+        copy: "Copy link",
+        copied: "Link copied",
+        native: "More…",
+    },
+    es: {
+        heading: "Compartir",
+        copy: "Copiar enlace",
+        copied: "Enlace copiado",
+        native: "Más…",
+    },
+    fr: {
+        heading: "Partager",
+        copy: "Copier le lien",
+        copied: "Lien copié",
+        native: "Plus…",
+    },
+    ja: {
+        heading: "シェア",
+        copy: "リンクをコピー",
+        copied: "リンクをコピーしました",
+        native: "その他…",
+    },
+    zh: {
+        heading: "分享",
+        copy: "复制链接",
+        copied: "链接已复制",
+        native: "更多…",
+    },
 }[lang];
 
 // Comments are opt-in per collection in the EmDash admin.
@@ -153,24 +205,94 @@ const commentsEnabled = post
 
 const commentLabels = {
     en: {
-        list: { heading: (n: number) => `Comments (${n})`, member: "Member", like: "Like" },
-        form: { name: "Name", email: "Email", comment: "Comment", submit: "Post comment", submitting: "Posting...", published: "Thanks! Your comment has been published.", pending: "Thanks! Your comment is waiting for approval.", error: "Your comment could not be posted.", networkError: "Network error. Please try again." },
+        list: {
+            heading: (n: number) => `Comments (${n})`,
+            member: "Member",
+            like: "Like",
+        },
+        form: {
+            name: "Name",
+            email: "Email",
+            comment: "Comment",
+            submit: "Post comment",
+            submitting: "Posting...",
+            published: "Thanks! Your comment has been published.",
+            pending: "Thanks! Your comment is waiting for approval.",
+            error: "Your comment could not be posted.",
+            networkError: "Network error. Please try again.",
+        },
     },
     es: {
-        list: { heading: (n: number) => `Comentarios (${n})`, member: "Miembro", like: "Me gusta" },
-        form: { name: "Nombre", email: "Correo electrónico", comment: "Comentario", submit: "Publicar comentario", submitting: "Publicando...", published: "¡Gracias! Tu comentario se ha publicado.", pending: "¡Gracias! Tu comentario está pendiente de aprobación.", error: "No se pudo publicar tu comentario.", networkError: "Error de red. Inténtalo de nuevo." },
+        list: {
+            heading: (n: number) => `Comentarios (${n})`,
+            member: "Miembro",
+            like: "Me gusta",
+        },
+        form: {
+            name: "Nombre",
+            email: "Correo electrónico",
+            comment: "Comentario",
+            submit: "Publicar comentario",
+            submitting: "Publicando...",
+            published: "¡Gracias! Tu comentario se ha publicado.",
+            pending: "¡Gracias! Tu comentario está pendiente de aprobación.",
+            error: "No se pudo publicar tu comentario.",
+            networkError: "Error de red. Inténtalo de nuevo.",
+        },
     },
     fr: {
-        list: { heading: (n: number) => `Commentaires (${n})`, member: "Membre", like: "J'aime" },
-        form: { name: "Nom", email: "E-mail", comment: "Commentaire", submit: "Publier le commentaire", submitting: "Publication...", published: "Merci ! Votre commentaire a été publié.", pending: "Merci ! Votre commentaire est en attente de validation.", error: "Impossible de publier votre commentaire.", networkError: "Erreur réseau. Veuillez réessayer." },
+        list: {
+            heading: (n: number) => `Commentaires (${n})`,
+            member: "Membre",
+            like: "J'aime",
+        },
+        form: {
+            name: "Nom",
+            email: "E-mail",
+            comment: "Commentaire",
+            submit: "Publier le commentaire",
+            submitting: "Publication...",
+            published: "Merci ! Votre commentaire a été publié.",
+            pending: "Merci ! Votre commentaire est en attente de validation.",
+            error: "Impossible de publier votre commentaire.",
+            networkError: "Erreur réseau. Veuillez réessayer.",
+        },
     },
     ja: {
-        list: { heading: (n: number) => `コメント（${n}）`, member: "メンバー", like: "いいね" },
-        form: { name: "名前", email: "メールアドレス", comment: "コメント", submit: "コメントを投稿", submitting: "投稿中...", published: "ありがとうございます！コメントが公開されました。", pending: "ありがとうございます！コメントは承認待ちです。", error: "コメントを投稿できませんでした。", networkError: "ネットワークエラーです。もう一度お試しください。" },
+        list: {
+            heading: (n: number) => `コメント（${n}）`,
+            member: "メンバー",
+            like: "いいね",
+        },
+        form: {
+            name: "名前",
+            email: "メールアドレス",
+            comment: "コメント",
+            submit: "コメントを投稿",
+            submitting: "投稿中...",
+            published: "ありがとうございます！コメントが公開されました。",
+            pending: "ありがとうございます！コメントは承認待ちです。",
+            error: "コメントを投稿できませんでした。",
+            networkError: "ネットワークエラーです。もう一度お試しください。",
+        },
     },
     zh: {
-        list: { heading: (n: number) => `评论（${n}）`, member: "成员", like: "赞" },
-        form: { name: "姓名", email: "电子邮件", comment: "评论", submit: "发表评论", submitting: "正在发表...", published: "谢谢！您的评论已发布。", pending: "谢谢！您的评论正在等待审核。", error: "无法发表您的评论。", networkError: "网络错误，请重试。" },
+        list: {
+            heading: (n: number) => `评论（${n}）`,
+            member: "成员",
+            like: "赞",
+        },
+        form: {
+            name: "姓名",
+            email: "电子邮件",
+            comment: "评论",
+            submit: "发表评论",
+            submitting: "正在发表...",
+            published: "谢谢！您的评论已发布。",
+            pending: "谢谢！您的评论正在等待审核。",
+            error: "无法发表您的评论。",
+            networkError: "网络错误，请重试。",
+        },
     },
 }[lang];
 ---
@@ -178,21 +300,31 @@ const commentLabels = {
 <Layout title={title} description={description} image={ogImage}>
     <div id="container">
         <Navbar />
-        <main class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8" style="margin-top: 80px;">
-            <div class={`grid gap-10 ${hasSidebar ? "lg:grid-cols-[minmax(0,1fr)_260px]" : ""}`}>
+        <main
+            class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
+            style="margin-top: 80px;"
+        >
+            <div
+                class={`grid gap-10 ${hasSidebar ? "lg:grid-cols-[minmax(0,1fr)_260px]" : ""}`}
+            >
                 <div class="min-w-0">
                     {post ? (
                         <article class="space-y-8 text-gray-700 leading-8">
                             <header class="space-y-4">
                                 <p class="text-sm font-semibold uppercase tracking-widest text-primary">
-                                    {t.eyebrow}{publishedAt && ` · ${publishedAt}`}
+                                    {t.eyebrow}
+                                    {publishedAt && ` · ${publishedAt}`}
                                 </p>
 
                                 <h1 class="text-4xl font-bold leading-tight text-gray-900 md:text-5xl">
                                     {post.data.title}
                                 </h1>
 
-                                {excerpt && <p class="text-lg leading-8 text-gray-500">{excerpt}</p>}
+                                {excerpt && (
+                                    <p class="text-lg leading-8 text-gray-500">
+                                        {excerpt}
+                                    </p>
+                                )}
                             </header>
 
                             {imageUrl && (
@@ -226,7 +358,10 @@ const commentLabels = {
                     )}
 
                     {post && commentsEnabled && (
-                        <section data-blog-comments class="blog-comments mt-16 space-y-8 border-t border-gray-200 pt-10">
+                        <section
+                            data-blog-comments
+                            class="blog-comments mt-16 space-y-8 border-t border-gray-200 pt-10"
+                        >
                             <div id="comments-list">
                                 <Comments
                                     collection="posts"
@@ -266,7 +401,10 @@ const commentLabels = {
         border-radius: 9999px;
         font-weight: 500;
         cursor: pointer;
-        transition: box-shadow 0.3s, transform 0.3s, opacity 0.3s;
+        transition:
+            box-shadow 0.3s,
+            transform 0.3s,
+            opacity 0.3s;
     }
     .blog-comments .ec-comment-form-submit:hover:not(:disabled) {
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
@@ -282,7 +420,9 @@ const commentLabels = {
     // After a comment is accepted, reload only the comment list, not the whole page.
     const section = document.querySelector<HTMLElement>("[data-blog-comments]");
     const list = document.getElementById("comments-list");
-    const status = section?.querySelector<HTMLElement>(".ec-comment-form-status");
+    const status = section?.querySelector<HTMLElement>(
+        ".ec-comment-form-status",
+    );
 
     if (section && list && status) {
         let refreshing = false;
@@ -295,7 +435,10 @@ const commentLabels = {
                 const response = await fetch(window.location.href, {
                     headers: { Accept: "text/html" },
                 });
-                const doc = new DOMParser().parseFromString(await response.text(), "text/html");
+                const doc = new DOMParser().parseFromString(
+                    await response.text(),
+                    "text/html",
+                );
                 const fresh = doc.getElementById("comments-list");
 
                 if (fresh) list.innerHTML = fresh.innerHTML;
